@@ -21,7 +21,10 @@ Wiesner | Helvert | h.wiesner@uniandes.edu.co  | helverinio |
 
 ### Funcionalidades bajo prueba
 - (F1)Funcionalidad 1:
-	- (F1E1) Escenario: As an admin user I want to create and publish post
+	- (F1E1) Escenario: Como usuario administrador quiero ingresar a Ghost, crear un post y publicarlo para verlo publicado en mi sitio. 
+	- (F1E2) Escenario: Como usuario administrador quiero ingresar a Ghost, buscar un post, cambiar su contenido y ver el cambio publicado en mi sitio
+	- (F1E3) Escenario: Como usuario administrador quiero ingresar a Ghost, buscar un post, despublicarlo y ver el cambio en el contenido del sitio
+	- (F1E4) Escenario: Como usuario administrador quiero ingresar a Ghost, buscar un post, eliminarlo para actualizar el contenido del sitio sin el post. 
 - Funcionalidad 2
 - Funcionalidad 3
 - Funcionalidad 4

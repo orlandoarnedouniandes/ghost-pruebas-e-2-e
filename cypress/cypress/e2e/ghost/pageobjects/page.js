@@ -27,6 +27,25 @@ class Page {
         cy.get('a.user-menu-signout').click();
         this.visit(this.baseUrl);
     }
+
+    navigateToPosts(){
+        cy.get('a[href="#/posts/"]').click();
+    }
+
+    getLastPostTitle() {
+        cy.get('div.post-feed')
+            .find('article.post-card')
+            .first()
+            .find('h2.post-card-title')
+            .invoke('text')
+            .as('postTitle')
+    }
+
+    getRandomPostTitle(title) {
+        const randomNum = Math.floor(Math.random() * 1000) + 1;
+        return  title + randomNum;
+    }
+
 }
 
 module.exports = Page;
