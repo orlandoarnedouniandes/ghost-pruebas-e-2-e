@@ -20,7 +20,8 @@ Wiesner | Helvert | h.wiesner@uniandes.edu.co  | helverinio |
 - 1...
 
 ### Funcionalidades bajo prueba
--  Funcionalidad 1
+- (F1)Funcionalidad 1:
+	- (F1E1) Escenario: As an admin user I want to create and publish post
 - Funcionalidad 2
 - Funcionalidad 3
 - Funcionalidad 4
