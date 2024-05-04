@@ -18,18 +18,18 @@ class Page {
 
     navigateToNewPost(){
         cy.wait(2000);
-        cy.get('a[href="#/editor/post/"]').click();
+        cy.get('a[href="#/editor/post/"]').first().click();
     }
 
     logout(){
-        cy.wait(2000);
+        cy.wait(2000);        
         cy.get('div.gh-user-avatar').click();
         cy.get('a.user-menu-signout').click();
         this.visit(this.baseUrl);
     }
 
     navigateToPosts(){
-        cy.get('a[href="#/posts/"]').click();
+        cy.get('a[href="#/posts/"]').first().click();
     }
 
     getLastPostTitle() {

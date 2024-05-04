@@ -6,8 +6,12 @@ class SitePage {
     }
 
     verifyPostTitleDoesNotExist(expectedTitle) {
-        cy.get('h2.post-card-title').each(($el, index, $list) => {
-            expect($el.text().trim()).not.to.eq(expectedTitle.trim());
+        cy.get('body').then(($body) => {
+            if ($body.find('h2.post-card-title').length > 0) {
+                cy.get('h2.post-card-title').each(($el, index, $list) => {
+                    expect($el.text().trim()).not.to.eq(expectedTitle.trim());
+                });
+            }
         });
     }
 }
