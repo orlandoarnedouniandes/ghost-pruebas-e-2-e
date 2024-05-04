@@ -70,3 +70,167 @@ When("I get current full name", async function () {
 	);
 	this.currentFullName = await fullNameElement.getValue();
 });
+
+/**Tags**/
+Given("I click on the 'Tags' link", async function () {
+	let tagLink = await this.driver.$("//a[contains(text(), 'Tags')]");
+	await tagLink.click();
+});
+
+Given("I click on the 'New Tag' link", async function () {
+	let newTagLink = await this.driver.$("//span[contains(text(), 'New tag')]");
+	await newTagLink.click();
+});
+
+When("I type the basic information for New Tag 'Test Tag' and create Tag", async function () {
+	let tagNameElement = await this.driver.$("#tag-name");
+	await tagNameElement.setValue("Test Tag");
+
+	let accentColorElement = await this.driver.$("div.input-color input.gh-input");
+	await accentColorElement.setValue("d62e2e");
+
+	let tagSlugElement = await this.driver.$("#tag-slug");
+	await tagSlugElement.setValue("testslug");
+
+	let tagDescriptionElement = await this.driver.$("#tag-description");
+	await tagDescriptionElement.setValue("Description");
+
+	let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
+	await saveButton.click();
+});
+
+Then("I validate the New Tag created 'Test Tag'", async function () {
+	let tagLink = await this.driver.$("//a[contains(text(), 'Tags')]");
+	await tagLink.click();
+
+	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name");	
+	let flag = false;
+
+	for (let i = 0; i < tags.length; i++) {
+		let tag = tags[i];
+		let tagText = await tag.getText();
+		if (tagText.includes("Test Tag")) {
+			flag=true;
+			break;
+		} 
+	}
+    
+	if (flag === false) {
+		throw new Error(
+			`Expected Tag to be 'Test Tag' but found ${actualText}`
+		);
+	}
+});
+
+When("I click on the first Tag list and I modify the title", async function () {	
+	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name");
+	if(tags.length>0){
+		await tags[0].click();	
+
+		let tagNameElement = await this.driver.$("#tag-name");
+		await tagNameElement.setValue("Test Tag Modified");
+
+		let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
+		await saveButton.click();
+	}else{
+		throw new Error(
+			`There are not Tags on the aplication`
+		);
+	}
+});
+
+Then("I validate the Tag modified 'Test Tag Modified'", async function () {
+	let tagLink = await this.driver.$("//a[contains(text(), 'Tags')]");
+	await tagLink.click();
+
+	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name");	
+	let flag = false;
+
+	for (let i = 0; i < tags.length; i++) {
+		let tag = tags[i];
+		let tagText = await tag.getText();
+		if (tagText.includes("Test Tag Modified")) {
+			flag=true;
+			break;
+		} 
+	}
+    
+	if (flag === false) {
+		throw new Error(
+			`Expected Tag to be 'Test Tag' but found ${actualText}`
+		);
+	}
+});
+
+const textSlugTag = "";
+
+When("I click on the last Tag and I delete the tag", async function () {	
+	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name");
+	if(tags.length>0){
+		await tags[tags.length-1].click();	
+
+		textSlugTag = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a span")[tags.length-1];
+
+		let deleteTagButton = await this.driver.$("//span[contains(text(), 'Delete tag')]");
+		await deleteTagButton.click();
+
+		let deleteButton = await this.driver.$("//span[contains(text(), 'Delete')]");
+		await deleteButton.click();
+	}else{
+		throw new Error(
+			`There are not Tags on the aplication`
+		);
+	}
+});
+
+Then("I validate that the tag 'Test Tag Modified' not exist", async function () {
+	let tagLink = await this.driver.$("//a[contains(text(), 'Tags')]");
+	await tagLink.click();
+
+	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a span");
+	let flag = false;
+
+	for (let i = 0; i < tags.length; i++) {
+		let tag = tags[i];
+		let tagText = await tag.getText();
+		if (tagText.includes(textSlugTag)) {
+			flag=true;
+			break;
+		} 
+	}
+    
+	if (flag === true) {
+		throw new Error(
+			`Expected Tag exist`
+		);
+	}
+});
+
+/**General*/
+Given("I click on the 'Settings' link", async function () {
+	let settingsLink = await this.driver.$("path.settings_svg__a");
+	await settingsLink.click();
+});
+
+Given("I click on the 'General Settings' link", async function () {
+	let settingsLink = await this.driver.$("a#ember788 div.h4");
+	await settingsLink.click();
+});
+
+When("I modify the description", async function () {	
+	let descriptionElement = await this.driver.$("#ember809");
+	await descriptionElement.setValue("Tests Ghost Uniandes");
+
+	let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
+	await saveButton.click();
+});
+
+Then("I validate that the description has been changed 'Proof Ghost Uniandes' on users page", async function () {	
+	let descriptionElement = await this.driver.$("div.site-header-inner p.site-description").getText();
+	
+	if(descriptionElement !== "Tests Ghost Uniandes"){
+		throw new Error(
+			`Expected Description is different`
+		);
+	}
+});
