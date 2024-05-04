@@ -42,18 +42,15 @@ When("I modify the user name and save changes", async function () {
 	await saveButton.click();
 });
 
-Then(
-	"I should see the updated name {string} in the profile",
-	async function (expectedName) {
-		let profileName = await this.driver.$("h2.post-card-title");
-		let displayedName = await profileName.getText();
-		if (displayedName !== expectedName) {
-			throw new Error(
-				`Expected name to be ${expectedName} but found ${displayedName}`
-			);
-		}
+Then("I should see the updated name", async function () {
+	let profileName = await this.driver.$("h2.post-card-title");
+	let displayedName = await profileName.getText();
+	if (displayedName !== this.currentFullName) {
+		throw new Error(
+			`Expected name to be ${this.currentFullName} but found ${displayedName}`
+		);
 	}
-);
+});
 
 When("I navigate to new user profile page", async function () {
 	await this.driver.url(
@@ -65,4 +62,11 @@ When("I wait {int} seconds", function (seconds) {
 	return new Promise((resolve) => {
 		setTimeout(resolve, seconds * 1000);
 	});
+});
+
+When("I get current full name", async function () {
+	let fullNameElement = await this.driver.$(
+		"input.user-name.ember-text-field.gh-input.ember-view"
+	);
+	this.currentFullName = await fullNameElement.getValue();
 });

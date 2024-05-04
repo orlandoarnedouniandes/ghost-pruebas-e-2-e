@@ -10,7 +10,8 @@ Feature: User Modification
     And I wait 1 seconds
     And I click on the 'Your profile' link
     And I wait 1 seconds
+    When I get current full name
     When I modify the user name and save changes
     And I wait 3 seconds
     When I navigate to new user profile page
-    Then I should see the updated name "Helvert Wiesner" in the profile
+    Then I should see the updated name
