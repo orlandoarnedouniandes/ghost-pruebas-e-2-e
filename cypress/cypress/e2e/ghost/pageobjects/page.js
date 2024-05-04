@@ -18,20 +18,34 @@ class Page {
 
     navigateToNewPost(){
         cy.wait(2000);
-        cy.get('a[href="#/editor/post/"]').click();
+        cy.get('a[href="#/editor/post/"]').first().click();
     }
 
     logout(){
-        cy.wait(2000);
+        cy.wait(2000);        
         cy.get('div.gh-user-avatar').click();
         cy.get('a.user-menu-signout').click();
         this.visit(this.baseUrl);
     }
 
-    getRandomPostTitle(title){
-        const randomInteger = Math.floor(Math.random() * 999);
-        return title + '_' + randomInteger;
+    navigateToPosts(){
+        cy.get('a[href="#/posts/"]').first().click();
     }
+
+    getLastPostTitle() {
+        cy.get('div.post-feed')
+            .find('article.post-card')
+            .first()
+            .find('h2.post-card-title')
+            .invoke('text')
+            .as('postTitle')
+    }
+
+    getRandomPostTitle(title) {
+        const randomNum = Math.floor(Math.random() * 1000) + 1;
+        return  title + randomNum;
+    }
+
 }
 
 module.exports = Page;
