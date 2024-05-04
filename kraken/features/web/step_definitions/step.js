@@ -14,6 +14,14 @@ When(
 	}
 );
 
+Given("I set the new user name to {string}", function (username) {
+	// this.newUsername = username;
+	const timestamp = Date.now();
+	// Encode the timestamp to make it URL safe
+	const encodedTimestamp = encodeURIComponent(timestamp);
+	this.newUsername = `${username}_${encodedTimestamp}`;
+});
+
 When("I Click on user dropdown", async function () {
 	let userDropdown = await this.driver.$(`div.gh-user-avatar`);
 	await userDropdown.click();
@@ -26,32 +34,39 @@ When("I click on the 'Your profile' link", async function () {
 	await profileLink.click();
 });
 
-When(
-	"I modify the user name to {string} and save changes",
-	async function (newName) {
-		let nameField = await this.driver.$("input[name='user']");
-		await nameField.setValue(newName);
+When("I modify the user name and save changes", async function () {
+	let nameField = await this.driver.$("input[name='user']");
+	await nameField.setValue(this.newUsername);
 
-		let saveButton = await this.driver.$("button.gh-btn-primary");
-		await saveButton.click();
-	}
-);
+	let saveButton = await this.driver.$("button.gh-btn-primary");
+	await saveButton.click();
+});
 
-Then(
-	"I should see the updated name {string} in the profile",
-	async function (expectedName) {
-		let profileName = await this.driver.$("h2.post-card-title");
-		let displayedName = await profileName.getText();
-		if (displayedName !== expectedName) {
-			throw new Error(
-				`Expected name to be ${expectedName} but found ${displayedName}`
-			);
-		}
+Then("I should see the updated name", async function () {
+	let profileName = await this.driver.$("h2.post-card-title");
+	let displayedName = await profileName.getText();
+	if (displayedName !== this.currentFullName) {
+		throw new Error(
+			`Expected name to be ${this.currentFullName} but found ${displayedName}`
+		);
 	}
-);
+});
+
+When("I navigate to new user profile page", async function () {
+	await this.driver.url(
+		`https://ghost-jpjk.onrender.com/author/${this.newUsername}/`
+	);
+});
 
 When("I wait {int} seconds", function (seconds) {
 	return new Promise((resolve) => {
-		setTimeout(resolve, seconds * 1000); // Convert seconds to milliseconds
+		setTimeout(resolve, seconds * 1000);
 	});
+});
+
+When("I get current full name", async function () {
+	let fullNameElement = await this.driver.$(
+		"input.user-name.ember-text-field.gh-input.ember-view"
+	);
+	this.currentFullName = await fullNameElement.getValue();
 });
