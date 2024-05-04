@@ -1,4 +1,4 @@
-Feature: User Modification
+Feature: Profile Actualizar slug
 
   @user1 @web
   Scenario: Modify and Verify User Information
@@ -11,4 +11,6 @@ Feature: User Modification
     When I modify the user name and save changes
     And I wait 3 seconds
     When I navigate to new user profile page
-    Then I should see the updated name
+    Then I should see the expected name
+
+  
