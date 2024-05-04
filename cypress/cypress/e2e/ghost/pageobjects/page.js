@@ -2,7 +2,7 @@ class Page {
     baseUrl = '';
 
     visit(url) {
-        console.log('Visiting: '+url);
+        cy.log('Visiting: '+url);
         if (!this.baseUrl) this.baseUrl = url;        
         cy.visit(url);
     }
@@ -26,6 +26,11 @@ class Page {
         cy.get('div.gh-user-avatar').click();
         cy.get('a.user-menu-signout').click();
         this.visit(this.baseUrl);
+    }
+
+    getRandomPostTitle(title){
+        const randomInteger = Math.floor(Math.random() * 999);
+        return title + '_' + randomInteger;
     }
 }
 

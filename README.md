@@ -19,9 +19,8 @@ Wiesner | Helvert | h.wiesner@uniandes.edu.co  | helverinio |
 ### Instalacion y ejecucion de las pruebas en Cypress
 - 1...
 
-### Funcionalidades bajo prueba
-- (F1)Funcionalidad 1:
-	- (F1E1) Escenario: As an admin user I want to create and publish post
+### Escenarios prueba
+- (E1):	El usuario editor quiere crear un nuevo post
 - Funcionalidad 2
 - Funcionalidad 3
 - Funcionalidad 4

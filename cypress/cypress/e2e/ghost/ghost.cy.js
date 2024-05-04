@@ -4,7 +4,7 @@ const Page = require("./pageobjects/page");
 const PostPage = require("./pageobjects/postpage");
 const SitePage = require("./pageobjects/sitepage");
 
-context("Ghost",function () {
+/*context("Ghost",function () {
   beforeEach(async function () {
     this.page = new Page();
     this.postPage = new PostPage();
@@ -36,4 +36,4 @@ context("Ghost",function () {
     //Then
     this.SitePage.verifylastPostTitle(this.data.post.title);
   });
-});
+});*/
