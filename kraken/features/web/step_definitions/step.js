@@ -14,6 +14,14 @@ When(
 	}
 );
 
+Given("I set the new user name to {string}", function (username) {
+	// this.newUsername = username;
+	const timestamp = Date.now();
+	// Encode the timestamp to make it URL safe
+	const encodedTimestamp = encodeURIComponent(timestamp);
+	this.newUsername = `${username}_${encodedTimestamp}`;
+});
+
 When("I Click on user dropdown", async function () {
 	let userDropdown = await this.driver.$(`div.gh-user-avatar`);
 	await userDropdown.click();
@@ -26,16 +34,13 @@ When("I click on the 'Your profile' link", async function () {
 	await profileLink.click();
 });
 
-When(
-	"I modify the user name to {string} and save changes",
-	async function (newName) {
-		let nameField = await this.driver.$("input[name='user']");
-		await nameField.setValue(newName);
+When("I modify the user name and save changes", async function () {
+	let nameField = await this.driver.$("input[name='user']");
+	await nameField.setValue(this.newUsername);
 
-		let saveButton = await this.driver.$("button.gh-btn-primary");
-		await saveButton.click();
-	}
-);
+	let saveButton = await this.driver.$("button.gh-btn-primary");
+	await saveButton.click();
+});
 
 Then(
 	"I should see the updated name {string} in the profile",
@@ -50,8 +55,14 @@ Then(
 	}
 );
 
+When("I navigate to new user profile page", async function () {
+	await this.driver.url(
+		`https://ghost-jpjk.onrender.com/author/${this.newUsername}/`
+	);
+});
+
 When("I wait {int} seconds", function (seconds) {
 	return new Promise((resolve) => {
-		setTimeout(resolve, seconds * 1000); // Convert seconds to milliseconds
+		setTimeout(resolve, seconds * 1000);
 	});
 });
