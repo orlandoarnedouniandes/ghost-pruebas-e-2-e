@@ -42,9 +42,7 @@ class PostPage {
         cy.get('span.gh-badge').first().invoke('text').then((text) => {
             expect(text.trim()).to.eq('Draft');
         });
-    }
-    
-    
+    }    
 
     backtoDashBoard(){
         cy.get('button.gh-publish-back-button').click();
@@ -75,6 +73,15 @@ class PostPage {
         cy.get('button.gh-btn.gh-btn-hover-red.gh-btn-icon.settings-menu-delete-button').click();
         cy.wait(1000);
         cy.get('div.epm-modal-container button.gh-btn.gh-btn-red.gh-btn-icon').click();
+    }
+
+    findDraftPost(){
+        cy.get('li.gh-posts-list-item').each(($el, index, $list) => {
+            if ($el.find('span.gh-badge').text().trim() === 'Draft') {
+                cy.wrap($el).find('h3.gh-content-entry-title').invoke('text').as('postTitle');
+                return false;
+            }
+        });
     }
 }
 

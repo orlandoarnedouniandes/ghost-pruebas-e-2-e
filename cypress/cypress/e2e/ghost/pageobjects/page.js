@@ -25,6 +25,7 @@ class Page {
         cy.wait(2000);        
         cy.get('div.gh-user-avatar').click();
         cy.get('a.user-menu-signout').click();
+        cy.wait(2000);
         this.visit(this.baseUrl);
     }
 
