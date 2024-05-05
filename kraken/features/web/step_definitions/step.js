@@ -132,7 +132,11 @@ When("I update the site title to {string}", async function (newTitle) {
 	let titleInput = await this.driver.$(
 		"input.ember-text-field.gh-input[type='text']"
 	);
-	await titleInput.setValue(newTitle);
+	const timestamp = Date.now();
+	const encodedTimestamp = encodeURIComponent(timestamp);
+	this.updatedSiteTitle = `${"Updated Title"}_${encodedTimestamp}`;
+
+	await titleInput.setValue(this.updatedSiteTitle);
 });
 
 When("I click the primary Save button", async function () {
@@ -142,12 +146,10 @@ When("I click the primary Save button", async function () {
 	await saveButton.click();
 });
 
-
 When("I navigate to the {string} page", async function (pageName) {
 	let link = await this.driver.$(`a[href="#/${pageName.toLowerCase()}/"]`);
 	await link.click();
 });
-
 
 Then("The site title in the header should be Updated", async function () {
 	let siteTitleH1 = await this.driver.$(
@@ -166,7 +168,7 @@ Then("The input field should equal 'Updated Title'", async function () {
 		"input.ember-text-field.gh-input[type='text']"
 	);
 	let inputValue = await inputField.getValue();
-	if (inputValue !== "Updated Title") {
+	if (inputValue !== this.updatedSiteTitle) {
 		throw new Error(
 			`Expected input to be 'Updated Title' but found '${inputValue}'`
 		);
