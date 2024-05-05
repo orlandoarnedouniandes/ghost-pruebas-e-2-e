@@ -1,13 +1,8 @@
 class PostPage {
     fillandSavePostForm(postTitle, postContent){
-        cy.get('div.koenig-editor__editor').type(postContent);
-        cy.get('textarea.gh-editor-title').type(postTitle);
-        cy.wait(2000);
-    }
-
-    editPostForm(postTitle, postContent){
-        cy.get('div.koenig-editor__editor').clear().type(postContent);
         cy.get('textarea.gh-editor-title').clear().type(postTitle);
+        cy.get('div.koenig-editor__editor').clear().type(postContent);
+        cy.wait(2000);
     }
 
     editPost(){
@@ -81,6 +76,23 @@ class PostPage {
                 cy.wrap($el).find('h3.gh-content-entry-title').invoke('text').as('postTitle');
                 return false;
             }
+        });
+    }
+
+    selectTag(tag){
+        cy.get('button.settings-menu-toggle').click();
+        cy.get('input.ember-power-select-trigger-multiple-input').first().type(tag);
+        cy.get('button.settings-menu-toggle').click();
+    }
+
+    Preview(){
+        cy.get('button.gh-editor-preview-trigger').click();
+    }
+
+    verifyTagExistsInPreview(title){
+        cy.get('iframe').then(($iframe) => {
+            const body = $iframe.contents().find('body');
+            cy.wrap(body).find('div.article-tag').find('a').contains(title).should('exist');
         });
     }
 }

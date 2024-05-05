@@ -32,7 +32,7 @@ context("UpdatePost",function () {
 
             //When
             const newTitle = this.page.getRandomPostTitle(this.data.post.title);
-            this.postPage.editPostForm(newTitle, this.data.post.content);
+            this.postPage.fillandSavePostForm(newTitle, this.data.post.content);
             this.postPage.editPost();
             this.page.navigateToPosts();
             this.page.logout();  
