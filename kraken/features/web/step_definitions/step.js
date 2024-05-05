@@ -174,3 +174,46 @@ Then("The input field should equal 'Updated Title'", async function () {
 		);
 	}
 });
+
+//E9
+
+When(
+	"I add a new navigation item with label {string} and URL {string}",
+	async function (label, url) {
+		let labelInputs = await this.driver.$$(
+			`input.ember-text-field.gh-input[type='text'][placeholder='Label']`
+		);
+
+		await labelInputs[labelInputs.length - 1].setValue(label);
+
+		let addButtons = await this.driver.$$("button.gh-blognav-add");
+		let lastAddButton = addButtons[addButtons.length - 1]; // Select the last "Add" button
+		await lastAddButton.click();
+	}
+);
+
+When("I save the navigation changes", async function () {
+	let saveButton = await this.driver.$("button[type='submit']");
+	await saveButton.click();
+});
+
+Then(
+	"I should see a navigation item with label {string} and URL {string}",
+	async function (expectedLabel, expectedUrl) {
+		let labels = await this.driver.$$(
+			`input.ember-text-field.gh-input[type='text'][placeholder='Label']`
+		);
+		
+
+		let labelExists = labels.some(
+			async (input) => (await input.getValue()) === expectedLabel
+		);
+
+
+		if (!labelExists ) {
+			throw new Error(
+				`Expected navigation item with label ${expectedLabel} was not found.`
+			);
+		}
+	}
+);
