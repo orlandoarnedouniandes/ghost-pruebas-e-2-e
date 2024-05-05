@@ -37,9 +37,11 @@ https://ghost-jpjk.onrender.com/
 
 #### Ejecución de pruebas Cypress
 1. Clone el siguiente repositorio https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e.git
-3. Ubiquese dentro de la carpeta Cypress
+2. navegue hasta el directorio donde descargo el repositorio
+3. Ubíquese dentro de la carpeta Cypress(cd cypress)
 4. A continuación corra las pruebas usando el siguiente comando: cypress run
-5. Recuerde que la aplicación bajo pruebas se encuentra desplegada en: https://ghost-jpjk.onrender.com/, si desea evidenciar la ejecución de las pruebas puede ingresar a la siguiente url https://ghost-jpjk.onrender.com/ghost con las isguientes credenciales: User:h.wiesner@uniandes.edu.co; Password: mWxNuDsU5Ng7LD.
+5. verifique los resultados.
+6. Recuerde que la aplicación bajo pruebas se encuentra desplegada en: https://ghost-jpjk.onrender.com/, si desea evidenciar la ejecución de las pruebas puede ingresar a la siguiente url https://ghost-jpjk.onrender.com/ghost con las isguientes credenciales: User:h.wiesner@uniandes.edu.co; Password: mWxNuDsU5Ng7LD.
 
 ### Escenarios de pruebas
 [Escenarios de pruebas](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Escenarios-de-pruebas)
