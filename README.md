@@ -26,7 +26,7 @@ https://ghost-jpjk.onrender.com/
 * Java
 
 ## Ejecución de pruebas Kraken
-1. Antes de iniciar puede valisar que cumplas con los requisitos previos usando en tu consola el siguiente comando: kraken-node doctor
+1. Antes de iniciar valide que se cumplan con los requisitos previos para el uso de la herramienta usando en tu consola el siguiente comando: kraken-node doctor
 2. Clone el siguiente repositorio https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e.git
 3. Ubiquese dentro de la carpeta Kraken
 4. Sobre la carpeta Kraken use el siguiente comando: npm install
