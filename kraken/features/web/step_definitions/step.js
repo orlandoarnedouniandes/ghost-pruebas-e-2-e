@@ -73,19 +73,113 @@ When("I get current full name", async function () {
 
 
 /**Page*/
-Given("I click on the 'Page' link", async function () {
-	let tagLink = await this.driver.$('a[href="#/poages/"]');
-	await tagLink.click();
+Given("I click on the 'Pages' link", async function () {
+	let postLink = await this.driver.$('a[href="#/pages/"]');
+	await postLink.click();
+});
+
+let textUrlPage = "";
+
+When("I click on the last Page and I delete the Page", async function () {	
+	let pages = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title");
+	if(pages.length>0){
+		await pages[pages.length-1].click();	
+
+		let menuButton = await this.driver.$("button.settings-menu-toggle");
+		await menuButton.click();
+
+		textUrlPage = await this.driver.$$("div.gh-icon-link input.post-setting-slug")[pages.length-1];
+
+		let deletePageButton = await this.driver.$("button.settings-menu-delete-button");
+		await deletePageButton.click();
+
+		let deleteButton = await this.driver.$("//span[contains(text(), 'Delete')]");
+		await deleteButton.click();
+	}
+});
+
+Then("I validate that the last Page not exist", async function () {
+	let pageLink = await this.driver.$('a[href="#/pages/"]');
+	await pageLink.click();
+
+	let pages = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title");
+	let flag = false;
+
+	for (let i = 0; i < pages.length; i++) {
+		let page = pages[i];
+		let pageText = await page.getText().toLowerCase().replace(/\s+/g, "-");;
+		if (pageText.includes(textUrlPage)) {
+			flag=true;
+			break;
+		} 
+	}
+    
+	if (flag === true) {
+		throw new Error(
+			`Expected Page exist`
+		);
+	}
+});
+
+let titleUrlPage = "";
+
+When("I click on the publish page", async function () {	
+	let pages = await this.driver.$$("a.gh-post-list-status div span.gh-content-status-published");
+	if(pages.length>0){
+		await pages[0].click();
+		let menuButton = await this.driver.$("button.gh-unpublish-trigger");
+		await menuButton.click();
+		titleUrlPage = await this.driver.$$("textarea.gh-editor-title")[0];	
+	}
+});
+
+When("I click on the unpublish page", async function () {	
+	let pages = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a div.intems-center span.gh-content-status-published");
+if(pages.length>0){
+		await pages[0].click();
+		let menuButton = await this.driver.$("gh-unpublish-trigger");
+		await menuButton.click();
+
+		titleUrlPage = await this.driver.$$("textarea.gh-editor-title")[0];
+		let unpublishedPageButton = await this.driver.$("button.gh-unpublish-trigger");
+		await unpublishedPageButton.click();
+
+		let unpublishedButton = await this.driver.$("button.gh-revert-to-draft");
+		await unpublishedButton.click();				
+	}
+});	
+
+Then("I validate that the last Page is unpublish", async function () {
+	let pageLink = await this.driver.$('a[href="#/pages/"]');
+	await pageLink.click();
+
+	let pages = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a div.intems-center span");
+	let flag = false;
+
+	for (let i = 0; i < pages.length; i++) {
+		let page = pages[i];
+		let pageText = await page.getText().toLowerCase().replace(/\s+/g, "-");;
+		if (pageText.includes(titleUrlPage)) {
+			flag=true;	
+			break;
+		} 
+	}
+    
+	if (flag === true) {
+		throw new Error(
+			`Expected Page exist`
+		);
+	}
 });
 
 /**Tags**/
 Given("I click on the 'Tags' link", async function () {
-	let tagLink = await this.driver.$("//a[contains(text(), 'Tags')]");
+	let tagLink = await this.driver.$('a[href="#/tags/"]');
 	await tagLink.click();
 });
 
 Given("I click on the 'New Tag' link", async function () {
-	let newTagLink = await this.driver.$("//span[contains(text(), 'New tag')]");
+	let newTagLink = await this.driver.$('a[href="#/tags/new/"]');
 	await newTagLink.click();
 });
 
@@ -107,7 +201,7 @@ When("I type the basic information for New Tag 'Test Tag' and create Tag", async
 });
 
 Then("I validate the New Tag created 'Test Tag'", async function () {
-	let tagLink = await this.driver.$("//a[contains(text(), 'Tags')]");
+	let tagLink = await this.driver.$('a[href="#/tags/"]');
 	await tagLink.click();
 
 	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name");	
@@ -143,7 +237,7 @@ When("I click on the first Tag list and I modify the title", async function () {
 });
 
 Then("I validate the Tag modified 'Test Tag Modified'", async function () {
-	let tagLink = await this.driver.$("//a[contains(text(), 'Tags')]");
+	let tagLink = await this.driver.$('a[href="#/tags/"]');
 	await tagLink.click();
 
 	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name");	
@@ -183,7 +277,7 @@ When("I click on the last Tag and I delete the tag", async function () {
 });
 
 Then("I validate that the tag 'Test Tag Modified' not exist", async function () {
-	let tagLink = await this.driver.$("//a[contains(text(), 'Tags')]");
+	let tagLink = await this.driver.$('a[href="#/tags/"]');
 	await tagLink.click();
 
 	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a span");
@@ -237,7 +331,7 @@ Then("I validate that the description has been changed 'Proof Ghost Uniandes' on
 	}
 });
 
-/**Tags - Posts**/
+/**Posts**/
 Given("I click on the 'Posts' link", async function () {
 	let tagLink = await this.driver.$('a[href="#/posts/"]');
 	await tagLink.click();
@@ -296,5 +390,48 @@ When("I click on the modify Post list and I verify tag", async function () {
 			}
 			break;
 		} 
+	}
+});
+
+let textUrlPost = "";
+
+When("I click on the last Post and I delete the Post", async function () {	
+	let posts = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title");
+	if(posts.length>0){
+		await posts[posts.length-1].click();	
+
+		let menuButton = await this.driver.$("button.settings-menu-toggle");
+		await menuButton.click();
+
+		textUrlPost = await this.driver.$$("div.gh-icon-link input.post-setting-slug")[posts.length-1];
+
+		let deletePostButton = await this.driver.$("button.settings-menu-delete-button");
+		await deletePostButton.click();
+
+		let deleteButton = await this.driver.$("//span[contains(text(), 'Delete')]");
+		await deleteButton.click();
+	}
+});
+
+Then("I validate that the last Post not exist", async function () {
+	let postLink = await this.driver.$('a[href="#/posts/"]');
+	await postLink.click();
+
+	let posts = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title");
+	let flag = false;
+
+	for (let i = 0; i < posts.length; i++) {
+		let post = posts[i];
+		let postText = await post.getText().toLowerCase().replace(/\s+/g, "-");;
+		if (postText.includes(textUrlPost)) {
+			flag=true;
+			break;
+		} 
+	}
+    
+	if (flag === true) {
+		throw new Error(
+			`Expected Post exist`
+		);
 	}
 });
