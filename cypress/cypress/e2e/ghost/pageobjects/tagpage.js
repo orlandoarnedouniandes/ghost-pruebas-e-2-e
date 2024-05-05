@@ -49,6 +49,25 @@ class TagPage {
         });
     }
 
+    navigateToSettingsAndSelectGeneral(){
+        cy.wait(2000);
+        cy.get('a[href="#/settings/"]').click();
+        cy.wait(1000);
+        //this.tagSelect = cy.get('ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name').first().text();
+        cy.get('a[href="#/settings/general/').click();
+        cy.wait(1000);
+        cy.get('div.gh-expandable-header button.gh-btn').first().click();
+    }
+
+    editDescriptionAndSave(){
+        const description = "Description Cypress General";
+        cy.get('div.description-container input.ember-text-field').first().should('be.visible').invoke('val', '').type(description);
+        //cy.get('input[id="tag-name"]').first().type(name);
+        cy.wait(1000);
+        cy.get('div.gh-canvas-header button.gh-btn span').click();
+        return description;
+    }
+
     deleteTag(){
         cy.get('button.gh-btn-red').click();
         cy.wait(1000);
@@ -59,6 +78,18 @@ class TagPage {
     verifyTagNotExists(expectedTag) {
         cy.get('h3.gh-tag-list-name').each(($el, index, $list) => {
             expect($el.text().trim()).not.to.eq(expectedTag.trim());
+        });
+    }
+
+    verifyDescription(description){
+        //cy.log('Texto Objetnido: '+nameTitle );
+        cy.wait(1000);
+        cy.get('div.site-header-inner p.site-description').then((descr) => {
+            if(description !== descr.text()){
+                throw new Error(
+                    `Expected Description is different`
+                );
+            }
         });
     }
 }
