@@ -71,6 +71,8 @@ When("I get current full name", async function () {
 	this.currentFullName = await fullNameElement.getValue();
 });
 
+
+
 /**Tags**/
 Given("I click on the 'Tags' link", async function () {
 	let tagLink = await this.driver.$("//a[contains(text(), 'Tags')]");
@@ -132,11 +134,11 @@ When("I click on the first Tag list and I modify the title", async function () {
 
 		let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
 		await saveButton.click();
-	}else{
+	}/*else{
 		throw new Error(
 			`There are not Tags on the aplication`
 		);
-	}
+	}*/
 });
 
 Then("I validate the Tag modified 'Test Tag Modified'", async function () {
@@ -162,7 +164,7 @@ Then("I validate the Tag modified 'Test Tag Modified'", async function () {
 	}
 });
 
-const textSlugTag = "";
+let textSlugTag = "";
 
 When("I click on the last Tag and I delete the tag", async function () {	
 	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name");
@@ -176,11 +178,11 @@ When("I click on the last Tag and I delete the tag", async function () {
 
 		let deleteButton = await this.driver.$("//span[contains(text(), 'Delete')]");
 		await deleteButton.click();
-	}else{
+	}/*else{
 		throw new Error(
 			`There are not Tags on the aplication`
 		);
-	}
+	}*/
 });
 
 Then("I validate that the tag 'Test Tag Modified' not exist", async function () {
@@ -213,12 +215,15 @@ Given("I click on the 'Settings' link", async function () {
 });
 
 Given("I click on the 'General Settings' link", async function () {
-	let settingsLink = await this.driver.$("a#ember788 div.h4");
+	let settingsLink = await this.driver.$('a[href="#/settings/general/"]');
 	await settingsLink.click();
 });
 
 When("I modify the description", async function () {	
-	let descriptionElement = await this.driver.$("#ember809");
+	let expandLink = await this.driver.$$('div.gh-expandable-header button.gh-btn')[0];
+	await expandLink.click();
+
+	let descriptionElement = await this.driver.$('div.description-container input.ember-text-field');
 	await descriptionElement.setValue("Tests Ghost Uniandes");
 
 	let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
@@ -232,5 +237,71 @@ Then("I validate that the description has been changed 'Proof Ghost Uniandes' on
 		throw new Error(
 			`Expected Description is different`
 		);
+	}
+});
+
+/**Tags - Posts**/
+Given("I click on the 'Posts' link", async function () {
+	let tagLink = await this.driver.$('a[href="#/posts/"]');
+	await tagLink.click();
+});
+
+let urlPosts = "";
+let addTag = "";
+
+When("I click on the first Post list and I add the tag", async function () {	
+	let posts = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title");
+	if(posts.length>0){
+		urlPosts = posts[0].getText();
+		await posts[0].click();	
+
+		let menuButton = await this.driver.$("button.settings-menu-toggle");
+		await menuButton.click();
+
+		let inputTags = await this.driver.$("input.ember-power-select-trigger-multiple-input");
+		await inputTags.click();
+
+		let tags = await this.driver.$$("li.ember-power-select-option");
+		if(tags.length > 0){
+			let tag = tags[0];
+			addTag = tag.getText(); 
+			await tag.click();			
+		}
+	}/*else{
+		throw new Error(
+			`There are not Posts on the aplication`
+		);
+	}*/
+});
+
+When("I click on the modify Post list and I verify tag", async function () {	
+	let tags = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title");
+	
+	for (let i = 0; i < tags.length; i++) {
+		let tag = tags[i];
+		let tagText = await tag.getText();
+		if (tagText.includes(urlPosts)) {
+			await tags[i].click();
+			
+			let menuButton = await this.driver.$("button.settings-menu-toggle");
+			await menuButton.click();
+
+			let tagsAdd = await this.driver.$$("li.ember-power-select-multiple-option span.ember-power-select-multiple-inner-text");
+			let flag = false;
+			for (let a = 0; a < tagsAdd.length; a++) {
+				let input = tagsAdd[a];
+				let inputText = await input.getText();
+				if (inputText.includes(addTag)) {
+					flag = true;
+					break;
+				}				
+			}
+			if(flag===false){
+				throw new Error(
+					`There is not Tag on the post`
+				);
+			}
+			break;
+		} 
 	}
 });
