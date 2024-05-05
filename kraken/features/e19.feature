@@ -13,6 +13,12 @@ Feature: Configuration link  update
     Then I refresh the page
     And I wait 3 seconds
     Then I should see a navigation item with label "Test" and URL "https://ghost-jpjk.onrender.com/"
+    Then delete label "Test"
+    And I wait 2 seconds
+    And I click the primary Save button
+    And I wait 2 seconds
+    Then I refresh the page
+    
 
     
 

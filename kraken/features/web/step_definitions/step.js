@@ -217,3 +217,9 @@ Then(
 		}
 	}
 );
+
+Then("delete label {string}", async function (expectedLabel) {
+	let deleteButtons = await this.driver.$$("button.gh-blognav-delete");
+	let lastDeleteButton = deleteButtons[deleteButtons.length - 1]; // Select the last "Add" button
+	await lastDeleteButton.click();
+});
