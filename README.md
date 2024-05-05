@@ -2,7 +2,7 @@
 
 ## Descripcion
 
-A brief description of what the project does.
+Pruebas automatizadas utilizando Kraken y Cypress
 
 ### Conformación de Equipo
 
@@ -14,7 +14,26 @@ Arnedo | Orlando | o.arnedoc@uniandes.edu.co | orlandoarnedouniandes |
 Wiesner | Helvert | h.wiesner@uniandes.edu.co  | helverinio |
 
 ### Instalacion y ejecucion de las pruebas en Kraken
-- 1...
+
+- Para instalar y ejetutar el proyecto de Kraken Por favor seguir estas instrucciones:
+
+**Estando en la carpeta principal del proyecto**:
+
+- npm install
+
+- cd kraken
+
+- npx kraken-node run
+
+### En caso de querer correr una prueba en particular:
+- Estando en la carpeta principal del proyecto
+- npm install
+- cd kraken
+- copiar la prueba del folder en el que se encuentra situada (ejemplo: feature/e15)
+- pegar el archivo de prueba dentro del folder /features
+- Asegurarse de que ningun otro archivo con extension .feature esta presente en /features aparte del que desamos probar (esto debido a la limitacion de kraken para correr differentes archivos de prueba en windows Link de la discusion: https://uniandes-miso.slack.com/archives/C06QRVAKMHR/p1714705849745749)
+- correr - npx kraken-node run
+
 
 ### Instalacion y ejecucion de las pruebas en Cypress
 - 1...

@@ -7,5 +7,6 @@ Before(async function() {
 })
 
 After(async function() {
-  await this.deviceClient.stopKrakenForUserId(this.userId);
+	await this.deviceClient.stopKrakenForUserId(this.userId);
+  
 });
