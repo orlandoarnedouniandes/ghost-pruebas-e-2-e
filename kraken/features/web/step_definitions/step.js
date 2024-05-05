@@ -167,7 +167,7 @@ Then("I validate that the last Page is unpublish", async function () {
     
 	if (flag === true) {
 		throw new Error(
-			`Expected Page exist`
+			`Expected Page publish`
 		);
 	}
 });
@@ -432,6 +432,60 @@ Then("I validate that the last Post not exist", async function () {
 	if (flag === true) {
 		throw new Error(
 			`Expected Post exist`
+		);
+	}
+});
+
+
+
+
+let titleUrlPost = "";
+
+When("I click on the publish post", async function () {	
+	let posts = await this.driver.$$("a.gh-post-list-status div span.gh-content-status-published");
+	if(posts.length>0){
+		await posts[0].click();
+		let menuButton = await this.driver.$("button.gh-unpublish-trigger");
+		await menuButton.click();
+		titleUrlPost = await this.driver.$$("textarea.gh-editor-title")[0];	
+	}
+});
+
+When("I click on the unpublish post", async function () {	
+	let posts = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a div.intems-center span.gh-content-status-published");
+if(posts.length>0){
+		await posts[0].click();
+		let menuButton = await this.driver.$("gh-unpublish-trigger");
+		await menuButton.click();
+
+		titleUrlPost = await this.driver.$$("textarea.gh-editor-title")[0];
+		let unpublishedPostButton = await this.driver.$("button.gh-unpublish-trigger");
+		await unpublishedPostButton.click();
+
+		let unpublishedButton = await this.driver.$("button.gh-revert-to-draft");
+		await unpublishedButton.click();				
+	}
+});	
+
+Then("I validate that the last Post is unpublish", async function () {
+	let postsLink = await this.driver.$('a[href="#/posts/"]');
+	await postsLink.click();
+
+	let posts = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a div.intems-center span");
+	let flag = false;
+
+	for (let i = 0; i < posts.length; i++) {
+		let post = posts[i];
+		let postText = await post.getText().toLowerCase().replace(/\s+/g, "-");;
+		if (postText.includes(titleUrlPost)) {
+			flag=true;	
+			break;
+		} 
+	}
+    
+	if (flag === true) {
+		throw new Error(
+			`Expected Post publish`
 		);
 	}
 });
