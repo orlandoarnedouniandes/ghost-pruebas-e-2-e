@@ -1,7 +1,7 @@
 class PostPage {
     fillandSavePostForm(postTitle, postContent){
-        cy.get('textarea.gh-editor-title').clear().type(postTitle);
-        cy.get('div.koenig-editor__editor').clear().type(postContent);
+        cy.get('textarea.gh-editor-title').clear().type(postTitle, {force: true});
+        cy.get('div.koenig-editor__editor').clear().type(postContent, {force: true});
         cy.wait(2000);
     }
 

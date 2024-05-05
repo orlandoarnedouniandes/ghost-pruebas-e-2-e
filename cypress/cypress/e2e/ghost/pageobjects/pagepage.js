@@ -2,6 +2,7 @@ class PageObject {
     fillandSavePageForm(postTitle, postContent){
         cy.get('textarea.gh-editor-title').clear().type(postTitle);
         cy.get('div.koenig-editor__editor').clear().type(postContent);
+        cy.get('body').click(); 
         cy.wait(2000);
     }
 
@@ -65,6 +66,7 @@ class PageObject {
     }
 
     editPage(){
+        cy.get('button.gh-editor-save-trigger').click();
         cy.wait(2000);
     }
 

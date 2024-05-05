@@ -24,6 +24,8 @@ context("DeletePost",function () {
 
       it("User wants to delete a post",function (){
         //Given
+        this.page.visit(this.data.url);
+        cy.wait(3000);
         this.page.getLastPostTitle();
         cy.get('@postTitle').then((title) => {
             cy.log('post a eliminar:'+title);

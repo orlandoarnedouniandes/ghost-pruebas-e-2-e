@@ -19,6 +19,7 @@ class Page {
     navigateToNewPost(){
         cy.wait(2000);
         cy.get('a[href="#/editor/post/"]').first().click();
+        cy.wait(2000);
     }
 
     navigateToNewPage(){
@@ -45,10 +46,12 @@ class Page {
 
     navigateToPosts(){
         cy.get('a[href="#/posts/"]').first().click();
+        cy.wait(2000);
     }
 
     navigateToPages(){
         cy.get('a[href="#/pages/"]').first().click();
+        cy.wait(2000);
     }
 
     navigateToTags(){
