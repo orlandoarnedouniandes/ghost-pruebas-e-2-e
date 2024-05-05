@@ -22,6 +22,15 @@ Given("I set the new user name to {string}", function (username) {
 	this.newUsername = `${username}_${encodedTimestamp}`;
 });
 
+Given("I set the new full name to {string}", function (fullName) {
+	// this.newUsername = username;
+	const timestamp = Date.now();
+	// Encode the timestamp to make it URL safe
+	const encodedTimestamp = encodeURIComponent(timestamp);
+	this.newFullName = `${fullName}_${encodedTimestamp}`;
+	this.currentFullName = this.newFullName;
+});
+
 When("I Click on user dropdown", async function () {
 	let userDropdown = await this.driver.$(`div.gh-user-avatar`);
 	await userDropdown.click();
@@ -42,7 +51,25 @@ When("I modify the user name and save changes", async function () {
 	await saveButton.click();
 });
 
-Then("I should see the updated name", async function () {
+When("I modify current full name and save changes", async function () {
+	let nameField = await this.driver.$("#user-name");
+	await nameField.setValue(this.newFullName);
+
+	let saveButton = await this.driver.$("button.gh-btn-primary");
+	await saveButton.click();
+});
+
+Then("I should see the expected name", async function () {
+	let profileName = await this.driver.$("h2.post-card-title");
+	let displayedName = await profileName.getText();
+	if (displayedName !== this.currentFullName) {
+		throw new Error(
+			`Expected name to be ${this.currentFullName} but found ${displayedName}`
+		);
+	}
+});
+
+Then("I should see the expected full name", async function () {
 	let profileName = await this.driver.$("h2.post-card-title");
 	let displayedName = await profileName.getText();
 	if (displayedName !== this.currentFullName) {
@@ -69,4 +96,9 @@ When("I get current full name", async function () {
 		"input.user-name.ember-text-field.gh-input.ember-view"
 	);
 	this.currentFullName = await fullNameElement.getValue();
+});
+
+When("I get current slug name", async function () {
+	let fullNameElement = await this.driver.$("input[name='user']");
+	this.newUsername = await fullNameElement.getValue();
 });
