@@ -42,6 +42,10 @@ https://ghost-jpjk.onrender.com/
 4. A continuación corra las pruebas usando el siguiente comando: cypress run
 5. verifique los resultados.
 6. Recuerde que la aplicación bajo pruebas se encuentra desplegada en: https://ghost-jpjk.onrender.com/, si desea evidenciar la ejecución de las pruebas puede ingresar a la siguiente url https://ghost-jpjk.onrender.com/ghost con las isguientes credenciales: User:h.wiesner@uniandes.edu.co; Password: mWxNuDsU5Ng7LD.
+#### Versiónes utilizadas en el desarrollo de las pruebas
+node: 18.13.0
+Cypress package version: 13.8.1
+Cypress binary version: 13.8.1
 
 ### Escenarios de pruebas
 [Escenarios de pruebas](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Escenarios-de-pruebas)
