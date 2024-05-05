@@ -72,6 +72,11 @@ When("I get current full name", async function () {
 });
 
 
+/**Page*/
+Given("I click on the 'Page' link", async function () {
+	let tagLink = await this.driver.$('a[href="#/poages/"]');
+	await tagLink.click();
+});
 
 /**Tags**/
 Given("I click on the 'Tags' link", async function () {
@@ -134,11 +139,7 @@ When("I click on the first Tag list and I modify the title", async function () {
 
 		let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
 		await saveButton.click();
-	}/*else{
-		throw new Error(
-			`There are not Tags on the aplication`
-		);
-	}*/
+	}
 });
 
 Then("I validate the Tag modified 'Test Tag Modified'", async function () {
@@ -178,11 +179,7 @@ When("I click on the last Tag and I delete the tag", async function () {
 
 		let deleteButton = await this.driver.$("//span[contains(text(), 'Delete')]");
 		await deleteButton.click();
-	}/*else{
-		throw new Error(
-			`There are not Tags on the aplication`
-		);
-	}*/
+	}
 });
 
 Then("I validate that the tag 'Test Tag Modified' not exist", async function () {
@@ -267,11 +264,7 @@ When("I click on the first Post list and I add the tag", async function () {
 			addTag = tag.getText(); 
 			await tag.click();			
 		}
-	}/*else{
-		throw new Error(
-			`There are not Posts on the aplication`
-		);
-	}*/
+	}
 });
 
 When("I click on the modify Post list and I verify tag", async function () {	
