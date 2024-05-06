@@ -2,7 +2,7 @@ Feature: Ghost Tests
 
   @user14 @web
     Scenario: E14 - Delete Tag
-      Given I navigate to page "https://ghost-jpjk.onrender.com/ghost/#/signin/"
+      Given I navigate to page "<BASEURL>"
       When I log in with email "<USERNAME>" and password "<PASSWORD>"
       And I wait 3 seconds
       And I click on the 'Tags' link

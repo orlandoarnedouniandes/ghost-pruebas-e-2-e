@@ -2,7 +2,7 @@ Feature: Ghost Tests
 
   @user18 @web
     Scenario: E18 - Update Title Description
-      Given I navigate to page "https://ghost-jpjk.onrender.com/ghost/#/signin/"
+      Given I navigate to page "<BASEURL>"
       When I log in with email "<USERNAME>" and password "<PASSWORD>"
       And I wait 3 seconds
       And I click on the 'Settings' link
