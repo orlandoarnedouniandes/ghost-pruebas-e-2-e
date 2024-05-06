@@ -8,7 +8,7 @@ const execPromise = util.promisify(exec);
 
 // File paths
 const sourceFiles = [
-	"features/e4/e4.feature",
+	// "features/e4/e4.feature",
 	// "features/e5/e5.feature",
 	// "features/e9/e9.feature",
 	// "features/e10/e10.feature",
@@ -16,7 +16,7 @@ const sourceFiles = [
 	// "features/e12/e12.feature",
 	// "features/e13/e13.feature",
 	// "features/e14/e14.feature",
-	// "features/e15/e15.feature",
+	"features/e15/e15.feature",
 	// "features/e16/e16.feature",
 	// "features/e17/e17.feature",
 	// "features/e18/e18.feature",

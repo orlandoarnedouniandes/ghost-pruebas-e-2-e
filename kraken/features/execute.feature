@@ -1,14 +1,16 @@
-Feature: Ghost Tests
+Feature: Profile Actualizar slug
 
-  @user4 @web
-    Scenario: E04 - Unpublish Post
-      Given I navigate to page "https://ghost-jpjk.onrender.com/ghost/#/signin/"
-      When I log in with email "<USERNAME>" and password "<PASSWORD>"
-      And I wait 3 seconds
-      And I click on the 'Posts' link
-      And I wait 1 seconds
-      And I click on the publish post
-      And I wait 1 seconds
-      And I click on the unpublish post
-      And I wait 1 seconds
-      Then I validate that the last Post is unpublish
+  @user15 @web
+  Scenario: E15 - Modify and Verify User Information
+    Given I navigate to page "https://ghost-jpjk.onrender.com/ghost/#/signin/"
+    And I set the new user name to "editedUsername"
+    When I log in with email "<USERNAME>" and password "<PASSWORD>"
+    And I Click on user dropdown
+    And I click on the 'Your profile' link
+    When I get current full name
+    When I modify the user name and save changes
+    And I wait 3 seconds
+    When I navigate to new user profile page
+    Then I should see the expected name
+
+  

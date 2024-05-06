@@ -19,6 +19,40 @@ async function saveScreenshot(resultsPath, stringId) {
 	await this.driver.saveScreenshot(`${resultsPath}/${stringId}.png`);
 }
 
+async function saveComparisonReport(datetime, resultsPath, stringId) {
+	const data = await compareImages(
+		fs.readFileSync(`${resultsPath}/${stringId}-before.png`),
+		fs.readFileSync(`${resultsPath}/${stringId}-after.png`),
+		options
+	);
+
+	resultInfo = {
+		isSameDimensions: data.isSameDimensions,
+		dimensionDifference: data.dimensionDifference,
+		rawMisMatchPercentage: data.rawMisMatchPercentage,
+		misMatchPercentage: data.misMatchPercentage,
+		diffBounds: data.diffBounds,
+		analysisTime: data.analysisTime,
+		browser: "chromium",
+		filePathBefore: `${stringId}-before.png`,
+		filePathAfter: `${stringId}-after.png`,
+		filePathCompare: `${stringId}-compare.png`,
+		stringId: stringId,
+	};
+
+	fs.writeFileSync(
+		`${resultsPath}/${resultInfo.filePathCompare}`,
+		data.getBuffer()
+	);
+
+	fs.writeFileSync(
+		`${resultsPath}/${stringId}-report.html`,
+		createReport(datetime, resultInfo)
+	);
+
+	fs.copyFileSync("./index.css", `${resultsPath}/index.css`);
+}
+
 When(
 	"I log in with email {kraken-string} and password {kraken-string}",
 	async function (email, password) {
@@ -41,33 +75,9 @@ When(
 		await nextButton.click();
 		await saveScreenshot.call(this, resultsPath, "loginBtn-after");
 
-		const data = await compareImages(
-			fs.readFileSync(`${resultsPath}/loginBtn-before.png`),
-			fs.readFileSync(`${resultsPath}/loginBtn-after.png`),
-			options
-		);
-
-		resultInfo = {
-			isSameDimensions: data.isSameDimensions,
-			dimensionDifference: data.dimensionDifference,
-			rawMisMatchPercentage: data.rawMisMatchPercentage,
-			misMatchPercentage: data.misMatchPercentage,
-			diffBounds: data.diffBounds,
-			analysisTime: data.analysisTime,
-			browser: "chromium",
-			filePathBefore: `loginBtn-before.png`,
-			filePathAfter: `loginBtn-after.png`,
-			filePathCompare: `compare-chromium.png`,
-		};
-
-		fs.writeFileSync(`${resultsPath}/compare-chromium.png`, data.getBuffer());
-
-		fs.writeFileSync(
-			`${resultsPath}/report.html`,
-			createReport(datetime, resultInfo)
-		);
-
-		fs.copyFileSync("./index.css", `${resultsPath}/index.css`);
+		await saveComparisonReport.call(this, datetime, resultsPath, "email");
+		await saveComparisonReport.call(this, datetime, resultsPath, "pwd");
+		await saveComparisonReport.call(this, datetime, resultsPath, "loginBtn");
 	}
 );
 
@@ -756,7 +766,7 @@ function browser(b, info) {
 	return `<div class=" browser" id="test0">
     <div class=" btitle">
         <h2>Browser: ${b}</h2>
-        <p>Data: ${info}</p>
+        <p>Data: ${info.stringId}</p>
     </div>
     <div class="imgline">
       <div class="imgcontainer">
