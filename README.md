@@ -28,8 +28,7 @@ https://ghost-jpjk.onrender.com/
 2. Clone el siguiente repositorio https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e.git
 3. Ubiquese dentro de la carpeta Kraken
 4. Sobre la carpeta Kraken use el siguiente comando: npm install
-5. A continuación corra las pruebas usando el siguiente comando: npx kraken-node run
-6. Recuerde que la aplicación bajo pruebas se encuentra desplegada en: https://ghost-jpjk.onrender.com/, si desea evidenciar la ejecución de las pruebas puede ingresar a la siguiente url https://ghost-jpjk.onrender.com/ghost con las isguientes credenciales: User:h.wiesner@uniandes.edu.co; Password: mWxNuDsU5Ng7LD.
+5. A continuación corra las pruebas usando el siguiente comando: node features/executeKrakenAll.js
 
 ### En caso de querer correr una prueba en particular: dado que hay una limitante de la herramienta en ejeutar varias pruebas consecutivas en ambientes Windows, se recomienda
 1. Navegar a la carpeta principal del proyecto y luego a la carpeta kraken
