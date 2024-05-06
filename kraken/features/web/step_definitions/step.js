@@ -14,9 +14,11 @@ function ensureDirSync(dirPath) {
 function getFormattedDatetime() {
 	return new Date().toISOString().replace(/:/g, "-");
 }
-async function saveScreenshot(resultsPath, stringId) {
+async function saveScreenshot(resultsPath, stringId, sequenceString) {
 	ensureDirSync(resultsPath);
-	await this.driver.saveScreenshot(`${resultsPath}/${stringId}.png`);
+	await this.driver.saveScreenshot(
+		`${resultsPath}/${stringId}-${sequenceString}.png`
+	);
 }
 
 async function saveComparisonReport(datetime, resultsPath, stringId) {
@@ -60,24 +62,28 @@ When(
 		const datetime = getFormattedDatetime();
 		const resultsPath = `./results/${datetime}`;
 
-		await saveScreenshot.call(this, resultsPath, "email-before");
+		await saveScreenshot.call(this, resultsPath, "email", "before");
 		let emailElement = await this.driver.$("#ember6");
 		await emailElement.setValue(email);
-		await saveScreenshot.call(this, resultsPath, "email-after");
+		await saveScreenshot.call(this, resultsPath, "email", "after");
 
-		await saveScreenshot.call(this, resultsPath, "pwd-before");
+		await saveScreenshot.call(this, resultsPath, "pwd", "before");
 		let passwordElement = await this.driver.$("#ember8");
 		await passwordElement.setValue(password);
-		await saveScreenshot.call(this, resultsPath, "pwd-after");
+		await saveScreenshot.call(this, resultsPath, "pwd", "after");
 
-		await saveScreenshot.call(this, resultsPath, "loginBtn-before");
+		await saveScreenshot.call(this, resultsPath, "loginBtn", "before");
 		let nextButton = await this.driver.$("#ember10");
 		await nextButton.click();
-		await saveScreenshot.call(this, resultsPath, "loginBtn-after");
+		await saveScreenshot.call(this, resultsPath, "loginBtn", "after");
 
-		await saveComparisonReport.call(this, datetime, resultsPath, "email");
-		await saveComparisonReport.call(this, datetime, resultsPath, "pwd");
-		await saveComparisonReport.call(this, datetime, resultsPath, "loginBtn");
+		try {
+			await saveComparisonReport.call(this, datetime, resultsPath, "email");
+			await saveComparisonReport.call(this, datetime, resultsPath, "pwd");
+			await saveComparisonReport.call(this, datetime, resultsPath, "loginBtn");
+		} catch (error) {
+			console.log(error);
+		}
 	}
 );
 
