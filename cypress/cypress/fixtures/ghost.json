@@ -1,0 +1,25 @@
+{
+    "url":"https://ghost-jpjk.onrender.com/",
+    "username":"h.wiesner@uniandes.edu.co",
+    "password":"mWxNuDsU5Ng7LD",
+    "title":"NewTitle",
+    "link":"link",
+    "post":{
+        "title":"The First automated post",
+        "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+        "status":"published"
+    },
+    "page":{
+        "title":"The First automated page",
+        "content":"Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+        "status":"published"
+    },
+    "tag":{
+        "name":"tag",
+        "color":"7f4343"
+    },
+    "profile":{
+        "slug":"profile",
+        "name":"NameUser"
+    }
+}

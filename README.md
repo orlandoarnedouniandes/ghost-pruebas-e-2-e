@@ -31,6 +31,13 @@ https://ghost-jpjk.onrender.com/
 5. A continuación corra las pruebas usando el siguiente comando: npx kraken-node run
 6. Recuerde que la aplicación bajo pruebas se encuentra desplegada en: https://ghost-jpjk.onrender.com/, si desea evidenciar la ejecución de las pruebas puede ingresar a la siguiente url https://ghost-jpjk.onrender.com/ghost con las isguientes credenciales: User:h.wiesner@uniandes.edu.co; Password: mWxNuDsU5Ng7LD.
 
+### En caso de querer correr una prueba en particular: dado que hay una limitante de la herramienta en ejeutar varias pruebas consecutivas en ambientes Windows, se recomienda
+1. Navegar a la carpeta principal del proyecto y luego a la carpeta kraken
+2. copiar la prueba desde el folder en el que se encuentra situada (ejemplo: feature/e15)
+3. pegar el archivo de prueba dentro del folder /features
+4. Asegurarse de que ningun otro archivo con extension .feature esta presente en /features aparte del que desamos probar (esto debido a la limitacion de kraken para correr differentes archivos de prueba en windows Link de la discusion: https://uniandes-miso.slack.com/archives/C06QRVAKMHR/p1714705849745749)
+5. correr - npx kraken-node run
+ 
 ### Instalación y ejecución de las pruebas en Cypress
 #### Requisitos
 * Tener instalado Cypress 
