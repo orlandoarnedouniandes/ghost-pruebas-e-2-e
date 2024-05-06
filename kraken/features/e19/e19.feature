@@ -1,7 +1,7 @@
 Feature: Configuration link  update
 
-  @user1 @web
-  Scenario: Modify and Verify Site Title Information
+  @user19 @web
+  Scenario: E19 - Modify and Verify Site Title Information
     Given I navigate to the Ghost login page
     And I log in with email "<USERNAME>" and password "<PASSWORD>"
     And I click on the "Settings" tab

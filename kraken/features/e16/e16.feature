@@ -1,7 +1,7 @@
 Feature: Profile Actualizar full name
 
-  @user1 @web
-  Scenario: Modify and Verify full name Information
+  @user16 @web
+  Scenario: E16 - Modify and Verify full name Information
     Given I navigate to page "https://ghost-jpjk.onrender.com/ghost/#/signin/"
     And I set the new full name to "Edited Full Name"
     When I log in with email "<USERNAME>" and password "<PASSWORD>"
