@@ -643,5 +643,3 @@ Then("delete label {string}", async function (expectedLabel) {
 	await lastDeleteButton.click();
 
 });
-
-});
