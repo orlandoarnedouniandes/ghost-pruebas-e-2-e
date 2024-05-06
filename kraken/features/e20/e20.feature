@@ -1,7 +1,7 @@
 Feature: Configuration link Delete
 
-  @user1 @web
-  Scenario: Modify Delete and Verify link Deletion
+  @user20 @web
+  Scenario: E20 - Modify Delete and Verify link Deletion
     Given I navigate to the Ghost login page
     And I log in with email "<USERNAME>" and password "<PASSWORD>"
     And I click on the "Settings" tab

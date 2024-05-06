@@ -1,7 +1,7 @@
 Feature: Profile Title update
 
-  @user1 @web
-  Scenario: Modify and Verify Site Title Information
+  @user17 @web
+  Scenario: E17 - Modify and Verify Site Title Information
     Given I navigate to the Ghost login page
     And I log in with email "<USERNAME>" and password "<PASSWORD>"
     And I click on the "Settings" tab

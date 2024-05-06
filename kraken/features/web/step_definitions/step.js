@@ -515,6 +515,7 @@ Then("I validate that the last Post is unpublish", async function () {
 			`Expected Post publish`
 		);
 	}
+});
 
 When("I get current slug name", async function () {
 	let fullNameElement = await this.driver.$("input[name='user']");

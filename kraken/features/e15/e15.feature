@@ -1,7 +1,7 @@
 Feature: Profile Actualizar slug
 
-  @user1 @web
-  Scenario: Modify and Verify User Information
+  @user15 @web
+  Scenario: E15 - Modify and Verify User Information
     Given I navigate to page "https://ghost-jpjk.onrender.com/ghost/#/signin/"
     And I set the new user name to "editedUsername"
     When I log in with email "<USERNAME>" and password "<PASSWORD>"
