@@ -58,7 +58,6 @@ async function saveComparisonReport(datetime, resultsPath, stringId) {
 When(
 	"I log in with email {kraken-string} and password {kraken-string}",
 	async function (email, password) {
-		let resultInfo = {};
 		const datetime = getFormattedDatetime();
 		const resultsPath = `./results/${datetime}`;
 
@@ -88,17 +87,13 @@ When(
 );
 
 Given("I set the new user name to {string}", function (username) {
-	// this.newUsername = username;
 	const timestamp = Date.now();
-	// Encode the timestamp to make it URL safe
 	const encodedTimestamp = encodeURIComponent(timestamp);
 	this.newUsername = `${username}_${encodedTimestamp}`;
 });
 
 Given("I set the new full name to {string}", function (fullName) {
-	// this.newUsername = username;
 	const timestamp = Date.now();
-	// Encode the timestamp to make it URL safe
 	const encodedTimestamp = encodeURIComponent(timestamp);
 	this.newFullName = `${fullName}_${encodedTimestamp}`;
 	this.currentFullName = this.newFullName;
