@@ -1,6 +1,10 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 const fs = require("fs");
 const path = require("path");
+const playwright = require("playwright");
+const compareImages = require("resemblejs/compareImages");
+const config = require("../../../config.json");
+const { options } = config;
 
 function ensureDirSync(dirPath) {
 	if (!fs.existsSync(dirPath)) {
@@ -18,7 +22,9 @@ async function saveScreenshot(resultsPath, stringId) {
 When(
 	"I log in with email {kraken-string} and password {kraken-string}",
 	async function (email, password) {
-		const resultsPath = `./results/${getFormattedDatetime()}`;
+		let resultInfo = {};
+		const datetime = getFormattedDatetime();
+		const resultsPath = `./results/${datetime}`;
 
 		await saveScreenshot.call(this, resultsPath, "email-before");
 		let emailElement = await this.driver.$("#ember6");
@@ -34,6 +40,34 @@ When(
 		let nextButton = await this.driver.$("#ember10");
 		await nextButton.click();
 		await saveScreenshot.call(this, resultsPath, "loginBtn-after");
+
+		const data = await compareImages(
+			fs.readFileSync(`${resultsPath}/loginBtn-before.png`),
+			fs.readFileSync(`${resultsPath}/loginBtn-after.png`),
+			options
+		);
+
+		resultInfo = {
+			isSameDimensions: data.isSameDimensions,
+			dimensionDifference: data.dimensionDifference,
+			rawMisMatchPercentage: data.rawMisMatchPercentage,
+			misMatchPercentage: data.misMatchPercentage,
+			diffBounds: data.diffBounds,
+			analysisTime: data.analysisTime,
+			browser: "chromium",
+			filePathBefore: `loginBtn-before.png`,
+			filePathAfter: `loginBtn-after.png`,
+			filePathCompare: `compare-chromium.png`,
+		};
+
+		fs.writeFileSync(`${resultsPath}/compare-chromium.png`, data.getBuffer());
+
+		fs.writeFileSync(
+			`${resultsPath}/report.html`,
+			createReport(datetime, resultInfo)
+		);
+
+		fs.copyFileSync("./index.css", `${resultsPath}/index.css`);
 	}
 );
 
@@ -722,22 +756,22 @@ function browser(b, info) {
 	return `<div class=" browser" id="test0">
     <div class=" btitle">
         <h2>Browser: ${b}</h2>
-        <p>Data: ${JSON.stringify(info)}</p>
+        <p>Data: ${info}</p>
     </div>
     <div class="imgline">
       <div class="imgcontainer">
         <span class="imgname">Reference</span>
-        <img class="img2" src="before-${b}.png" id="refImage" label="Reference">
+        <img class="img2" src="${info.filePathBefore}" id="refImage" label="Reference">
       </div>
       <div class="imgcontainer">
         <span class="imgname">Test</span>
-        <img class="img2" src="after-${b}.png" id="testImage" label="Test">
+        <img class="img2" src="${info.filePathAfter}" id="testImage" label="Test">
       </div>
     </div>
     <div class="imgline">
       <div class="imgcontainer">
         <span class="imgname">Diff</span>
-        <img class="imgfull" src="./compare-${b}.png" id="diffImage" label="Diff">
+        <img class="imgfull" src="${info.filePathCompare}" id="diffImage" label="Diff">
       </div>
     </div>
   </div>`;
@@ -751,12 +785,12 @@ function createReport(datetime, resInfo) {
             <link href="index.css" type="text/css" rel="stylesheet">
         </head>
         <body>
-            <h1>Report for 
-                 <a href="${config.url}"> ${config.url}</a>
+            <h1>Report for
+                 <a href="ghost-app"> ghost-app</a>
             </h1>
             <p>Executed: ${datetime}</p>
             <div id="visualizer">
-                ${config.browsers.map((b) => browser(b, resInfo[b]))}
+                ${browser(resInfo.browser, resInfo)}
             </div>
         </body>
     </html>`;
