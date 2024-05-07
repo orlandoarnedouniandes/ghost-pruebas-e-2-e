@@ -33,17 +33,17 @@ When(
 		resultsPath = `./results/${datetime}`;
 
 		await saveScreenshot.call(this, resultsPath, "email", "before");
-		let emailElement = await this.driver.$("#ember6");
+		let emailElement = await this.driver.$("#ember8");
 		await emailElement.setValue(email);
 		await saveScreenshot.call(this, resultsPath, "email", "after");
 
 		await saveScreenshot.call(this, resultsPath, "pwd", "before");
-		let passwordElement = await this.driver.$("#ember8");
+		let passwordElement = await this.driver.$("#ember10");
 		await passwordElement.setValue(password);
 		await saveScreenshot.call(this, resultsPath, "pwd", "after");
 
 		await saveScreenshot.call(this, resultsPath, "loginBtn", "before");
-		let nextButton = await this.driver.$("#ember10");
+		let nextButton = await this.driver.$("#ember12");
 		await nextButton.click();
 		await saveScreenshot.call(this, resultsPath, "loginBtn", "after");
 	}
@@ -71,10 +71,15 @@ When("I Click on user dropdown", async function () {
 
 When("I click on the 'Your profile' link", async function () {
 	await saveScreenshot.call(this, resultsPath, "clickUserProfile", "before");
-	let profileLink = await this.driver.$(
-		"//a[contains(text(), 'Your profile')]"
-	);
-	await profileLink.click();
+
+	let profileLinks = await this.driver.$$("a.dropdown-item.ember-view");
+	for (let link of profileLinks) {
+		let linkText = await link.getText();
+		if (linkText.includes("Your Profile")) {
+			await link.click();
+			break;
+		}
+	}
 	await saveScreenshot.call(this, resultsPath, "clickUserProfile", "after");
 });
 
@@ -85,8 +90,17 @@ When("I modify the user name and save changes", async function () {
 	await saveScreenshot.call(this, resultsPath, "modifyUsername", "after");
 
 	await saveScreenshot.call(this, resultsPath, "clickSaveUsername", "before");
-	let saveButton = await this.driver.$("button.gh-btn-primary");
-	await saveButton.click();
+
+	let btns = await this.driver.$$(
+		"button.gh-btn.gh-btn-blue.gh-btn-icon.ember-view"
+	);
+	for (let link of btns) {
+		let linkText = await link.getText();
+		if (linkText.includes("Save")) {
+			await link.click();
+			break;
+		}
+	}
 	await saveScreenshot.call(this, resultsPath, "clickSaveUsername", "after");
 });
 
@@ -103,11 +117,12 @@ When("I modify current full name and save changes", async function () {
 });
 
 Then("I should see the expected name", async function () {
-	let profileName = await this.driver.$("h2.post-card-title");
-	let displayedName = await profileName.getText();
-	if (displayedName !== this.currentFullName) {
+	let nameField = await this.driver.$("input[name='user']");
+	let displayedName = await nameField.getValue();
+
+	if (displayedName !== this.newUsername) {
 		throw new Error(
-			`Expected name to be ${this.currentFullName} but found ${displayedName}`
+			`Expected name to be ${this.newUsername} but found ${displayedName}`
 		);
 	}
 });
