@@ -10,6 +10,10 @@ const {
 
 async function saveScreenshot(resultsPath, stringId, sequenceString) {
 	ensureDirSync(resultsPath);
+
+	//since the steps are too quick, we need time to take a meaningful screenshot
+	await new Promise((resolve) => setTimeout(resolve, 500));
+
 	await this.driver.saveScreenshot(
 		`${resultsPath}/${stringId}-${sequenceString}.png`
 	);
@@ -42,13 +46,6 @@ When(
 		let nextButton = await this.driver.$("#ember10");
 		await nextButton.click();
 		await saveScreenshot.call(this, resultsPath, "loginBtn", "after");
-
-		// try {
-		// 	await saveComparisonReport.call(this, datetime, resultsPath, "pwd");
-		// 	await saveComparisonReport.call(this, datetime, resultsPath, "loginBtn");
-		// } catch (error) {
-		// 	console.log(error);
-		// }
 	}
 );
 
@@ -627,17 +624,30 @@ Then("I validate that the last Post not exist", async function () {
 let titleUrlPost = "";
 
 When("I click on the publish post", async function () {
-	await saveScreenshot.call(this, resultsPath, "publishPost", "before");
 	let posts = await this.driver.$$(
 		"a.gh-post-list-status div span.gh-content-status-published"
 	);
 	if (posts.length > 0) {
+		await saveScreenshot.call(this, resultsPath, "publishPostClick", "before");
 		await posts[0].click();
+		await saveScreenshot.call(this, resultsPath, "publishPostClick", "after");
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"publishPostMenuClick",
+			"before"
+		);
 		let menuButton = await this.driver.$("button.gh-unpublish-trigger");
 		await menuButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"publishPostMenuClick",
+			"after"
+		);
 		titleUrlPost = await this.driver.$$("textarea.gh-editor-title")[0];
 	}
-	await saveScreenshot.call(this, resultsPath, "publishPost", "after");
 });
 
 When("I click on the unpublish post", async function () {
