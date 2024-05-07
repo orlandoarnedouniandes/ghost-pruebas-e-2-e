@@ -1,31 +1,99 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
+const fs = require("fs");
+const path = require("path");
+const playwright = require("playwright");
+const compareImages = require("resemblejs/compareImages");
+const config = require("../../../config.json");
+const { options } = config;
+
+function ensureDirSync(dirPath) {
+	if (!fs.existsSync(dirPath)) {
+		fs.mkdirSync(dirPath, { recursive: true });
+	}
+}
+function getFormattedDatetime() {
+	return new Date().toISOString().replace(/:/g, "-");
+}
+async function saveScreenshot(resultsPath, stringId, sequenceString) {
+	ensureDirSync(resultsPath);
+	await this.driver.saveScreenshot(
+		`${resultsPath}/${stringId}-${sequenceString}.png`
+	);
+}
+
+async function saveComparisonReport(datetime, resultsPath, stringId) {
+	const data = await compareImages(
+		fs.readFileSync(`${resultsPath}/${stringId}-before.png`),
+		fs.readFileSync(`${resultsPath}/${stringId}-after.png`),
+		options
+	);
+
+	resultInfo = {
+		isSameDimensions: data.isSameDimensions,
+		dimensionDifference: data.dimensionDifference,
+		rawMisMatchPercentage: data.rawMisMatchPercentage,
+		misMatchPercentage: data.misMatchPercentage,
+		diffBounds: data.diffBounds,
+		analysisTime: data.analysisTime,
+		browser: "chromium",
+		filePathBefore: `${stringId}-before.png`,
+		filePathAfter: `${stringId}-after.png`,
+		filePathCompare: `${stringId}-compare.png`,
+		stringId: stringId,
+	};
+
+	fs.writeFileSync(
+		`${resultsPath}/${resultInfo.filePathCompare}`,
+		data.getBuffer()
+	);
+
+	fs.writeFileSync(
+		`${resultsPath}/${stringId}-report.html`,
+		createReport(datetime, resultInfo)
+	);
+
+	fs.copyFileSync("./index.css", `${resultsPath}/index.css`);
+}
 
 When(
 	"I log in with email {kraken-string} and password {kraken-string}",
 	async function (email, password) {
+		const datetime = getFormattedDatetime();
+		const resultsPath = `./results/${datetime}`;
+
+		await saveScreenshot.call(this, resultsPath, "email", "before");
 		let emailElement = await this.driver.$("#ember6");
 		await emailElement.setValue(email);
+		await saveScreenshot.call(this, resultsPath, "email", "after");
 
+		await saveScreenshot.call(this, resultsPath, "pwd", "before");
 		let passwordElement = await this.driver.$("#ember8");
 		await passwordElement.setValue(password);
+		await saveScreenshot.call(this, resultsPath, "pwd", "after");
 
+		await saveScreenshot.call(this, resultsPath, "loginBtn", "before");
 		let nextButton = await this.driver.$("#ember10");
 		await nextButton.click();
+		await saveScreenshot.call(this, resultsPath, "loginBtn", "after");
+
+		try {
+			await saveComparisonReport.call(this, datetime, resultsPath, "email");
+			await saveComparisonReport.call(this, datetime, resultsPath, "pwd");
+			await saveComparisonReport.call(this, datetime, resultsPath, "loginBtn");
+		} catch (error) {
+			console.log(error);
+		}
 	}
 );
 
 Given("I set the new user name to {string}", function (username) {
-	// this.newUsername = username;
 	const timestamp = Date.now();
-	// Encode the timestamp to make it URL safe
 	const encodedTimestamp = encodeURIComponent(timestamp);
 	this.newUsername = `${username}_${encodedTimestamp}`;
 });
 
 Given("I set the new full name to {string}", function (fullName) {
-	// this.newUsername = username;
 	const timestamp = Date.now();
-	// Encode the timestamp to make it URL safe
 	const encodedTimestamp = encodeURIComponent(timestamp);
 	this.newFullName = `${fullName}_${encodedTimestamp}`;
 	this.currentFullName = this.newFullName;
@@ -98,7 +166,6 @@ When("I get current full name", async function () {
 	this.currentFullName = await fullNameElement.getValue();
 });
 
-
 /**Page*/
 Given("I click on the 'Pages' link", async function () {
 	let postLink = await this.driver.$('a[href="#/pages/"]');
@@ -107,20 +174,28 @@ Given("I click on the 'Pages' link", async function () {
 
 let textUrlPage = "";
 
-When("I click on the last Page and I delete the Page", async function () {	
-	let pages = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title");
-	if(pages.length>0){
-		await pages[pages.length-1].click();	
+When("I click on the last Page and I delete the Page", async function () {
+	let pages = await this.driver.$$(
+		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
+	);
+	if (pages.length > 0) {
+		await pages[pages.length - 1].click();
 
 		let menuButton = await this.driver.$("button.settings-menu-toggle");
 		await menuButton.click();
 
-		textUrlPage = await this.driver.$$("div.gh-icon-link input.post-setting-slug")[pages.length-1];
+		textUrlPage = await this.driver.$$(
+			"div.gh-icon-link input.post-setting-slug"
+		)[pages.length - 1];
 
-		let deletePageButton = await this.driver.$("button.settings-menu-delete-button");
+		let deletePageButton = await this.driver.$(
+			"button.settings-menu-delete-button"
+		);
 		await deletePageButton.click();
 
-		let deleteButton = await this.driver.$("//span[contains(text(), 'Delete')]");
+		let deleteButton = await this.driver.$(
+			"//span[contains(text(), 'Delete')]"
+		);
 		await deleteButton.click();
 	}
 });
@@ -129,73 +204,79 @@ Then("I validate that the last Page not exist", async function () {
 	let pageLink = await this.driver.$('a[href="#/pages/"]');
 	await pageLink.click();
 
-	let pages = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title");
+	let pages = await this.driver.$$(
+		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
+	);
 	let flag = false;
 
 	for (let i = 0; i < pages.length; i++) {
 		let page = pages[i];
-		let pageText = await page.getText().toLowerCase().replace(/\s+/g, "-");;
+		let pageText = await page.getText().toLowerCase().replace(/\s+/g, "-");
 		if (pageText.includes(textUrlPage)) {
-			flag=true;
+			flag = true;
 			break;
-		} 
+		}
 	}
-    
+
 	if (flag === true) {
-		throw new Error(
-			`Expected Page exist`
-		);
+		throw new Error(`Expected Page exist`);
 	}
 });
 
 let titleUrlPage = "";
 
-When("I click on the publish page", async function () {	
-	let pages = await this.driver.$$("a.gh-post-list-status div span.gh-content-status-published");
-	if(pages.length>0){
+When("I click on the publish page", async function () {
+	let pages = await this.driver.$$(
+		"a.gh-post-list-status div span.gh-content-status-published"
+	);
+	if (pages.length > 0) {
 		await pages[0].click();
 		let menuButton = await this.driver.$("button.gh-unpublish-trigger");
 		await menuButton.click();
-		titleUrlPage = await this.driver.$$("textarea.gh-editor-title")[0];	
+		titleUrlPage = await this.driver.$$("textarea.gh-editor-title")[0];
 	}
 });
 
-When("I click on the unpublish page", async function () {	
-	let pages = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a div.intems-center span.gh-content-status-published");
-if(pages.length>0){
+When("I click on the unpublish page", async function () {
+	let pages = await this.driver.$$(
+		"ol li.gh-list-row.gh-posts-list-item a div.intems-center span.gh-content-status-published"
+	);
+	if (pages.length > 0) {
 		await pages[0].click();
 		let menuButton = await this.driver.$("gh-unpublish-trigger");
 		await menuButton.click();
 
 		titleUrlPage = await this.driver.$$("textarea.gh-editor-title")[0];
-		let unpublishedPageButton = await this.driver.$("button.gh-unpublish-trigger");
+		let unpublishedPageButton = await this.driver.$(
+			"button.gh-unpublish-trigger"
+		);
 		await unpublishedPageButton.click();
 
 		let unpublishedButton = await this.driver.$("button.gh-revert-to-draft");
-		await unpublishedButton.click();				
+		await unpublishedButton.click();
 	}
-});	
+});
 
 Then("I validate that the last Page is unpublish", async function () {
 	let pageLink = await this.driver.$('a[href="#/pages/"]');
 	await pageLink.click();
 
-	let pages = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a div.intems-center span");
+	let pages = await this.driver.$$(
+		"ol li.gh-list-row.gh-posts-list-item a div.intems-center span"
+	);
 	let flag = false;
 
 	for (let i = 0; i < pages.length; i++) {
 		let page = pages[i];
-		let pageText = await page.getText().toLowerCase().replace(/\s+/g, "-");;
+		let pageText = await page.getText().toLowerCase().replace(/\s+/g, "-");
 		if (pageText.includes(titleUrlPage)) {
-			flag=true;	
+			flag = true;
 			break;
-		} 
+		}
 	}
-    
+
 	if (flag === true) {
-		throw new Error(
-			`Expected Page publish`
-		);
+		throw new Error(`Expected Page publish`);
 	}
 });
 
@@ -210,50 +291,57 @@ Given("I click on the 'New Tag' link", async function () {
 	await newTagLink.click();
 });
 
-When("I type the basic information for New Tag 'Test Tag' and create Tag", async function () {
-	let tagNameElement = await this.driver.$("#tag-name");
-	await tagNameElement.setValue("Test Tag");
+When(
+	"I type the basic information for New Tag 'Test Tag' and create Tag",
+	async function () {
+		let tagNameElement = await this.driver.$("#tag-name");
+		await tagNameElement.setValue("Test Tag");
 
-	let accentColorElement = await this.driver.$("div.input-color input.gh-input");
-	await accentColorElement.setValue("d62e2e");
+		let accentColorElement = await this.driver.$(
+			"div.input-color input.gh-input"
+		);
+		await accentColorElement.setValue("d62e2e");
 
-	let tagSlugElement = await this.driver.$("#tag-slug");
-	await tagSlugElement.setValue("testslug");
+		let tagSlugElement = await this.driver.$("#tag-slug");
+		await tagSlugElement.setValue("testslug");
 
-	let tagDescriptionElement = await this.driver.$("#tag-description");
-	await tagDescriptionElement.setValue("Description");
+		let tagDescriptionElement = await this.driver.$("#tag-description");
+		await tagDescriptionElement.setValue("Description");
 
-	let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
-	await saveButton.click();
-});
+		let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
+		await saveButton.click();
+	}
+);
 
 Then("I validate the New Tag created 'Test Tag'", async function () {
 	let tagLink = await this.driver.$('a[href="#/tags/"]');
 	await tagLink.click();
 
-	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name");	
+	let tags = await this.driver.$$(
+		"ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name"
+	);
 	let flag = false;
 
 	for (let i = 0; i < tags.length; i++) {
 		let tag = tags[i];
 		let tagText = await tag.getText();
 		if (tagText.includes("Test Tag")) {
-			flag=true;
+			flag = true;
 			break;
-		} 
+		}
 	}
-    
+
 	if (flag === false) {
-		throw new Error(
-			`Expected Tag to be 'Test Tag' but found ${actualText}`
-		);
+		throw new Error(`Expected Tag to be 'Test Tag' but found ${actualText}`);
 	}
 });
 
-When("I click on the first Tag list and I modify the title", async function () {	
-	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name");
-	if(tags.length>0){
-		await tags[0].click();	
+When("I click on the first Tag list and I modify the title", async function () {
+	let tags = await this.driver.$$(
+		"ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name"
+	);
+	if (tags.length > 0) {
+		await tags[0].click();
 
 		let tagNameElement = await this.driver.$("#tag-name");
 		await tagNameElement.setValue("Test Tag Modified");
@@ -267,64 +355,75 @@ Then("I validate the Tag modified 'Test Tag Modified'", async function () {
 	let tagLink = await this.driver.$('a[href="#/tags/"]');
 	await tagLink.click();
 
-	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name");	
+	let tags = await this.driver.$$(
+		"ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name"
+	);
 	let flag = false;
 
 	for (let i = 0; i < tags.length; i++) {
 		let tag = tags[i];
 		let tagText = await tag.getText();
 		if (tagText.includes("Test Tag Modified")) {
-			flag=true;
+			flag = true;
 			break;
-		} 
+		}
 	}
-    
+
 	if (flag === false) {
-		throw new Error(
-			`Expected Tag to be 'Test Tag' but found ${actualText}`
-		);
+		throw new Error(`Expected Tag to be 'Test Tag' but found ${actualText}`);
 	}
 });
 
 let textSlugTag = "";
 
-When("I click on the last Tag and I delete the tag", async function () {	
-	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name");
-	if(tags.length>0){
-		await tags[tags.length-1].click();	
+When("I click on the last Tag and I delete the tag", async function () {
+	let tags = await this.driver.$$(
+		"ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name"
+	);
+	if (tags.length > 0) {
+		await tags[tags.length - 1].click();
 
-		textSlugTag = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a span")[tags.length-1];
+		textSlugTag = await this.driver.$$(
+			"ol li.gh-list-row.gh-tags-list-item a span"
+		)[tags.length - 1];
 
-		let deleteTagButton = await this.driver.$("//span[contains(text(), 'Delete tag')]");
+		let deleteTagButton = await this.driver.$(
+			"//span[contains(text(), 'Delete tag')]"
+		);
 		await deleteTagButton.click();
 
-		let deleteButton = await this.driver.$("//span[contains(text(), 'Delete')]");
+		let deleteButton = await this.driver.$(
+			"//span[contains(text(), 'Delete')]"
+		);
 		await deleteButton.click();
 	}
 });
 
-Then("I validate that the tag 'Test Tag Modified' not exist", async function () {
-	let tagLink = await this.driver.$('a[href="#/tags/"]');
-	await tagLink.click();
+Then(
+	"I validate that the tag 'Test Tag Modified' not exist",
+	async function () {
+		let tagLink = await this.driver.$('a[href="#/tags/"]');
+		await tagLink.click();
 
-	let tags = await this.driver.$$("ol li.gh-list-row.gh-tags-list-item a span");
-	let flag = false;
-
-	for (let i = 0; i < tags.length; i++) {
-		let tag = tags[i];
-		let tagText = await tag.getText();
-		if (tagText.includes(textSlugTag)) {
-			flag=true;
-			break;
-		} 
-	}
-    
-	if (flag === true) {
-		throw new Error(
-			`Expected Tag exist`
+		let tags = await this.driver.$$(
+			"ol li.gh-list-row.gh-tags-list-item a span"
 		);
+		let flag = false;
+
+		for (let i = 0; i < tags.length; i++) {
+			let tag = tags[i];
+			let tagText = await tag.getText();
+			if (tagText.includes(textSlugTag)) {
+				flag = true;
+				break;
+			}
+		}
+
+		if (flag === true) {
+			throw new Error(`Expected Tag exist`);
+		}
 	}
-});
+);
 
 /**General*/
 Given("I click on the 'Settings' link", async function () {
@@ -337,26 +436,33 @@ Given("I click on the 'General Settings' link", async function () {
 	await settingsLink.click();
 });
 
-When("I modify the description", async function () {	
-	let expandLink = await this.driver.$$('div.gh-expandable-header button.gh-btn')[0];
+When("I modify the description", async function () {
+	let expandLink = await this.driver.$$(
+		"div.gh-expandable-header button.gh-btn"
+	)[0];
 	await expandLink.click();
 
-	let descriptionElement = await this.driver.$('div.description-container input.ember-text-field');
+	let descriptionElement = await this.driver.$(
+		"div.description-container input.ember-text-field"
+	);
 	await descriptionElement.setValue("Tests Ghost Uniandes");
 
 	let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
 	await saveButton.click();
 });
 
-Then("I validate that the description has been changed 'Proof Ghost Uniandes' on users page", async function () {	
-	let descriptionElement = await this.driver.$("div.site-header-inner p.site-description").getText();
-	
-	if(descriptionElement !== "Tests Ghost Uniandes"){
-		throw new Error(
-			`Expected Description is different`
-		);
+Then(
+	"I validate that the description has been changed 'Proof Ghost Uniandes' on users page",
+	async function () {
+		let descriptionElement = await this.driver
+			.$("div.site-header-inner p.site-description")
+			.getText();
+
+		if (descriptionElement !== "Tests Ghost Uniandes") {
+			throw new Error(`Expected Description is different`);
+		}
 	}
-});
+);
 
 /**Posts**/
 Given("I click on the 'Posts' link", async function () {
@@ -367,40 +473,48 @@ Given("I click on the 'Posts' link", async function () {
 let urlPosts = "";
 let addTag = "";
 
-When("I click on the first Post list and I add the tag", async function () {	
-	let posts = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title");
-	if(posts.length>0){
+When("I click on the first Post list and I add the tag", async function () {
+	let posts = await this.driver.$$(
+		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
+	);
+	if (posts.length > 0) {
 		urlPosts = posts[0].getText();
-		await posts[0].click();	
+		await posts[0].click();
 
 		let menuButton = await this.driver.$("button.settings-menu-toggle");
 		await menuButton.click();
 
-		let inputTags = await this.driver.$("input.ember-power-select-trigger-multiple-input");
+		let inputTags = await this.driver.$(
+			"input.ember-power-select-trigger-multiple-input"
+		);
 		await inputTags.click();
 
 		let tags = await this.driver.$$("li.ember-power-select-option");
-		if(tags.length > 0){
+		if (tags.length > 0) {
 			let tag = tags[0];
-			addTag = tag.getText(); 
-			await tag.click();			
+			addTag = tag.getText();
+			await tag.click();
 		}
 	}
 });
 
-When("I click on the modify Post list and I verify tag", async function () {	
-	let tags = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title");
-	
+When("I click on the modify Post list and I verify tag", async function () {
+	let tags = await this.driver.$$(
+		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
+	);
+
 	for (let i = 0; i < tags.length; i++) {
 		let tag = tags[i];
 		let tagText = await tag.getText();
 		if (tagText.includes(urlPosts)) {
 			await tags[i].click();
-			
+
 			let menuButton = await this.driver.$("button.settings-menu-toggle");
 			await menuButton.click();
 
-			let tagsAdd = await this.driver.$$("li.ember-power-select-multiple-option span.ember-power-select-multiple-inner-text");
+			let tagsAdd = await this.driver.$$(
+				"li.ember-power-select-multiple-option span.ember-power-select-multiple-inner-text"
+			);
 			let flag = false;
 			for (let a = 0; a < tagsAdd.length; a++) {
 				let input = tagsAdd[a];
@@ -408,34 +522,40 @@ When("I click on the modify Post list and I verify tag", async function () {
 				if (inputText.includes(addTag)) {
 					flag = true;
 					break;
-				}				
+				}
 			}
-			if(flag===false){
-				throw new Error(
-					`There is not Tag on the post`
-				);
+			if (flag === false) {
+				throw new Error(`There is not Tag on the post`);
 			}
 			break;
-		} 
+		}
 	}
 });
 
 let textUrlPost = "";
 
-When("I click on the last Post and I delete the Post", async function () {	
-	let posts = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title");
-	if(posts.length>0){
-		await posts[posts.length-1].click();	
+When("I click on the last Post and I delete the Post", async function () {
+	let posts = await this.driver.$$(
+		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
+	);
+	if (posts.length > 0) {
+		await posts[posts.length - 1].click();
 
 		let menuButton = await this.driver.$("button.settings-menu-toggle");
 		await menuButton.click();
 
-		textUrlPost = await this.driver.$$("div.gh-icon-link input.post-setting-slug")[posts.length-1];
+		textUrlPost = await this.driver.$$(
+			"div.gh-icon-link input.post-setting-slug"
+		)[posts.length - 1];
 
-		let deletePostButton = await this.driver.$("button.settings-menu-delete-button");
+		let deletePostButton = await this.driver.$(
+			"button.settings-menu-delete-button"
+		);
 		await deletePostButton.click();
 
-		let deleteButton = await this.driver.$("//span[contains(text(), 'Delete')]");
+		let deleteButton = await this.driver.$(
+			"//span[contains(text(), 'Delete')]"
+		);
 		await deleteButton.click();
 	}
 });
@@ -444,76 +564,79 @@ Then("I validate that the last Post not exist", async function () {
 	let postLink = await this.driver.$('a[href="#/posts/"]');
 	await postLink.click();
 
-	let posts = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title");
+	let posts = await this.driver.$$(
+		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
+	);
 	let flag = false;
 
 	for (let i = 0; i < posts.length; i++) {
 		let post = posts[i];
-		let postText = await post.getText().toLowerCase().replace(/\s+/g, "-");;
+		let postText = await post.getText().toLowerCase().replace(/\s+/g, "-");
 		if (postText.includes(textUrlPost)) {
-			flag=true;
+			flag = true;
 			break;
-		} 
+		}
 	}
-    
+
 	if (flag === true) {
-		throw new Error(
-			`Expected Post exist`
-		);
+		throw new Error(`Expected Post exist`);
 	}
 });
-
-
-
 
 let titleUrlPost = "";
 
-When("I click on the publish post", async function () {	
-	let posts = await this.driver.$$("a.gh-post-list-status div span.gh-content-status-published");
-	if(posts.length>0){
+When("I click on the publish post", async function () {
+	let posts = await this.driver.$$(
+		"a.gh-post-list-status div span.gh-content-status-published"
+	);
+	if (posts.length > 0) {
 		await posts[0].click();
 		let menuButton = await this.driver.$("button.gh-unpublish-trigger");
 		await menuButton.click();
-		titleUrlPost = await this.driver.$$("textarea.gh-editor-title")[0];	
+		titleUrlPost = await this.driver.$$("textarea.gh-editor-title")[0];
 	}
 });
 
-When("I click on the unpublish post", async function () {	
-	let posts = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a div.intems-center span.gh-content-status-published");
-if(posts.length>0){
+When("I click on the unpublish post", async function () {
+	let posts = await this.driver.$$(
+		"ol li.gh-list-row.gh-posts-list-item a div.intems-center span.gh-content-status-published"
+	);
+	if (posts.length > 0) {
 		await posts[0].click();
 		let menuButton = await this.driver.$("gh-unpublish-trigger");
 		await menuButton.click();
 
 		titleUrlPost = await this.driver.$$("textarea.gh-editor-title")[0];
-		let unpublishedPostButton = await this.driver.$("button.gh-unpublish-trigger");
+		let unpublishedPostButton = await this.driver.$(
+			"button.gh-unpublish-trigger"
+		);
 		await unpublishedPostButton.click();
 
 		let unpublishedButton = await this.driver.$("button.gh-revert-to-draft");
-		await unpublishedButton.click();				
+		await unpublishedButton.click();
 	}
-});	
+});
 
 Then("I validate that the last Post is unpublish", async function () {
 	let postsLink = await this.driver.$('a[href="#/posts/"]');
 	await postsLink.click();
 
-	let posts = await this.driver.$$("ol li.gh-list-row.gh-posts-list-item a div.intems-center span");
+	let posts = await this.driver.$$(
+		"ol li.gh-list-row.gh-posts-list-item a div.intems-center span"
+	);
 	let flag = false;
 
 	for (let i = 0; i < posts.length; i++) {
 		let post = posts[i];
-		let postText = await post.getText().toLowerCase().replace(/\s+/g, "-");;
+		let postText = await post.getText().toLowerCase().replace(/\s+/g, "-");
 		if (postText.includes(titleUrlPost)) {
-			flag=true;	
+			flag = true;
 			break;
-		} 
+		}
 	}
-    
+
 	if (flag === true) {
-		throw new Error(
-			`Expected Post publish`
-		);
+		throw new Error(`Expected Post publish`);
 	}
 });
 
@@ -521,7 +644,6 @@ When("I get current slug name", async function () {
 	let fullNameElement = await this.driver.$("input[name='user']");
 	this.newUsername = await fullNameElement.getValue();
 });
-
 
 //E17
 Given("I navigate to the Ghost login page", async function () {
@@ -541,9 +663,9 @@ When("I navigate to the {string} settings page", async function (pageName) {
 });
 
 When("I click the Expand button", async function () {
-    let button = await this.driver.$(
-			"body > div.gh-app > div > main > section > div:nth-child(2) > div:nth-child(1) > section > div:nth-child(1) > div.gh-expandable-header > button"
-		);
+	let button = await this.driver.$(
+		"body > div.gh-app > div > main > section > div:nth-child(2) > div:nth-child(1) > section > div:nth-child(1) > div.gh-expandable-header > button"
+	);
 	await button.click();
 });
 
@@ -622,14 +744,12 @@ Then(
 		let labels = await this.driver.$$(
 			`input.ember-text-field.gh-input[type='text'][placeholder='Label']`
 		);
-		
 
 		let labelExists = labels.some(
 			async (input) => (await input.getValue()) === expectedLabel
 		);
 
-
-		if (!labelExists ) {
+		if (!labelExists) {
 			throw new Error(
 				`Expected navigation item with label ${expectedLabel} was not found.`
 			);
@@ -641,5 +761,48 @@ Then("delete label {string}", async function (expectedLabel) {
 	let deleteButtons = await this.driver.$$("button.gh-blognav-delete");
 	let lastDeleteButton = deleteButtons[deleteButtons.length - 1]; // Select the last "Add" button
 	await lastDeleteButton.click();
-
 });
+
+function browser(b, info) {
+	return `<div class=" browser" id="test0">
+    <div class=" btitle">
+        <h2>Browser: ${b}</h2>
+        <p>Data: ${info.stringId}</p>
+    </div>
+    <div class="imgline">
+      <div class="imgcontainer">
+        <span class="imgname">Reference</span>
+        <img class="img2" src="${info.filePathBefore}" id="refImage" label="Reference">
+      </div>
+      <div class="imgcontainer">
+        <span class="imgname">Test</span>
+        <img class="img2" src="${info.filePathAfter}" id="testImage" label="Test">
+      </div>
+    </div>
+    <div class="imgline">
+      <div class="imgcontainer">
+        <span class="imgname">Diff</span>
+        <img class="imgfull" src="${info.filePathCompare}" id="diffImage" label="Diff">
+      </div>
+    </div>
+  </div>`;
+}
+
+function createReport(datetime, resInfo) {
+	return `
+    <html>
+        <head>
+            <title> VRT Report </title>
+            <link href="index.css" type="text/css" rel="stylesheet">
+        </head>
+        <body>
+            <h1>Report for
+                 <a href="ghost-app"> ghost-app</a>
+            </h1>
+            <p>Executed: ${datetime}</p>
+            <div id="visualizer">
+                ${browser(resInfo.browser, resInfo)}
+            </div>
+        </body>
+    </html>`;
+}

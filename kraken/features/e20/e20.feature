@@ -2,7 +2,7 @@ Feature: Configuration link Delete
 
   @user20 @web
   Scenario: E20 - Modify Delete and Verify link Deletion
-    Given I navigate to the Ghost login page
+    Given I navigate to page "<BASEURL>"
     And I log in with email "<USERNAME>" and password "<PASSWORD>"
     And I click on the "Settings" tab
     And I navigate to the "Navigation" settings page
