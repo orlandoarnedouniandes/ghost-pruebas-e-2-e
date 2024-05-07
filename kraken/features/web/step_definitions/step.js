@@ -1,65 +1,36 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
-const fs = require("fs");
-const path = require("path");
-const playwright = require("playwright");
-const compareImages = require("resemblejs/compareImages");
-const config = require("../../../config.json");
-const { options } = config;
+let datetime;
+let resultsPath;
 
-function ensureDirSync(dirPath) {
-	if (!fs.existsSync(dirPath)) {
-		fs.mkdirSync(dirPath, { recursive: true });
-	}
-}
-function getFormattedDatetime() {
-	return new Date().toISOString().replace(/:/g, "-");
-}
+const {
+	ensureDirSync,
+	getFormattedDatetime,
+	saveComparisonReport,
+} = require("./helper");
+
 async function saveScreenshot(resultsPath, stringId, sequenceString) {
 	ensureDirSync(resultsPath);
+
+	//since the steps are too quick, we need time to take a meaningful screenshot
+	await new Promise((resolve) => setTimeout(resolve, 500));
+
 	await this.driver.saveScreenshot(
 		`${resultsPath}/${stringId}-${sequenceString}.png`
 	);
-}
-
-async function saveComparisonReport(datetime, resultsPath, stringId) {
-	const data = await compareImages(
-		fs.readFileSync(`${resultsPath}/${stringId}-before.png`),
-		fs.readFileSync(`${resultsPath}/${stringId}-after.png`),
-		options
-	);
-
-	resultInfo = {
-		isSameDimensions: data.isSameDimensions,
-		dimensionDifference: data.dimensionDifference,
-		rawMisMatchPercentage: data.rawMisMatchPercentage,
-		misMatchPercentage: data.misMatchPercentage,
-		diffBounds: data.diffBounds,
-		analysisTime: data.analysisTime,
-		browser: "chromium",
-		filePathBefore: `${stringId}-before.png`,
-		filePathAfter: `${stringId}-after.png`,
-		filePathCompare: `${stringId}-compare.png`,
-		stringId: stringId,
-	};
-
-	fs.writeFileSync(
-		`${resultsPath}/${resultInfo.filePathCompare}`,
-		data.getBuffer()
-	);
-
-	fs.writeFileSync(
-		`${resultsPath}/${stringId}-report.html`,
-		createReport(datetime, resultInfo)
-	);
-
-	fs.copyFileSync("./index.css", `${resultsPath}/index.css`);
+	if (sequenceString === "after") {
+		try {
+			await saveComparisonReport.call(this, datetime, resultsPath, stringId);
+		} catch (error) {
+			console.log(error);
+		}
+	}
 }
 
 When(
 	"I log in with email {kraken-string} and password {kraken-string}",
 	async function (email, password) {
-		const datetime = getFormattedDatetime();
-		const resultsPath = `./results/${datetime}`;
+		datetime = getFormattedDatetime();
+		resultsPath = `./results/${datetime}`;
 
 		await saveScreenshot.call(this, resultsPath, "email", "before");
 		let emailElement = await this.driver.$("#ember6");
@@ -75,14 +46,6 @@ When(
 		let nextButton = await this.driver.$("#ember10");
 		await nextButton.click();
 		await saveScreenshot.call(this, resultsPath, "loginBtn", "after");
-
-		try {
-			await saveComparisonReport.call(this, datetime, resultsPath, "email");
-			await saveComparisonReport.call(this, datetime, resultsPath, "pwd");
-			await saveComparisonReport.call(this, datetime, resultsPath, "loginBtn");
-		} catch (error) {
-			console.log(error);
-		}
 	}
 );
 
@@ -100,31 +63,43 @@ Given("I set the new full name to {string}", function (fullName) {
 });
 
 When("I Click on user dropdown", async function () {
+	await saveScreenshot.call(this, resultsPath, "clickUserDropdown", "before");
 	let userDropdown = await this.driver.$(`div.gh-user-avatar`);
 	await userDropdown.click();
+	await saveScreenshot.call(this, resultsPath, "clickUserDropdown", "after");
 });
 
 When("I click on the 'Your profile' link", async function () {
+	await saveScreenshot.call(this, resultsPath, "clickUserProfile", "before");
 	let profileLink = await this.driver.$(
 		"//a[contains(text(), 'Your profile')]"
 	);
 	await profileLink.click();
+	await saveScreenshot.call(this, resultsPath, "clickUserProfile", "after");
 });
 
 When("I modify the user name and save changes", async function () {
+	await saveScreenshot.call(this, resultsPath, "modifyUsername", "before");
 	let nameField = await this.driver.$("input[name='user']");
 	await nameField.setValue(this.newUsername);
+	await saveScreenshot.call(this, resultsPath, "modifyUsername", "after");
 
+	await saveScreenshot.call(this, resultsPath, "clickSaveUsername", "before");
 	let saveButton = await this.driver.$("button.gh-btn-primary");
 	await saveButton.click();
+	await saveScreenshot.call(this, resultsPath, "clickSaveUsername", "after");
 });
 
 When("I modify current full name and save changes", async function () {
+	await saveScreenshot.call(this, resultsPath, "changeFullName", "before");
 	let nameField = await this.driver.$("#user-name");
 	await nameField.setValue(this.newFullName);
+	await saveScreenshot.call(this, resultsPath, "changeFullName", "after");
 
+	await saveScreenshot.call(this, resultsPath, "changeFullNameClick", "before");
 	let saveButton = await this.driver.$("button.gh-btn-primary");
 	await saveButton.click();
+	await saveScreenshot.call(this, resultsPath, "changeFullNameClick", "after");
 });
 
 Then("I should see the expected name", async function () {
@@ -148,9 +123,11 @@ Then("I should see the expected full name", async function () {
 });
 
 When("I navigate to new user profile page", async function () {
+	await saveScreenshot.call(this, resultsPath, "navigateToProfile", "before");
 	await this.driver.url(
 		`https://ghost-jpjk.onrender.com/author/${this.newUsername}/`
 	);
+	await saveScreenshot.call(this, resultsPath, "navigateToProfile", "after");
 });
 
 When("I wait {int} seconds", function (seconds) {
@@ -168,8 +145,10 @@ When("I get current full name", async function () {
 
 /**Page*/
 Given("I click on the 'Pages' link", async function () {
+	await saveScreenshot.call(this, resultsPath, "clickPageLink", "before");
 	let postLink = await this.driver.$('a[href="#/pages/"]');
 	await postLink.click();
+	await saveScreenshot.call(this, resultsPath, "clickPageLink", "after");
 });
 
 let textUrlPage = "";
@@ -179,11 +158,16 @@ When("I click on the last Page and I delete the Page", async function () {
 		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
 	);
 	if (pages.length > 0) {
+		await saveScreenshot.call(this, resultsPath, "clickLastPage", "before");
 		await pages[pages.length - 1].click();
+		await saveScreenshot.call(this, resultsPath, "clickLastPage", "after");
 
+		await saveScreenshot.call(this, resultsPath, "clickMenuToggle", "before");
 		let menuButton = await this.driver.$("button.settings-menu-toggle");
 		await menuButton.click();
+		await saveScreenshot.call(this, resultsPath, "clickMenuToggle", "after");
 
+		await saveScreenshot.call(this, resultsPath, "deletePage1", "before");
 		textUrlPage = await this.driver.$$(
 			"div.gh-icon-link input.post-setting-slug"
 		)[pages.length - 1];
@@ -192,17 +176,22 @@ When("I click on the last Page and I delete the Page", async function () {
 			"button.settings-menu-delete-button"
 		);
 		await deletePageButton.click();
+		await saveScreenshot.call(this, resultsPath, "deletePage1", "after");
 
+		await saveScreenshot.call(this, resultsPath, "deletePage2", "before");
 		let deleteButton = await this.driver.$(
 			"//span[contains(text(), 'Delete')]"
 		);
 		await deleteButton.click();
+		await saveScreenshot.call(this, resultsPath, "deletePage2", "after");
 	}
 });
 
 Then("I validate that the last Page not exist", async function () {
+	await saveScreenshot.call(this, resultsPath, "deletedPageCheck", "before");
 	let pageLink = await this.driver.$('a[href="#/pages/"]');
 	await pageLink.click();
+	await saveScreenshot.call(this, resultsPath, "deletedPageCheck", "after");
 
 	let pages = await this.driver.$$(
 		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
@@ -226,6 +215,7 @@ Then("I validate that the last Page not exist", async function () {
 let titleUrlPage = "";
 
 When("I click on the publish page", async function () {
+	await saveScreenshot.call(this, resultsPath, "publishClick", "before");
 	let pages = await this.driver.$$(
 		"a.gh-post-list-status div span.gh-content-status-published"
 	);
@@ -235,6 +225,7 @@ When("I click on the publish page", async function () {
 		await menuButton.click();
 		titleUrlPage = await this.driver.$$("textarea.gh-editor-title")[0];
 	}
+	await saveScreenshot.call(this, resultsPath, "publishClick", "after");
 });
 
 When("I click on the unpublish page", async function () {
@@ -252,12 +243,15 @@ When("I click on the unpublish page", async function () {
 		);
 		await unpublishedPageButton.click();
 
+		await saveScreenshot.call(this, resultsPath, "unPublishClick", "before");
 		let unpublishedButton = await this.driver.$("button.gh-revert-to-draft");
 		await unpublishedButton.click();
+		await saveScreenshot.call(this, resultsPath, "unPublishClick", "after");
 	}
 });
 
 Then("I validate that the last Page is unpublish", async function () {
+	await saveScreenshot.call(this, resultsPath, "unPublishCheck", "before");
 	let pageLink = await this.driver.$('a[href="#/pages/"]');
 	await pageLink.click();
 
@@ -278,35 +272,48 @@ Then("I validate that the last Page is unpublish", async function () {
 	if (flag === true) {
 		throw new Error(`Expected Page publish`);
 	}
+	await saveScreenshot.call(this, resultsPath, "unPublishCheck", "after");
 });
 
 /**Tags**/
 Given("I click on the 'Tags' link", async function () {
+	await saveScreenshot.call(this, resultsPath, "tagClick", "before");
 	let tagLink = await this.driver.$('a[href="#/tags/"]');
 	await tagLink.click();
+	await saveScreenshot.call(this, resultsPath, "tagClick", "after");
 });
 
 Given("I click on the 'New Tag' link", async function () {
+	await saveScreenshot.call(this, resultsPath, "newTagClick", "before");
 	let newTagLink = await this.driver.$('a[href="#/tags/new/"]');
 	await newTagLink.click();
+	await saveScreenshot.call(this, resultsPath, "newTagClick", "after");
 });
 
 When(
 	"I type the basic information for New Tag 'Test Tag' and create Tag",
 	async function () {
+		await saveScreenshot.call(this, resultsPath, "newTagData1", "before");
 		let tagNameElement = await this.driver.$("#tag-name");
 		await tagNameElement.setValue("Test Tag");
+		await saveScreenshot.call(this, resultsPath, "newTagData1", "after");
 
+		await saveScreenshot.call(this, resultsPath, "newTagData2", "before");
 		let accentColorElement = await this.driver.$(
 			"div.input-color input.gh-input"
 		);
 		await accentColorElement.setValue("d62e2e");
+		await saveScreenshot.call(this, resultsPath, "newTagData2", "after");
 
+		await saveScreenshot.call(this, resultsPath, "newTagData3", "before");
 		let tagSlugElement = await this.driver.$("#tag-slug");
 		await tagSlugElement.setValue("testslug");
+		await saveScreenshot.call(this, resultsPath, "newTagData3", "after");
 
+		await saveScreenshot.call(this, resultsPath, "newTagData4", "before");
 		let tagDescriptionElement = await this.driver.$("#tag-description");
 		await tagDescriptionElement.setValue("Description");
+		await saveScreenshot.call(this, resultsPath, "newTagData4", "after");
 
 		let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
 		await saveButton.click();
@@ -314,6 +321,7 @@ When(
 );
 
 Then("I validate the New Tag created 'Test Tag'", async function () {
+	await saveScreenshot.call(this, resultsPath, "newTagCheck", "before");
 	let tagLink = await this.driver.$('a[href="#/tags/"]');
 	await tagLink.click();
 
@@ -330,6 +338,7 @@ Then("I validate the New Tag created 'Test Tag'", async function () {
 			break;
 		}
 	}
+	await saveScreenshot.call(this, resultsPath, "newTagCheck", "after");
 
 	if (flag === false) {
 		throw new Error(`Expected Tag to be 'Test Tag' but found ${actualText}`);
@@ -343,15 +352,20 @@ When("I click on the first Tag list and I modify the title", async function () {
 	if (tags.length > 0) {
 		await tags[0].click();
 
+		await saveScreenshot.call(this, resultsPath, "tagedit", "before");
 		let tagNameElement = await this.driver.$("#tag-name");
 		await tagNameElement.setValue("Test Tag Modified");
+		await saveScreenshot.call(this, resultsPath, "tagedit", "after");
 
+		await saveScreenshot.call(this, resultsPath, "tageditClick", "before");
 		let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
 		await saveButton.click();
+		await saveScreenshot.call(this, resultsPath, "tageditClick", "after");
 	}
 });
 
 Then("I validate the Tag modified 'Test Tag Modified'", async function () {
+	await saveScreenshot.call(this, resultsPath, "tageditcheck", "before");
 	let tagLink = await this.driver.$('a[href="#/tags/"]');
 	await tagLink.click();
 
@@ -369,6 +383,8 @@ Then("I validate the Tag modified 'Test Tag Modified'", async function () {
 		}
 	}
 
+	await saveScreenshot.call(this, resultsPath, "tageditcheck", "after");
+
 	if (flag === false) {
 		throw new Error(`Expected Tag to be 'Test Tag' but found ${actualText}`);
 	}
@@ -377,6 +393,7 @@ Then("I validate the Tag modified 'Test Tag Modified'", async function () {
 let textSlugTag = "";
 
 When("I click on the last Tag and I delete the tag", async function () {
+	await saveScreenshot.call(this, resultsPath, "deleteTag", "before");
 	let tags = await this.driver.$$(
 		"ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name"
 	);
@@ -397,11 +414,13 @@ When("I click on the last Tag and I delete the tag", async function () {
 		);
 		await deleteButton.click();
 	}
+	await saveScreenshot.call(this, resultsPath, "deleteTag", "after");
 });
 
 Then(
 	"I validate that the tag 'Test Tag Modified' not exist",
 	async function () {
+		await saveScreenshot.call(this, resultsPath, "tagEditionCheck", "before");
 		let tagLink = await this.driver.$('a[href="#/tags/"]');
 		await tagLink.click();
 
@@ -418,6 +437,7 @@ Then(
 				break;
 			}
 		}
+		await saveScreenshot.call(this, resultsPath, "tagEditionCheck", "after");
 
 		if (flag === true) {
 			throw new Error(`Expected Tag exist`);
@@ -427,13 +447,17 @@ Then(
 
 /**General*/
 Given("I click on the 'Settings' link", async function () {
+	await saveScreenshot.call(this, resultsPath, "settingsClick", "before");
 	let settingsLink = await this.driver.$("path.settings_svg__a");
 	await settingsLink.click();
+	await saveScreenshot.call(this, resultsPath, "settingsClick", "after");
 });
 
 Given("I click on the 'General Settings' link", async function () {
+	await saveScreenshot.call(this, resultsPath, "genSettingsClick", "before");
 	let settingsLink = await this.driver.$('a[href="#/settings/general/"]');
 	await settingsLink.click();
+	await saveScreenshot.call(this, resultsPath, "genSettingsClick", "after");
 });
 
 When("I modify the description", async function () {
@@ -442,13 +466,17 @@ When("I modify the description", async function () {
 	)[0];
 	await expandLink.click();
 
+	await saveScreenshot.call(this, resultsPath, "desciptionEdit", "before");
 	let descriptionElement = await this.driver.$(
 		"div.description-container input.ember-text-field"
 	);
 	await descriptionElement.setValue("Tests Ghost Uniandes");
+	await saveScreenshot.call(this, resultsPath, "desciptionEdit", "after");
 
+	await saveScreenshot.call(this, resultsPath, "desciptionEditClick", "before");
 	let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
 	await saveButton.click();
+	await saveScreenshot.call(this, resultsPath, "desciptionEditClick", "after");
 });
 
 Then(
@@ -466,14 +494,17 @@ Then(
 
 /**Posts**/
 Given("I click on the 'Posts' link", async function () {
+	await saveScreenshot.call(this, resultsPath, "postLinkClick", "before");
 	let tagLink = await this.driver.$('a[href="#/posts/"]');
 	await tagLink.click();
+	await saveScreenshot.call(this, resultsPath, "postLinkClick", "after");
 });
 
 let urlPosts = "";
 let addTag = "";
 
 When("I click on the first Post list and I add the tag", async function () {
+	await saveScreenshot.call(this, resultsPath, "addTagToPost", "before");
 	let posts = await this.driver.$$(
 		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
 	);
@@ -496,9 +527,11 @@ When("I click on the first Post list and I add the tag", async function () {
 			await tag.click();
 		}
 	}
+	await saveScreenshot.call(this, resultsPath, "addTagToPost", "after");
 });
 
 When("I click on the modify Post list and I verify tag", async function () {
+	await saveScreenshot.call(this, resultsPath, "TagToPostCheck", "before");
 	let tags = await this.driver.$$(
 		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
 	);
@@ -530,11 +563,13 @@ When("I click on the modify Post list and I verify tag", async function () {
 			break;
 		}
 	}
+	await saveScreenshot.call(this, resultsPath, "TagToPostCheck", "after");
 });
 
 let textUrlPost = "";
 
 When("I click on the last Post and I delete the Post", async function () {
+	await saveScreenshot.call(this, resultsPath, "deletePost", "before");
 	let posts = await this.driver.$$(
 		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
 	);
@@ -558,9 +593,11 @@ When("I click on the last Post and I delete the Post", async function () {
 		);
 		await deleteButton.click();
 	}
+	await saveScreenshot.call(this, resultsPath, "deletePost", "after");
 });
 
 Then("I validate that the last Post not exist", async function () {
+	await saveScreenshot.call(this, resultsPath, "deletePostCheck", "before");
 	let postLink = await this.driver.$('a[href="#/posts/"]');
 	await postLink.click();
 
@@ -577,6 +614,7 @@ Then("I validate that the last Post not exist", async function () {
 			break;
 		}
 	}
+	await saveScreenshot.call(this, resultsPath, "deletePostCheck", "after");
 
 	if (flag === true) {
 		throw new Error(`Expected Post exist`);
@@ -590,14 +628,30 @@ When("I click on the publish post", async function () {
 		"a.gh-post-list-status div span.gh-content-status-published"
 	);
 	if (posts.length > 0) {
+		await saveScreenshot.call(this, resultsPath, "publishPostClick", "before");
 		await posts[0].click();
+		await saveScreenshot.call(this, resultsPath, "publishPostClick", "after");
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"publishPostMenuClick",
+			"before"
+		);
 		let menuButton = await this.driver.$("button.gh-unpublish-trigger");
 		await menuButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"publishPostMenuClick",
+			"after"
+		);
 		titleUrlPost = await this.driver.$$("textarea.gh-editor-title")[0];
 	}
 });
 
 When("I click on the unpublish post", async function () {
+	await saveScreenshot.call(this, resultsPath, "unPublishPost", "before");
 	let posts = await this.driver.$$(
 		"ol li.gh-list-row.gh-posts-list-item a div.intems-center span.gh-content-status-published"
 	);
@@ -615,9 +669,11 @@ When("I click on the unpublish post", async function () {
 		let unpublishedButton = await this.driver.$("button.gh-revert-to-draft");
 		await unpublishedButton.click();
 	}
+	await saveScreenshot.call(this, resultsPath, "unPublishPost", "after");
 });
 
 Then("I validate that the last Post is unpublish", async function () {
+	await saveScreenshot.call(this, resultsPath, "unPublishPostCheck", "before");
 	let postsLink = await this.driver.$('a[href="#/posts/"]');
 	await postsLink.click();
 
@@ -634,6 +690,7 @@ Then("I validate that the last Post is unpublish", async function () {
 			break;
 		}
 	}
+	await saveScreenshot.call(this, resultsPath, "unPublishPostCheck", "after");
 
 	if (flag === true) {
 		throw new Error(`Expected Post publish`);
@@ -651,25 +708,52 @@ Given("I navigate to the Ghost login page", async function () {
 });
 
 When("I click on the {string} tab", async function (tabName) {
+	await saveScreenshot.call(
+		this,
+		resultsPath,
+		`clickOnTab_${tabName}`,
+		"before"
+	);
 	let tab = await this.driver.$(`a[href="#/${tabName.toLowerCase()}/"]`);
 	await tab.click();
+	await saveScreenshot.call(
+		this,
+		resultsPath,
+		`clickOnTab_${tabName}`,
+		"after"
+	);
 });
 
 When("I navigate to the {string} settings page", async function (pageName) {
+	await saveScreenshot.call(
+		this,
+		resultsPath,
+		`navigateSetting_${pageName}`,
+		"before"
+	);
 	let link = await this.driver.$(
 		`a[href="#/settings/${pageName.toLowerCase()}/"]`
 	);
 	await link.click();
+	await saveScreenshot.call(
+		this,
+		resultsPath,
+		`navigateSetting_${pageName}`,
+		"after"
+	);
 });
 
 When("I click the Expand button", async function () {
+	await saveScreenshot.call(this, resultsPath, "expandBtnClick", "before");
 	let button = await this.driver.$(
 		"body > div.gh-app > div > main > section > div:nth-child(2) > div:nth-child(1) > section > div:nth-child(1) > div.gh-expandable-header > button"
 	);
 	await button.click();
+	await saveScreenshot.call(this, resultsPath, "expandBtnClick", "after");
 });
 
 When("I update the site title to {string}", async function (newTitle) {
+	await saveScreenshot.call(this, resultsPath, "updateSiteTitle", "before");
 	let titleInput = await this.driver.$(
 		"input.ember-text-field.gh-input[type='text']"
 	);
@@ -678,18 +762,33 @@ When("I update the site title to {string}", async function (newTitle) {
 	this.updatedSiteTitle = `${"Updated Title"}_${encodedTimestamp}`;
 
 	await titleInput.setValue(this.updatedSiteTitle);
+	await saveScreenshot.call(this, resultsPath, "updateSiteTitle", "after");
 });
 
 When("I click the primary Save button", async function () {
+	await saveScreenshot.call(this, resultsPath, "primarySaveBtn", "before");
 	let saveButton = await this.driver.$(
 		"button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view"
 	);
 	await saveButton.click();
+	await saveScreenshot.call(this, resultsPath, "primarySaveBtn", "after");
 });
 
 When("I navigate to the {string} page", async function (pageName) {
+	await saveScreenshot.call(
+		this,
+		resultsPath,
+		`navigatePage_${pageName}`,
+		"before"
+	);
 	let link = await this.driver.$(`a[href="#/${pageName.toLowerCase()}/"]`);
 	await link.click();
+	await saveScreenshot.call(
+		this,
+		resultsPath,
+		`navigatePage_${pageName}`,
+		"after"
+	);
 });
 
 Then("The site title in the header should be Updated", async function () {
@@ -721,6 +820,7 @@ Then("The input field should equal 'Updated Title'", async function () {
 When(
 	"I add a new navigation item with label {string} and URL {string}",
 	async function (label, url) {
+		await saveScreenshot.call(this, resultsPath, "newNavigation", "before");
 		let labelInputs = await this.driver.$$(
 			`input.ember-text-field.gh-input[type='text'][placeholder='Label']`
 		);
@@ -730,12 +830,15 @@ When(
 		let addButtons = await this.driver.$$("button.gh-blognav-add");
 		let lastAddButton = addButtons[addButtons.length - 1]; // Select the last "Add" button
 		await lastAddButton.click();
+		await saveScreenshot.call(this, resultsPath, "newNavigation", "after");
 	}
 );
 
 When("I save the navigation changes", async function () {
+	await saveScreenshot.call(this, resultsPath, "saveNavigation", "before");
 	let saveButton = await this.driver.$("button[type='submit']");
 	await saveButton.click();
+	await saveScreenshot.call(this, resultsPath, "saveNavigation", "after");
 });
 
 Then(
@@ -758,51 +861,9 @@ Then(
 );
 
 Then("delete label {string}", async function (expectedLabel) {
+	await saveScreenshot.call(this, resultsPath, "deleteLabel", "before");
 	let deleteButtons = await this.driver.$$("button.gh-blognav-delete");
-	let lastDeleteButton = deleteButtons[deleteButtons.length - 1]; // Select the last "Add" button
+	let lastDeleteButton = deleteButtons[deleteButtons.length - 1];
 	await lastDeleteButton.click();
+	await saveScreenshot.call(this, resultsPath, "deleteLabel", "after");
 });
-
-function browser(b, info) {
-	return `<div class=" browser" id="test0">
-    <div class=" btitle">
-        <h2>Browser: ${b}</h2>
-        <p>Data: ${info.stringId}</p>
-    </div>
-    <div class="imgline">
-      <div class="imgcontainer">
-        <span class="imgname">Reference</span>
-        <img class="img2" src="${info.filePathBefore}" id="refImage" label="Reference">
-      </div>
-      <div class="imgcontainer">
-        <span class="imgname">Test</span>
-        <img class="img2" src="${info.filePathAfter}" id="testImage" label="Test">
-      </div>
-    </div>
-    <div class="imgline">
-      <div class="imgcontainer">
-        <span class="imgname">Diff</span>
-        <img class="imgfull" src="${info.filePathCompare}" id="diffImage" label="Diff">
-      </div>
-    </div>
-  </div>`;
-}
-
-function createReport(datetime, resInfo) {
-	return `
-    <html>
-        <head>
-            <title> VRT Report </title>
-            <link href="index.css" type="text/css" rel="stylesheet">
-        </head>
-        <body>
-            <h1>Report for
-                 <a href="ghost-app"> ghost-app</a>
-            </h1>
-            <p>Executed: ${datetime}</p>
-            <div id="visualizer">
-                ${browser(resInfo.browser, resInfo)}
-            </div>
-        </body>
-    </html>`;
-}

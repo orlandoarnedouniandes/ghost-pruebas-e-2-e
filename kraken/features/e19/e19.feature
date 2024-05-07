@@ -4,7 +4,9 @@ Feature: Configuration link  update
   Scenario: E19 - Modify and Verify Site Title Information
     Given I navigate to page "<BASEURL>"
     And I log in with email "<USERNAME>" and password "<PASSWORD>"
+    And I wait 2 seconds
     And I click on the "Settings" tab
+    And I wait 1 seconds
     And I navigate to the "Navigation" settings page
     And I wait 3 seconds
     When I add a new navigation item with label "Test" and URL "https://ghost-jpjk.onrender.com/"
