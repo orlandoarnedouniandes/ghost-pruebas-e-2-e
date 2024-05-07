@@ -130,3 +130,5 @@ dist
 .pnp.*
 kraken/reports/*
 kraken/results/*
+kraken_3_42/reports/*
+kraken_3_42/results/*
