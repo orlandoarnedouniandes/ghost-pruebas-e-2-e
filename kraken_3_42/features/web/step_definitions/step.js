@@ -111,8 +111,16 @@ When("I modify current full name and save changes", async function () {
 	await saveScreenshot.call(this, resultsPath, "changeFullName", "after");
 
 	await saveScreenshot.call(this, resultsPath, "changeFullNameClick", "before");
-	let saveButton = await this.driver.$("button.gh-btn-primary");
-	await saveButton.click();
+	let btns = await this.driver.$$(
+		"button.gh-btn.gh-btn-blue.gh-btn-icon.ember-view"
+	);
+	for (let link of btns) {
+		let linkText = await link.getText();
+		if (linkText.includes("Save")) {
+			await link.click();
+			break;
+		}
+	}
 	await saveScreenshot.call(this, resultsPath, "changeFullNameClick", "after");
 });
 
@@ -128,8 +136,9 @@ Then("I should see the expected name", async function () {
 });
 
 Then("I should see the expected full name", async function () {
-	let profileName = await this.driver.$("h2.post-card-title");
-	let displayedName = await profileName.getText();
+	let nameField = await this.driver.$("#user-name");
+	let displayedName = await nameField.getValue();
+
 	if (displayedName !== this.currentFullName) {
 		throw new Error(
 			`Expected name to be ${this.currentFullName} but found ${displayedName}`
