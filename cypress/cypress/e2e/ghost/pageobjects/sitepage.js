@@ -26,12 +26,13 @@ class SitePage {
         cy.location('pathname').should('eq', '/'+titleModified+'/');
     }
 
-    verifyTagExistsInPost(expectedTag) {
+    verifyTagExistsInPost(expectedTag, escenario = 'escenario', imagen = 'imagen') {
         cy.get('h2.post-card-title').first().click();
         cy.wait(2000);
         cy.get('div.article-tag').find('a').invoke('text').then((text) => {
             expect(text.trim()).to.eq(expectedTag.trim());
         });
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     verifyIfUserNameIsDisplayed(expectedName) {

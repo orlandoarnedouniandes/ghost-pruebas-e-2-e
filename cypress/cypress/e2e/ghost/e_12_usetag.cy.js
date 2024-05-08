@@ -7,6 +7,7 @@ const PostPage = require("./pageobjects/postpage");
 const SitePage = require("./pageobjects/sitepage");
 
 context("UseTag", function () {
+    let escenario = 'escenario12';
     beforeEach(function () {
         this.page = new Page();
         this.tagpage = new TagPage();
@@ -17,29 +18,28 @@ context("UseTag", function () {
             cy.log('Data: '+data.url );
             this.data = data;
             //Given      
-            this.page.visit(this.data.url);
+            this.page.visit(this.data.url, escenario, '1_home');
         });
     });
     
     it("El usuario usa un tag", function () {
         //Given
-        this.page.loginAdmin(this.data.username, this.data.password);
-        this.page.navigateToTags();
+        this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
+        this.page.navigateToTags(escenario, '3_tags');
         this.tagpage.getLastTag();
         cy.get('@tag').then((tag) => {
             //When
             cy.log('tag a usar:'+tag);
-            this.page.navigateToNewPost();
+            this.page.navigateToNewPost(escenario, '4_newpost');
             const title = this.page.getRandomPostTitle(this.data.post.title);
-            this.postPage.selectTag(tag);
-            this.postPage.fillandSavePostForm(title, this.data.post.content);           
-            this.postPage.publishPost();
-            this.postPage.backtoDashBoard();
-            this.page.logout();  
-            this.page.visit(this.data.url);
+            this.postPage.selectTag(tag, escenario, '5_selecttag');
+            this.postPage.fillandSavePostForm(title, this.data.post.content, escenario, '6_fillform');           
+            this.postPage.publishPost(escenario, '7_publishpost');
+            this.postPage.backtoDashBoard(escenario, '8_backtodashboard');
+            this.page.logout(escenario, '9_logout'); 
 
             //Then
-            this.sitePage.verifyTagExistsInPost(tag      );
+            this.sitePage.verifyTagExistsInPost(tag, escenario, '10_verify');
         });
     });
 

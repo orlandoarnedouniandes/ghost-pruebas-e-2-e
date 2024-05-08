@@ -96,10 +96,14 @@ class PostPage {
         });
     }
 
-    selectTag(tag){
+    selectTag(tag, escenario = 'escenario',imagen = 'imagen'){
         cy.get('button.settings-menu-toggle').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('input.ember-power-select-trigger-multiple-input').first().type(tag);
         cy.get('button.settings-menu-toggle').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
     }
 
     Preview(){
