@@ -1,13 +1,18 @@
-Feature: Ghost Tests
+Feature: Profile Actualizar full name
 
-  @user14 @web
-    Scenario: E14 - Delete Tag
-      Given I navigate to page "<BASEURL>"
-      When I log in with email "<USERNAME>" and password "<PASSWORD>"
-      And I wait 3 seconds
-      And I click on the 'Tags' link
-      And I wait 1 seconds
-      And I click on the last Tag and I delete the tag
-      And I wait 1 seconds
-      Then I validate that the tag 'Test Tag Modified' not exist
-
+  @user16 @web
+  Scenario: E16 - Modify and Verify full name Information
+    Given I navigate to page "<BASEURL>"
+    And I set the new full name to "Edited Full Name"
+    When I log in with email "<USERNAME>" and password "<PASSWORD>"
+    And I wait 3 seconds
+    And I Click on user dropdown
+    And I wait 1 seconds
+    And I click on the 'Your profile' link
+    And I wait 1 seconds
+    When I get current slug name
+    When I modify current full name and save changes
+    And I wait 3 seconds
+    Then I refresh the page
+    And I wait 2 seconds
+    Then I should see the expected full name
