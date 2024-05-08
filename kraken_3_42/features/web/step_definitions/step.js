@@ -245,8 +245,22 @@ When("I click on the publish page", async function () {
 	);
 	if (pages.length > 0) {
 		await pages[0].click();
-		let menuButton = await this.driver.$("button.gh-unpublish-trigger");
-		await menuButton.click();
+
+		let updateButton = await this.driver.$(
+			"div.gh-btn.gh-btn-outline.gh-publishmenu-trigger"
+		);
+		await updateButton.click();
+
+		let unpublishedOption = await this.driver.$(
+			"div.gh-publishmenu-radio-content"
+		);
+		await unpublishedOption.click();
+
+		let updateConfirmButton = await this.driver.$(
+			"button.gh-btn.gh-btn-blue.gh-publishmenu-button"
+		);
+		await updateConfirmButton.click();
+
 		titleUrlPage = await this.driver.$$("textarea.gh-editor-title")[0];
 	}
 	await saveScreenshot.call(this, resultsPath, "publishClick", "after");
