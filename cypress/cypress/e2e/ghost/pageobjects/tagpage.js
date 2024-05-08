@@ -8,6 +8,7 @@ class TagPage {
         cy.get('textarea[name="description"]').clear().type(title,{force: true});
         cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view').click();
         cy.wait(2000);
+        cy.get('main.gh-main').scrollTo(0, 0);
         cy.screenshot(escenario+'/'+imagen);
     }
 
@@ -53,6 +54,7 @@ class TagPage {
                 }
             }
         });
+        cy.get('main.gh-main').scrollTo(0, 0);
         cy.screenshot(escenario+'/'+imagen);
     }
 
@@ -75,17 +77,20 @@ class TagPage {
         return description;
     }
 
-    deleteTag(){
+    deleteTag(escenario = 'escenario',imagen = 'imagen'){
         cy.get('button.gh-btn-red').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('div.epm-modal-container button.gh-btn.gh-btn-red.gh-btn-icon').click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
     }
 
-    verifyTagNotExists(expectedTag) {
+    verifyTagNotExists(expectedTag, escenario = 'escenario', imagen = 'imagen') {
         cy.get('h3.gh-tag-list-name').each(($el, index, $list) => {
             expect($el.text().trim()).not.to.eq(expectedTag.trim());
         });
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     verifyDescription(description){
