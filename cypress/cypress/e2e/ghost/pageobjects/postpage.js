@@ -75,12 +75,16 @@ class PostPage {
         cy.screenshot(escenario+'/'+imagen);
     }
 
-    deletePost(){
+    deletePost(escenario = 'escenario',imagen = 'imagen'){
         cy.get('button.settings-menu-toggle').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('button.gh-btn.gh-btn-hover-red.gh-btn-icon.settings-menu-delete-button').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
         cy.get('div.epm-modal-container button.gh-btn.gh-btn-red.gh-btn-icon').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_3');
     }
 
     findDraftPost(escenario = 'escenario',imagen = 'imagen'){
