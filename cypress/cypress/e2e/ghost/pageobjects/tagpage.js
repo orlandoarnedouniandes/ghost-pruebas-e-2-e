@@ -1,5 +1,5 @@
 class TagPage {
-    fillandSaveTagForm(title,color) {        
+    fillandSaveTagForm(title,color,escenario = 'escenario',imagen = 'imagen') {        
         //cy.get('input[name="name"]').clear();
         cy.get('main.gh-main').scrollTo(0, 0);
         cy.get('input[name="name"]').type(title,{force: true});
@@ -8,6 +8,7 @@ class TagPage {
         cy.get('textarea[name="description"]').clear().type(title,{force: true});
         cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view').click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     updateTagForm(title) {
@@ -17,7 +18,7 @@ class TagPage {
         cy.wait(2000);
     }
 
-    verifyTagExists(expectedTag) {
+    verifyTagExists(expectedTag, escenario = 'escenario', imagen = 'imagen') {
         cy.get('h3.gh-tag-list-name').each(($el, index, $list) => {
             const text = $el.text().trim();
             if (text === expectedTag.trim()) {
@@ -25,6 +26,7 @@ class TagPage {
                 return false;
             }
         });
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     getLastTag() {

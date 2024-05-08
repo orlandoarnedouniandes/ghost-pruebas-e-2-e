@@ -36,11 +36,14 @@ class Page {
         cy.screenshot(escenario+'/'+imagen+'_2');
     }
 
-    navigateToNewTag(){
+    navigateToNewTag(escenario='escenario',imagen='imagen'){
         cy.wait(2000);
         cy.get('a[href="#/tags/"]').first().click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('a[href="#/tags/new/"]').first().click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
     }
 
     logout(escenario='escenario',imagen='imagen'){
@@ -108,9 +111,10 @@ class Page {
         return  title + randomNum;
     }
 
-    backtoTags(){
+    backtoTags(escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/tags/"]').first().click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     navigateToProfile(){
