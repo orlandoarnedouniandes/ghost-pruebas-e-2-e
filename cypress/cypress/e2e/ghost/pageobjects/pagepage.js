@@ -76,15 +76,17 @@ class PageObject {
         cy.get('h3.gh-content-entry-title').first().invoke('text').as('pageTitle');
     }
 
-    editPage(){
+    editPage(escenario='escenario',imagen='imagen'){
         cy.get('button.gh-editor-save-trigger').click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
-    verifylastPageTitle(expectedTitle){
+    verifylastPageTitle(expectedTitle, escenario='escenario',imagen='imagen'){
         cy.get('h3.gh-content-entry-title').first().invoke('text').then((text) => {
             expect(text.trim()).to.eq(expectedTitle.trim());
         });
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     findPublishedPage(){
