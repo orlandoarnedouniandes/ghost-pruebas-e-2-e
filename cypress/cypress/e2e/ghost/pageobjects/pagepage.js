@@ -1,23 +1,26 @@
 class PageObject {
-    fillandSavePageForm(postTitle, postContent){
+    fillandSavePageForm(postTitle, postContent, escenario='escenario',imagen='imagen'){
         cy.get('textarea.gh-editor-title').clear().type(postTitle);
         cy.get('div.koenig-editor__editor').clear().type(postContent);
         cy.get('body').click(); 
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
-    backtoPages(){
+    backtoPages(escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/pages/"]').first().click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
-    verifylastPageTitleandDraft(expectedTitle){
+    verifylastPageTitleandDraft(expectedTitle, escenario='escenario',imagen='imagen'){
         cy.get('h3.gh-content-entry-title').first().invoke('text').then((text) => {
             expect(text.trim()).to.eq(expectedTitle.trim());
         });
         cy.get('span.gh-badge').first().invoke('text').then((text) => {
             expect(text.trim()).to.eq('Draft');
         });
+        cy.screenshot(escenario+'/'+imagen);
     }  
     
     findDraftPage(){

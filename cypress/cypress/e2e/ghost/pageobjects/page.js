@@ -26,11 +26,14 @@ class Page {
         cy.screenshot(escenario+'/'+imagen+'_newpost');
     }
 
-    navigateToNewPage(){
+    navigateToNewPage(escenario='escenario',imagen='imagen') {
         cy.wait(2000);
         cy.get('a[href="#/pages/"]').first().click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('a[href="#/editor/page/"]').first().click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
     }
 
     navigateToNewTag(){
