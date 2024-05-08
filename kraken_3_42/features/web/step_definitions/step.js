@@ -550,13 +550,16 @@ When("I click on the first Post list and I add the tag", async function () {
 		urlPosts = posts[0].getText();
 		await posts[0].click();
 
-		let menuButton = await this.driver.$("button.settings-menu-toggle");
-		await menuButton.click();
+		// Click settings Btn
+		let settingsButton = await this.driver.$("button.post-settings");
+		await settingsButton.click();
 
 		let inputTags = await this.driver.$(
 			"input.ember-power-select-trigger-multiple-input"
 		);
 		await inputTags.click();
+
+		await new Promise((resolve) => setTimeout(resolve, 1000));
 
 		let tags = await this.driver.$$("li.ember-power-select-option");
 		if (tags.length > 0) {
@@ -564,6 +567,27 @@ When("I click on the first Post list and I add the tag", async function () {
 			addTag = tag.getText();
 			await tag.click();
 		}
+
+		// Click Close btn
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+		let closeButton = await this.driver.$("button[aria-label='Close']");
+		await closeButton.click();
+
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+
+		// Click update button
+		let updateBtn = await this.driver.$(
+			"div.gh-btn.gh-btn-outline.gh-publishmenu-trigger"
+		);
+		await updateBtn.click();
+
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+
+		// Click Update button
+		let confirmUpdateBtn = await this.driver.$(
+			"button.gh-btn.gh-btn-blue.gh-publishmenu-button"
+		);
+		await confirmUpdateBtn.click();
 	}
 	await saveScreenshot.call(this, resultsPath, "addTagToPost", "after");
 });
