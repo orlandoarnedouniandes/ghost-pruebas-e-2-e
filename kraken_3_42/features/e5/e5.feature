@@ -8,7 +8,5 @@ Feature: Ghost Tests
       And I click on the 'Posts' link
       And I wait 1 seconds
       And I click on the last Post and I delete the Post
-      And I wait 1 seconds
+      And I wait 3 seconds
       Then I validate that the last Post not exist
-
-  

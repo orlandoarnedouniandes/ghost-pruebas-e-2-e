@@ -6,13 +6,14 @@ const {
 	ensureDirSync,
 	getFormattedDatetime,
 	saveComparisonReport,
+	wait,
 } = require("./helper");
 
 async function saveScreenshot(resultsPath, stringId, sequenceString) {
 	ensureDirSync(resultsPath);
 
 	//since the steps are too quick, we need time to take a meaningful screenshot
-	await new Promise((resolve) => setTimeout(resolve, 500));
+	await wait(500);
 
 	await this.driver.saveScreenshot(
 		`${resultsPath}/${stringId}-${sequenceString}.png`
@@ -435,8 +436,11 @@ When("I click on the last Tag and I delete the tag", async function () {
 	let tags = await this.driver.$$(
 		"ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name"
 	);
+
 	if (tags.length > 0) {
 		await tags[tags.length - 1].click();
+
+		await wait(1000);
 
 		textSlugTag = await this.driver.$$(
 			"ol li.gh-list-row.gh-tags-list-item a span"
@@ -447,10 +451,13 @@ When("I click on the last Tag and I delete the tag", async function () {
 		);
 		await deleteTagButton.click();
 
-		let deleteButton = await this.driver.$(
-			"//span[contains(text(), 'Delete')]"
+		await wait(3000);
+
+		// Click delete confirmation
+		let deleteConfirmButton = await this.driver.$(
+			"button.gh-btn.gh-btn-red.gh-btn-icon.ember-view"
 		);
-		await deleteButton.click();
+		await deleteConfirmButton.click();
 	}
 	await saveScreenshot.call(this, resultsPath, "deleteTag", "after");
 });
@@ -550,13 +557,16 @@ When("I click on the first Post list and I add the tag", async function () {
 		urlPosts = posts[0].getText();
 		await posts[0].click();
 
-		let menuButton = await this.driver.$("button.settings-menu-toggle");
-		await menuButton.click();
+		// Click settings Btn
+		let settingsButton = await this.driver.$("button.post-settings");
+		await settingsButton.click();
 
 		let inputTags = await this.driver.$(
 			"input.ember-power-select-trigger-multiple-input"
 		);
 		await inputTags.click();
+
+		await wait(1000);
 
 		let tags = await this.driver.$$("li.ember-power-select-option");
 		if (tags.length > 0) {
@@ -564,6 +574,27 @@ When("I click on the first Post list and I add the tag", async function () {
 			addTag = tag.getText();
 			await tag.click();
 		}
+
+		// Click Close btn
+		await wait(1000);
+		let closeButton = await this.driver.$("button[aria-label='Close']");
+		await closeButton.click();
+
+		await wait(1000);
+
+		// Click update button
+		let updateBtn = await this.driver.$(
+			"div.gh-btn.gh-btn-outline.gh-publishmenu-trigger"
+		);
+		await updateBtn.click();
+
+		await wait(1000);
+
+		// Click Update button
+		let confirmUpdateBtn = await this.driver.$(
+			"button.gh-btn.gh-btn-blue.gh-publishmenu-button"
+		);
+		await confirmUpdateBtn.click();
 	}
 	await saveScreenshot.call(this, resultsPath, "addTagToPost", "after");
 });
@@ -614,22 +645,34 @@ When("I click on the last Post and I delete the Post", async function () {
 	if (posts.length > 0) {
 		await posts[posts.length - 1].click();
 
-		let menuButton = await this.driver.$("button.settings-menu-toggle");
-		await menuButton.click();
+		// Click settings Btn
+		let settingsButton = await this.driver.$("button.post-settings");
+		await settingsButton.click();
+
+		await wait(2000);
+
+		// Scroll to delete Btn and click
+		let deleteButton = await this.driver.$(
+			"button.gh-btn.gh-btn-hover-red.gh-btn-icon.settings-menu-delete-button"
+		);
+		await this.driver.executeScript("arguments[0].scrollIntoView(true);", [
+			deleteButton,
+		]);
+		await deleteButton.click();
+
+		await wait(1000);
+
+		// Click delete confirmation
+		let deleteConfirmButton = await this.driver.$(
+			"button.gh-btn.gh-btn-red.gh-btn-icon.ember-view"
+		);
+		await deleteConfirmButton.click();
+
+		await wait(1000);
 
 		textUrlPost = await this.driver.$$(
 			"div.gh-icon-link input.post-setting-slug"
 		)[posts.length - 1];
-
-		let deletePostButton = await this.driver.$(
-			"button.settings-menu-delete-button"
-		);
-		await deletePostButton.click();
-
-		let deleteButton = await this.driver.$(
-			"//span[contains(text(), 'Delete')]"
-		);
-		await deleteButton.click();
 	}
 	await saveScreenshot.call(this, resultsPath, "deletePost", "after");
 });
@@ -640,13 +683,14 @@ Then("I validate that the last Post not exist", async function () {
 	await postLink.click();
 
 	let posts = await this.driver.$$(
-		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
+		"section.content-list ol.posts-list.gh-list li.gh-posts-list-item a.gh-list-data.gh-post-list-title h3.gh-content-entry-title"
 	);
 	let flag = false;
 
 	for (let i = 0; i < posts.length; i++) {
 		let post = posts[i];
-		let postText = await post.getText().toLowerCase().replace(/\s+/g, "-");
+		let postText = await post.getText();
+		postText = postText.toLowerCase().replace(/\s+/g, "-");
 		if (postText.includes(textUrlPost)) {
 			flag = true;
 			break;
