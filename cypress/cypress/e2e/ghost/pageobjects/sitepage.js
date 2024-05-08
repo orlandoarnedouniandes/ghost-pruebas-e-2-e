@@ -17,10 +17,12 @@ class SitePage {
         cy.screenshot(escenario+'/'+imagen);
     }
 
-    verifyifPageExists(url, title) {
+    verifyifPageExists(url, title, escenario = 'escenario', imagen = 'imagen') {
         let titleModified = title.trim().replace(/\s/g, '-').toLowerCase();
         cy.log('Title modified: '+titleModified);
-        cy.visit(url + titleModified);
+        cy.visit(url + titleModified,escenario,imagen);     
+        cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen);   
         cy.location('pathname').should('eq', '/'+titleModified+'/');
     }
 
