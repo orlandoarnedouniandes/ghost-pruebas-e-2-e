@@ -117,16 +117,19 @@ class PageObject {
         cy.screenshot(escenario+'/'+imagen);
     }
 
-    deletePage(){
+    deletePage(escenario='escenario',imagen='imagen'){
         cy.get('button.settings-menu-toggle').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('button.gh-btn.gh-btn-hover-red.gh-btn-icon.settings-menu-delete-button').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
         cy.get('div.epm-modal-container button.gh-btn.gh-btn-red.gh-btn-icon').click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen+'_3');
     }
 
-    verifyPageTitleDoesNotExist(expectedTitle){
+    verifyPageTitleDoesNotExist(expectedTitle, escenario='escenario',imagen='imagen'){
         cy.get('body').then(($body) => {
             if ($body.find('h3.gh-content-entry-title').length > 0) {
                 cy.get('h3.gh-content-entry-title').each(($el, index, $list) => {
@@ -134,6 +137,7 @@ class PageObject {
                 });
             }
         });
+        cy.screenshot(escenario+'/'+imagen);
     }
 }
 
