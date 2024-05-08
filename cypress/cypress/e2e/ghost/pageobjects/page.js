@@ -119,16 +119,22 @@ class Page {
         cy.screenshot(escenario+'/'+imagen);
     }
 
-    navigateToProfile(){
+    navigateToProfile(escenario='escenario',imagen='imagen'){
         cy.get('div.gh-user-avatar').first().click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('a[href*="#/settings/staff/"]').first().click();
+        cy.screenshot(escenario+'/'+imagen+'_2');
         cy.wait(2000);
     }
 
-    updateProfileSlug(slug){
+    updateProfileSlug(slug, escenario='escenario',imagen='imagen'){
         cy.get('input[name="user"]').clear().type(slug, {force: true});
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1before');
         cy.get('button.gh-btn-primary').click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen+'_2after');
     }
 
     updateProfileName(name){
