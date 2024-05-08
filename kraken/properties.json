@@ -1,5 +1,7 @@
 {
-	"BASEURL": "https://ghost-jpjk.onrender.com/ghost/#/signin/",
+	"BASEURL": "http://localhost:2368/ghost/#/signin",
 	"USERNAME": "h.wiesner@uniandes.edu.co",
-	"PASSWORD": "mWxNuDsU5Ng7LD"
+	"PASSWORD": "mWxNuDsU5Ng7LD",
+	"POSTTITLE": "The First automated post",
+	"POSTCONTENT": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
 }

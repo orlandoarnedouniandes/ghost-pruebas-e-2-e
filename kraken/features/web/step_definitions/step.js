@@ -867,3 +867,48 @@ Then("delete label {string}", async function (expectedLabel) {
 	await lastDeleteButton.click();
 	await saveScreenshot.call(this, resultsPath, "deleteLabel", "after");
 });
+
+
+When ("I click on the 'NewPost' link", async function () {
+	await saveScreenshot.call(this, resultsPath, "saveNavigation", "before");
+	let newpost = await this.driver.$('a[href="#/editor/post/"]');
+	await newpost.click();	
+	await saveScreenshot.call(this, resultsPath, "saveNavigation", "after");
+});
+
+When("I fill the post with title {kraken-string} and content {kraken-string}",
+	async function (title, content) {
+
+		let titleElement = await this.driver.$("textarea.gh-editor-title");
+		await titleElement.setValue(title);
+		let contentElement = await this.driver.$("div.koenig-editor__editor");
+		await contentElement.setValue(content);
+	}
+);
+
+When("I navigate back to the 'Posts' page", async function () {
+	await saveScreenshot.call(this, resultsPath, "navigateToPosts", "before");
+	let postsLink = await this.driver.$('a[href="#/posts/"]');
+	await postsLink.click();
+	await saveScreenshot.call(this, resultsPath, "navigateToPosts", "after");
+});
+
+Then("I validate the last post with title {kraken-string}", async function (title) {
+	let posts = await this.driver.$$(
+		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
+	);
+	let flag = false;
+	for (let i = 0; i < posts.length; i++) {
+		let post = posts[i];
+		let postText = (await post.getText()).toLowerCase().replace(/\s+/g, "-");		                     
+		if (postText.includes(title)) {
+			flag = true;
+			break;
+		}
+	}
+
+	if (flag === true) {
+		throw new Error(`Expected Post not exists`);
+	}
+});
+
