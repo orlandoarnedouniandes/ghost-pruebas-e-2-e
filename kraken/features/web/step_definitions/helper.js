@@ -11,7 +11,7 @@ function ensureDirSync(dirPath) {
 }
 
 function getFormattedDatetime() {
-	return new Date().toISOString().replace(/:/g, "-");
+	return new Date().toISOString().split("T")[0];
 }
 
 async function saveComparisonReport(datetime, resultsPath, stringId) {
