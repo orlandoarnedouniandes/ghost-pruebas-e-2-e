@@ -6,8 +6,10 @@ class PostPage {
         cy.wait(2000);
     }
 
-    editPost(){
+    editPost(escenario = 'escenario',imagen = 'imagen'){
         cy.get('button.gh-editor-save-trigger').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen);
    }
 
     unpublishPost(escenario = 'escenario',imagen = 'imagen'){
