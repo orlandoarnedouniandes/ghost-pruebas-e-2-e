@@ -1,14 +1,12 @@
 Feature: Ghost Tests
 
-  @user4 @web
-    Scenario: E04 - Unpublish Post
+  @user5 @web
+    Scenario: E05 - Delete Post
       Given I navigate to page "<BASEURL>"
       When I log in with email "<USERNAME>" and password "<PASSWORD>"
       And I wait 3 seconds
       And I click on the 'Posts' link
       And I wait 1 seconds
-      And I click on the publish post
-      # And I wait 1 seconds
-      # And I click on the unpublish post
-      And I wait 1 seconds
-      Then I validate that the last Post is unpublish
+      And I click on the last Post and I delete the Post
+      And I wait 3 seconds
+      Then I validate that the last Post not exist

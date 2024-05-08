@@ -614,22 +614,34 @@ When("I click on the last Post and I delete the Post", async function () {
 	if (posts.length > 0) {
 		await posts[posts.length - 1].click();
 
-		let menuButton = await this.driver.$("button.settings-menu-toggle");
-		await menuButton.click();
+		// Click settings Btn
+		let settingsButton = await this.driver.$("button.post-settings");
+		await settingsButton.click();
+
+		await new Promise((resolve) => setTimeout(resolve, 2000));
+
+		// Scroll to delete Btn and click
+		let deleteButton = await this.driver.$(
+			"button.gh-btn.gh-btn-hover-red.gh-btn-icon.settings-menu-delete-button"
+		);
+		await this.driver.executeScript("arguments[0].scrollIntoView(true);", [
+			deleteButton,
+		]);
+		await deleteButton.click();
+
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+
+		// Click delete confirmation
+		let deleteConfirmButton = await this.driver.$(
+			"button.gh-btn.gh-btn-red.gh-btn-icon.ember-view"
+		);
+		await deleteConfirmButton.click();
+
+		await new Promise((resolve) => setTimeout(resolve, 1000));
 
 		textUrlPost = await this.driver.$$(
 			"div.gh-icon-link input.post-setting-slug"
 		)[posts.length - 1];
-
-		let deletePostButton = await this.driver.$(
-			"button.settings-menu-delete-button"
-		);
-		await deletePostButton.click();
-
-		let deleteButton = await this.driver.$(
-			"//span[contains(text(), 'Delete')]"
-		);
-		await deleteButton.click();
 	}
 	await saveScreenshot.call(this, resultsPath, "deletePost", "after");
 });
@@ -640,13 +652,14 @@ Then("I validate that the last Post not exist", async function () {
 	await postLink.click();
 
 	let posts = await this.driver.$$(
-		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
+		"section.content-list ol.posts-list.gh-list li.gh-posts-list-item a.gh-list-data.gh-post-list-title h3.gh-content-entry-title"
 	);
 	let flag = false;
 
 	for (let i = 0; i < posts.length; i++) {
 		let post = posts[i];
-		let postText = await post.getText().toLowerCase().replace(/\s+/g, "-");
+		let postText = await post.getText();
+		postText = postText.toLowerCase().replace(/\s+/g, "-");
 		if (postText.includes(textUrlPost)) {
 			flag = true;
 			break;
