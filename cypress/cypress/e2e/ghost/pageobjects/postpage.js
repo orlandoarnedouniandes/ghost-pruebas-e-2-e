@@ -10,20 +10,23 @@ class PostPage {
         cy.get('button.gh-editor-save-trigger').click();
    }
 
-    unpublishPost(){
+    unpublishPost(escenario = 'escenario',imagen = 'imagen'){
         cy.get('button.gh-unpublish-trigger').click();
         cy.wait(1000);
         cy.get('button.gh-revert-to-draft').click();
         cy.wait(1000);
     }
 
-    publishPost(){
+    publishPost(escenario = 'escenario',imagen = 'imagen'){
         cy.get('button.gh-publish-trigger').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('button.gh-btn-black').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
         cy.get('button.gh-btn-pulse').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_3');
     }
 
     backtoPosts(escenario = 'escenario',imagen = 'imagen'){
@@ -42,17 +45,18 @@ class PostPage {
         cy.screenshot(escenario+'/'+imagen);
     }    
 
-    backtoDashBoard(){
+    backtoDashBoard(escenario = 'escenario',imagen = 'imagen'){
         cy.get('button.gh-publish-back-button').click();
-        cy.wait(1000);
         cy.get('body').then(($body) => {
             if ($body.find('a.gh-editor-back-button').length > 0) {
                 cy.get('a.gh-editor-back-button').click();
             }
         });
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
     }
 
-    navigateToSpecificPost(postTitle){
+    navigateToSpecificPost(postTitle,escenario = 'escenario',imagen = 'imagen'){
         cy.wait(1000);
         let foundPost = true;
         cy.get('h3.gh-content-entry-title').each(($el, index, $list) => {
@@ -63,6 +67,8 @@ class PostPage {
                 }
             }
         });
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     deletePost(){
@@ -73,7 +79,7 @@ class PostPage {
         cy.get('div.epm-modal-container button.gh-btn.gh-btn-red.gh-btn-icon').click();
     }
 
-    findDraftPost(){
+    findDraftPost(escenario = 'escenario',imagen = 'imagen'){
         cy.get('li.gh-posts-list-item').each(($el, index, $list) => {
             if ($el.find('span.gh-badge').text().trim() === 'Draft') {
                 cy.wrap($el).find('h3.gh-content-entry-title').invoke('text').as('postTitle');

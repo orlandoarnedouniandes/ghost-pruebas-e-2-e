@@ -1,8 +1,9 @@
 class SitePage {
-    verifylastPostTitle(expectedTitle) {
+    verifylastPostTitle(expectedTitle, escenario = 'escenario', imagen = 'imagen') {
         cy.get('h2.post-card-title').first().invoke('text').then((text) => {
             expect(text.trim()).to.eq(expectedTitle.trim()); 
           });
+          cy.screenshot(escenario+'/'+imagen);
     }
 
     verifyPostTitleDoesNotExist(expectedTitle) {

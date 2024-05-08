@@ -40,17 +40,20 @@ class Page {
         cy.get('a[href="#/tags/new/"]').first().click();
     }
 
-    logout(){
+    logout(escenario='escenario',imagen='imagen'){
         cy.wait(2000);        
         cy.get('div.gh-user-avatar').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1_avatar');
         cy.get('a.user-menu-signout').click();
         cy.wait(2000);
-        this.visit(this.baseUrl);
+        this.visit(this.baseUrl,escenario,imagen+'_2_home');        
     }
 
-    navigateToPosts(){
+    navigateToPosts(escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/posts/"]').first().click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     navigateToPages(){
