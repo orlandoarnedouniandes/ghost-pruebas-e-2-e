@@ -1,25 +1,29 @@
 class Page {
     baseUrl = '';
 
-    visit(url) {
+    visit(url,escenario ='escenario', imagen='imagen') {
         cy.log('Visiting: '+url);
         if (!this.baseUrl) this.baseUrl = url;        
         cy.visit(url);
+        cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
-    loginAdmin(username, password) {
-        this.visit(this.baseUrl+'ghost/');
-
+    loginAdmin(username, password, escenario='escenario', imagen='imagen') {
+        this.visit(this.baseUrl+'ghost/',escenario,imagen+'_1before');        
         cy.get('input[name="identification"]').type(username);
         cy.get('input[name="password"]').type(password);
+        cy.screenshot(escenario+'/'+imagen+'_2after');
         cy.get('button.login').click();
-
+        cy.wait(2000);        
     }
 
-    navigateToNewPost(){
+    navigateToNewPost(escenario='escenario',imagen='imagen') {
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen+'_dashboard');
         cy.get('a[href="#/editor/post/"]').first().click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen+'_newpost');
     }
 
     navigateToNewPage(){

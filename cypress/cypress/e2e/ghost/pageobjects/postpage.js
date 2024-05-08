@@ -1,7 +1,8 @@
 class PostPage {
-    fillandSavePostForm(postTitle, postContent){
+    fillandSavePostForm(postTitle, postContent,escenario = 'escenario',imagen = 'imagen'){
         cy.get('textarea.gh-editor-title').clear().type(postTitle, {force: true});
         cy.get('div.koenig-editor__editor').clear().type(postContent, {force: true});
+        cy.screenshot(escenario+'/'+imagen);
         cy.wait(2000);
     }
 
@@ -25,18 +26,20 @@ class PostPage {
         cy.wait(1000);
     }
 
-    backtoPosts(){
+    backtoPosts(escenario = 'escenario',imagen = 'imagen'){
         cy.get('a[href="#/posts/"]').first().click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
-    verifylastPostTitleandDraft(expectedTitle){
+    verifylastPostTitleandDraft(expectedTitle, escenario = 'escenario',imagen = 'imagen'){
         cy.get('h3.gh-content-entry-title').first().invoke('text').then((text) => {
             expect(text.trim()).to.eq(expectedTitle.trim());
         });
         cy.get('span.gh-badge').first().invoke('text').then((text) => {
             expect(text.trim()).to.eq('Draft');
         });
+        cy.screenshot(escenario+'/'+imagen);
     }    
 
     backtoDashBoard(){
