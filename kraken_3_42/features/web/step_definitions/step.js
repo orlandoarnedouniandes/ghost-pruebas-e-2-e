@@ -438,6 +438,8 @@ When("I click on the last Tag and I delete the tag", async function () {
 	if (tags.length > 0) {
 		await tags[tags.length - 1].click();
 
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+
 		textSlugTag = await this.driver.$$(
 			"ol li.gh-list-row.gh-tags-list-item a span"
 		)[tags.length - 1];
@@ -447,10 +449,13 @@ When("I click on the last Tag and I delete the tag", async function () {
 		);
 		await deleteTagButton.click();
 
-		let deleteButton = await this.driver.$(
-			"//span[contains(text(), 'Delete')]"
+		await new Promise((resolve) => setTimeout(resolve, 3000));
+
+		// Click delete confirmation
+		let deleteConfirmButton = await this.driver.$(
+			"button.gh-btn.gh-btn-red.gh-btn-icon.ember-view"
 		);
-		await deleteButton.click();
+		await deleteConfirmButton.click();
 	}
 	await saveScreenshot.call(this, resultsPath, "deleteTag", "after");
 });
