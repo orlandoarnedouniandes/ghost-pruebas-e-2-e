@@ -9,6 +9,4 @@ Feature: Ghost Tests
       And I wait 1 seconds
       And I click on the publish post
       And I wait 1 seconds
-      And I click on the unpublish post
-      And I wait 1 seconds
       Then I validate that the last Post is unpublish

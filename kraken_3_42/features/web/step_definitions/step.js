@@ -676,8 +676,25 @@ When("I click on the publish post", async function () {
 			"publishPostMenuClick",
 			"before"
 		);
-		let menuButton = await this.driver.$("button.gh-unpublish-trigger");
-		await menuButton.click();
+
+		// Click update button
+		let updateBtn = await this.driver.$(
+			"div.gh-btn.gh-btn-outline.gh-publishmenu-trigger"
+		);
+		await updateBtn.click();
+
+		// Click Unpublished option
+		let unpublishedOption = await this.driver.$(
+			"div.gh-publishmenu-radio-content"
+		);
+		await unpublishedOption.click();
+
+		// Click Update button
+		let confirmUpdateBtn = await this.driver.$(
+			"button.gh-btn.gh-btn-blue.gh-publishmenu-button"
+		);
+		await confirmUpdateBtn.click();
+
 		await saveScreenshot.call(
 			this,
 			resultsPath,
