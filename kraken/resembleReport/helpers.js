@@ -56,7 +56,7 @@ async function saveComparisonReport(
 function browser(b, info) {
 	return `<div class=" browser" id="test0">
     <div class=" btitle">
-        <h4>Comparison: Ghost version 5.80 Vs 3.42</h4>
+        <h4>Comparison: Ghost version 5.14 Vs 3.42</h4>
         <p>Data: ${info.stringId}</p>
     </div>
     <div class="imgline">
