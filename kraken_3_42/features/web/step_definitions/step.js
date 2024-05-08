@@ -6,13 +6,14 @@ const {
 	ensureDirSync,
 	getFormattedDatetime,
 	saveComparisonReport,
+	wait,
 } = require("./helper");
 
 async function saveScreenshot(resultsPath, stringId, sequenceString) {
 	ensureDirSync(resultsPath);
 
 	//since the steps are too quick, we need time to take a meaningful screenshot
-	await new Promise((resolve) => setTimeout(resolve, 500));
+	await wait(500);
 
 	await this.driver.saveScreenshot(
 		`${resultsPath}/${stringId}-${sequenceString}.png`
@@ -435,10 +436,11 @@ When("I click on the last Tag and I delete the tag", async function () {
 	let tags = await this.driver.$$(
 		"ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name"
 	);
+
 	if (tags.length > 0) {
 		await tags[tags.length - 1].click();
 
-		await new Promise((resolve) => setTimeout(resolve, 1000));
+		await wait(1000);
 
 		textSlugTag = await this.driver.$$(
 			"ol li.gh-list-row.gh-tags-list-item a span"
@@ -449,7 +451,7 @@ When("I click on the last Tag and I delete the tag", async function () {
 		);
 		await deleteTagButton.click();
 
-		await new Promise((resolve) => setTimeout(resolve, 3000));
+		await wait(3000);
 
 		// Click delete confirmation
 		let deleteConfirmButton = await this.driver.$(
@@ -564,7 +566,7 @@ When("I click on the first Post list and I add the tag", async function () {
 		);
 		await inputTags.click();
 
-		await new Promise((resolve) => setTimeout(resolve, 1000));
+		await wait(1000);
 
 		let tags = await this.driver.$$("li.ember-power-select-option");
 		if (tags.length > 0) {
@@ -574,11 +576,11 @@ When("I click on the first Post list and I add the tag", async function () {
 		}
 
 		// Click Close btn
-		await new Promise((resolve) => setTimeout(resolve, 1000));
+		await wait(1000);
 		let closeButton = await this.driver.$("button[aria-label='Close']");
 		await closeButton.click();
 
-		await new Promise((resolve) => setTimeout(resolve, 1000));
+		await wait(1000);
 
 		// Click update button
 		let updateBtn = await this.driver.$(
@@ -586,7 +588,7 @@ When("I click on the first Post list and I add the tag", async function () {
 		);
 		await updateBtn.click();
 
-		await new Promise((resolve) => setTimeout(resolve, 1000));
+		await wait(1000);
 
 		// Click Update button
 		let confirmUpdateBtn = await this.driver.$(
@@ -647,7 +649,7 @@ When("I click on the last Post and I delete the Post", async function () {
 		let settingsButton = await this.driver.$("button.post-settings");
 		await settingsButton.click();
 
-		await new Promise((resolve) => setTimeout(resolve, 2000));
+		await wait(2000);
 
 		// Scroll to delete Btn and click
 		let deleteButton = await this.driver.$(
@@ -658,7 +660,7 @@ When("I click on the last Post and I delete the Post", async function () {
 		]);
 		await deleteButton.click();
 
-		await new Promise((resolve) => setTimeout(resolve, 1000));
+		await wait(1000);
 
 		// Click delete confirmation
 		let deleteConfirmButton = await this.driver.$(
@@ -666,7 +668,7 @@ When("I click on the last Post and I delete the Post", async function () {
 		);
 		await deleteConfirmButton.click();
 
-		await new Promise((resolve) => setTimeout(resolve, 1000));
+		await wait(1000);
 
 		textUrlPost = await this.driver.$$(
 			"div.gh-icon-link input.post-setting-slug"
