@@ -130,3 +130,5 @@ dist
 .pnp.*
 kraken/reports/*
 kraken/results/*
+
+cypress/screenshots/*
