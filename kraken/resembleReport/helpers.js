@@ -56,7 +56,7 @@ async function saveComparisonReport(
 function browser(b, info) {
 	return `<div class=" browser" id="test0">
     <div class=" btitle">
-        <h2>Browser: ${b}</h2>
+        <h4>Comparison: Ghost version 5.80 Vs 3.42</h4>
         <p>Data: ${info.stringId}</p>
     </div>
     <div class="imgline">
@@ -86,9 +86,7 @@ function createReport(datetime, resInfo) {
             <link href="index.css" type="text/css" rel="stylesheet">
         </head>
         <body>
-            <h1>Report for
-                 <a href="ghost-app"> ghost-app</a>
-            </h1>
+           <h1>Report for ghost-app</h1>
             <p>Executed: ${datetime}</p>
             <div id="visualizer">
                 ${browser(resInfo.browser, resInfo)}
