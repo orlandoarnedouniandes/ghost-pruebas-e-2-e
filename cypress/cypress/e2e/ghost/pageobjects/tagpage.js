@@ -11,11 +11,15 @@ class TagPage {
         cy.screenshot(escenario+'/'+imagen);
     }
 
-    updateTagForm(title) {
+    updateTagForm(title, escenario = 'escenario', imagen = 'imagen') {
         cy.get('main.gh-main').scrollTo(0, 0);
         cy.get('input[name="name"]').clear().type(title,{force: true});
+        cy.wait(1000);
+        cy.get('main.gh-main').scrollTo(0, 0);
+        cy.screenshot(escenario+'/'+imagen+'_1before');
         cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view').click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen+'_2after');
     }
 
     verifyTagExists(expectedTag, escenario = 'escenario', imagen = 'imagen') {
@@ -38,7 +42,7 @@ class TagPage {
             .as('tag')
     }
 
-    navigateToSpecificTag(tag) {
+    navigateToSpecificTag(tag, escenario = 'escenario', imagen = 'imagen') {
         let foundPost = true;
         cy.get('h3.gh-tag-list-name').each(($el, index, $list) => {
             if (foundPost) {
@@ -49,6 +53,7 @@ class TagPage {
                 }
             }
         });
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     navigateToSettingsAndSelectGeneral(){
