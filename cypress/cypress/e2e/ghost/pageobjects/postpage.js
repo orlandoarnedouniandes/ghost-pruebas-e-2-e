@@ -15,8 +15,10 @@ class PostPage {
     unpublishPost(escenario = 'escenario',imagen = 'imagen'){
         cy.get('button.gh-unpublish-trigger').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('button.gh-revert-to-draft').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
     }
 
     publishPost(escenario = 'escenario',imagen = 'imagen'){

@@ -6,7 +6,7 @@ class SitePage {
           cy.screenshot(escenario+'/'+imagen);
     }
 
-    verifyPostTitleDoesNotExist(expectedTitle) {
+    verifyPostTitleDoesNotExist(expectedTitle, escenario = 'escenario', imagen = 'imagen') {
         cy.get('body').then(($body) => {
             if ($body.find('h2.post-card-title').length > 0) {
                 cy.get('h2.post-card-title').each(($el, index, $list) => {
@@ -14,6 +14,7 @@ class SitePage {
                 });
             }
         });
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     verifyifPageExists(url, title) {
