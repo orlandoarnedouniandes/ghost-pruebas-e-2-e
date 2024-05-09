@@ -49,8 +49,9 @@ class SitePage {
         cy.screenshot(escenario+'/'+imagen);
     }
 
-    verifyLink(expectedLink) {
+    verifyLink(expectedLink, escenario = 'escenario', imagen = 'imagen') {
         cy.get('div.gh-head-menu').find('a').contains(expectedLink).should('exist');
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     verifyLinkNotExists(expectedLink) {

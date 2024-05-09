@@ -169,14 +169,19 @@ class Page {
     }
 
 
-    addLink(title){
+    addLink(title, escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/settings/"]').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('a[href="#/settings/navigation/"]').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
         cy.get('div.gh-blognav-item').eq(2).find('input.ember-text-field').first().clear().type(title, {force: true});
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_3');
         cy.get('button.gh-btn-primary').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_4');
     }
 
     removeLink(){
