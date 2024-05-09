@@ -58,6 +58,24 @@ node: 18.13.0
 Cypress package version: 13.8.1
 Cypress binary version: 13.8.1
 
+
+#### backstop
+node: 18.13.0
+BackstopJS v6.3.23
+Instalar backstop de manera global si no lo tiene instalado aun: npm install -g backstopjs
+ - Si aun no tiene imagenes de referencia:
+    - ejecute las pruebas de cypress siguiendo las instrucciones anteriores
+    - Asegurese de ubicarse en la raiz del poryecto usando el comando cd
+    - copee las imagenes para compara usando el comando: xcopy /E /I /Y cypress\screenshots backstop\screenshots
+    - naveguea la carpeta backstop: cd backstop
+    - ejecute el comando backstope remote
+    - Inicie una nueva consola de comandos y navegue a la carpeta backstop
+    - Ejecute el comando backstop reference
+    - Ejecute el comando backstop test
+    - Disfrute del informe
+navegar a la carpeta backstop: cd backstop
+
+
 ### Escenarios de pruebas
 [Escenarios de pruebas](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Escenarios-de-pruebas)
 
