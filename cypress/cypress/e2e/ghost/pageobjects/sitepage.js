@@ -42,10 +42,11 @@ class SitePage {
         cy.screenshot(escenario+'/'+imagen);
     }
 
-    verifyTitle(expectedTitle) {
+    verifyTitle(expectedTitle, escenario = 'escenario', imagen = 'imagen') {
         cy.get('h1').invoke('text').then((text) => {
             expect(text.trim()).to.eq(expectedTitle);
         });
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     verifyLink(expectedLink) {

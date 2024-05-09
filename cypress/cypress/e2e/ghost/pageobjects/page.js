@@ -150,15 +150,22 @@ class Page {
         cy.screenshot(escenario+'/'+imagen+'_2after');
     }
 
-    updateTitle(title){
+    updateTitle(title, escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/settings/"]').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('a[href="#/settings/general/"]').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
         cy.get('div.gh-main-section').find('button.gh-btn').first().click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_3');
         cy.get('input.ember-text-field').first().clear().type(title, {force: true});
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_4');
         cy.get('button.gh-btn-primary').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_5');
     }
 
 
