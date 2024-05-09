@@ -13,6 +13,6 @@ Feature: Profile Actualizar full name
     When I get current slug name
     When I modify current full name and save changes
     And I wait 3 seconds
-    When I navigate to new user profile page
+    Then I refresh the page
     And I wait 2 seconds
     Then I should see the expected full name

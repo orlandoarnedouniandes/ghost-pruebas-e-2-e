@@ -26,9 +26,14 @@ https://ghost-jpjk.onrender.com/
 #### Ejecución de pruebas Kraken
 1. Antes de iniciar valide que se cumplan con los requisitos previos para el uso de la herramienta usando en tu consola el siguiente comando: kraken-node doctor
 2. Clone el siguiente repositorio https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e.git
-3. Ubiquese dentro de la carpeta Kraken
-4. Sobre la carpeta Kraken use el siguiente comando: npm install
+3. Ubiquese dentro de la carpeta Kraken o Kraken_3_42 dependiendo de la version de Ghost que desee probar
+4. Sobre la carpeta Kraken o Kraken_3_42 use el siguiente comando: npm install
 5. A continuación corra las pruebas usando el siguiente comando: node features/executeKrakenAll.js
+
+#### Requsitos para correr Kraken_3_42
+- En caso de probar Kraken_3_42 es necesario  asegurarse de que estos requerimientos de cumplan
+1. Correr Ghost version 3.42 en local en esta url http://localhost:2368/ghost/
+2. La version local de ghost debe tener registrados el usuario "h.wiesner@uniandes.edu.co" pwd: "mWxNuDsU5Ng7LD"
 
 ### En caso de querer correr una prueba en particular: dado que hay una limitante de la herramienta en ejeutar varias pruebas consecutivas en ambientes Windows, se recomienda
 1. Navegar a la carpeta principal del proyecto y luego a la carpeta kraken

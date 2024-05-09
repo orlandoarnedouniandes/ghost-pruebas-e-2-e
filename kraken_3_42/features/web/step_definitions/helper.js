@@ -92,9 +92,12 @@ function createReport(datetime, resInfo) {
     </html>`;
 }
 
+async function wait(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
 module.exports = {
 	ensureDirSync,
 	getFormattedDatetime,
-	// saveScreenshot,
 	saveComparisonReport,
+	wait,
 };

@@ -1,6 +1,6 @@
 const fs = require("fs");
 const compareImages = require("resemblejs/compareImages");
-const config = require("../../../config.json");
+const config = require("../config.json");
 
 const { options } = config;
 
@@ -14,10 +14,17 @@ function getFormattedDatetime() {
 	return new Date().toISOString().split("T")[0];
 }
 
-async function saveComparisonReport(datetime, resultsPath, stringId) {
+async function saveComparisonReport(
+	datetime,
+	resultsPath,
+	stringId,
+	v1Path,
+	v2Path
+) {
+	console.log(resultsPath);
 	const data = await compareImages(
-		fs.readFileSync(`${resultsPath}/${stringId}-before.png`),
-		fs.readFileSync(`${resultsPath}/${stringId}-after.png`),
+		fs.readFileSync(`${v1Path}`),
+		fs.readFileSync(`${v2Path}`),
 		options
 	);
 
@@ -29,8 +36,8 @@ async function saveComparisonReport(datetime, resultsPath, stringId) {
 		diffBounds: data.diffBounds,
 		analysisTime: data.analysisTime,
 		browser: "chromium",
-		filePathBefore: `${stringId}-before.png`,
-		filePathAfter: `${stringId}-after.png`,
+		v1Path: v1Path,
+		v2Path: v2Path,
 		filePathCompare: `${stringId}-compare.png`,
 		stringId: stringId,
 	};
@@ -44,24 +51,22 @@ async function saveComparisonReport(datetime, resultsPath, stringId) {
 		`${resultsPath}/${stringId}-report.html`,
 		createReport(datetime, resultInfo)
 	);
-
-	fs.copyFileSync("./index.css", `${resultsPath}/index.css`);
 }
 
 function browser(b, info) {
 	return `<div class=" browser" id="test0">
     <div class=" btitle">
-        <h2>Browser: ${b}</h2>
+        <h4>Comparison: Ghost version 5.14 Vs 3.42</h4>
         <p>Data: ${info.stringId}</p>
     </div>
     <div class="imgline">
       <div class="imgcontainer">
-        <span class="imgname">Reference</span>
-        <img class="img2" src="${info.filePathBefore}" id="refImage" label="Reference">
+        <span class="imgname">Version 1</span>
+        <img class="img2" src="${info.v1Path}" id="refImage" label="Reference">
       </div>
       <div class="imgcontainer">
-        <span class="imgname">Test</span>
-        <img class="img2" src="${info.filePathAfter}" id="testImage" label="Test">
+        <span class="imgname">Version 2</span>
+        <img class="img2" src="${info.v2Path}" id="testImage" label="Test">
       </div>
     </div>
     <div class="imgline">
@@ -81,9 +86,7 @@ function createReport(datetime, resInfo) {
             <link href="index.css" type="text/css" rel="stylesheet">
         </head>
         <body>
-            <h1>Report for
-                 <a href="ghost-app"> ghost-app</a>
-            </h1>
+           <h1>Report for ghost-app</h1>
             <p>Executed: ${datetime}</p>
             <div id="visualizer">
                 ${browser(resInfo.browser, resInfo)}
