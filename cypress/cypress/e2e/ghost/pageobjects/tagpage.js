@@ -58,22 +58,29 @@ class TagPage {
         cy.screenshot(escenario+'/'+imagen);
     }
 
-    navigateToSettingsAndSelectGeneral(){
+    navigateToSettingsAndSelectGeneral(escenario = 'escenario',imagen = 'imagen'){
         cy.wait(2000);
         cy.get('a[href="#/settings/"]').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1')
         //this.tagSelect = cy.get('ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name').first().text();
         cy.get('a[href="#/settings/general/').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2')
         cy.get('div.gh-expandable-header button.gh-btn').first().click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_3')
     }
 
-    editDescriptionAndSave(){
+    editDescriptionAndSave(escenario = 'escenario',imagen = 'imagen'){
         const description = "Description Cypress General";
         cy.get('div.description-container input.ember-text-field').first().should('be.visible').invoke('val', '').type(description);
         //cy.get('input[id="tag-name"]').first().type(name);
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('div.gh-canvas-header button.gh-btn span').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
         return description;
     }
 
@@ -93,7 +100,7 @@ class TagPage {
         cy.screenshot(escenario+'/'+imagen);
     }
 
-    verifyDescription(description){
+    verifyDescription(description, escenario = 'escenario', imagen = 'imagen'){
         //cy.log('Texto Objetnido: '+nameTitle );
         cy.wait(1000);
         cy.get('div.site-header-inner p.site-description').then((descr) => {
@@ -103,6 +110,7 @@ class TagPage {
                 );
             }
         });
+        cy.screenshot(escenario+'/'+imagen);
     }
 }
 
