@@ -35,10 +35,11 @@ class SitePage {
         cy.screenshot(escenario+'/'+imagen);
     }
 
-    verifyIfUserNameIsDisplayed(expectedName) {
+    verifyIfUserNameIsDisplayed(expectedName, escenario = 'escenario', imagen = 'imagen') {
         cy.get('h2').first().invoke('text').then((text) => {
             expect(text.trim().replace(/\n/g, '')).to.eq(expectedName);
         });
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     verifyTitle(expectedTitle) {

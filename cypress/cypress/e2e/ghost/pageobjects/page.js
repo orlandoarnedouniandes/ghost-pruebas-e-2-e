@@ -137,15 +137,17 @@ class Page {
         cy.screenshot(escenario+'/'+imagen+'_2after');
     }
 
-    updateProfileName(name){
+    updateProfileName(name,escenario='escenario',imagen='imagen'){
         cy.get('input#user-name').clear().type(name, {force: true});
-        
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1update');
         cy.get('input#user-slug')
         .invoke('val')
         .as('slug')
 
         cy.get('button.gh-btn-primary').click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen+'_2after');
     }
 
     updateTitle(title){

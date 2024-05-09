@@ -24,7 +24,6 @@ context("UpdateProfileSlug", function () {
         
         //When
         const slug = this.page.getRandomSlug(this.data.profile.slug);
-        //this.page.navigateToProfile(escenario , '4_editprofile');
         this.page.updateProfileSlug(slug, escenario, '5_updateprofile');
         this.page.logout(escenario, '6_logout');
         
