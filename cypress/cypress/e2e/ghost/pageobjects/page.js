@@ -184,19 +184,23 @@ class Page {
         cy.screenshot(escenario+'/'+imagen+'_4');
     }
 
-    removeLink(){
+    removeLink(escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/settings/"]').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');   
         cy.get('a[href="#/settings/navigation/"]').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
     
         return cy.get('div.gh-blognav-item').eq(2).find('input.ember-text-field')
         .invoke('val')
         .then((link) => {
             cy.get('div.gh-blognav-item').eq(2).find('button.gh-blognav-delete').click();
             cy.wait(1000);
+            cy.screenshot(escenario+'/'+imagen+'_3');
             cy.get('button.gh-btn-primary').click();
             cy.wait(2000);
+            cy.screenshot(escenario+'/'+imagen+'_4');
             return cy.wrap(link);
         });
     }

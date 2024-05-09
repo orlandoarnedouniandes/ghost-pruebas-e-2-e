@@ -54,8 +54,9 @@ class SitePage {
         cy.screenshot(escenario+'/'+imagen);
     }
 
-    verifyLinkNotExists(expectedLink) {
+    verifyLinkNotExists(expectedLink,escenario = 'escenario', imagen = 'imagen') {
         cy.get('div.gh-head-menu').find('a').contains(expectedLink).should('not.exist');
+        cy.screenshot(escenario+'/'+imagen);
     }
 
 }
