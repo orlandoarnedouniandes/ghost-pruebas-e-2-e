@@ -1,61 +1,77 @@
 class Page {
     baseUrl = '';
 
-    visit(url) {
+    visit(url,escenario ='escenario', imagen='imagen') {
         cy.log('Visiting: '+url);
         if (!this.baseUrl) this.baseUrl = url;        
         cy.visit(url);
+        cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
-    loginAdmin(username, password) {
-        this.visit(this.baseUrl+'ghost/');
-
+    loginAdmin(username, password, escenario='escenario', imagen='imagen') {
+        this.visit(this.baseUrl+'ghost/',escenario,imagen+'_1before');        
         cy.get('input[name="identification"]').type(username);
         cy.get('input[name="password"]').type(password);
+        cy.screenshot(escenario+'/'+imagen+'_2after');
         cy.get('button.login').click();
-
+        cy.wait(2000);        
     }
 
-    navigateToNewPost(){
+    navigateToNewPost(escenario='escenario',imagen='imagen') {
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen+'_dashboard');
         cy.get('a[href="#/editor/post/"]').first().click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen+'_newpost');
     }
 
-    navigateToNewPage(){
+    navigateToNewPage(escenario='escenario',imagen='imagen') {
         cy.wait(2000);
         cy.get('a[href="#/pages/"]').first().click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('a[href="#/editor/page/"]').first().click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
     }
 
-    navigateToNewTag(){
+    navigateToNewTag(escenario='escenario',imagen='imagen'){
         cy.wait(2000);
         cy.get('a[href="#/tags/"]').first().click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('a[href="#/tags/new/"]').first().click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
     }
 
-    logout(){
+    logout(escenario='escenario',imagen='imagen'){
         cy.wait(2000);        
         cy.get('div.gh-user-avatar').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1_avatar');
         cy.get('a.user-menu-signout').click();
         cy.wait(2000);
-        this.visit(this.baseUrl);
+        this.visit(this.baseUrl,escenario,imagen+'_2_home');        
     }
 
-    navigateToPosts(){
+    navigateToPosts(escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/posts/"]').first().click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
-    navigateToPages(){
+    navigateToPages(escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/pages/"]').first().click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
-    navigateToTags(){
+    navigateToTags(escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/tags/"]').first().click();
+        cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
     getLastPostTitle() {
@@ -97,69 +113,94 @@ class Page {
         return  title + randomNum;
     }
 
-    backtoTags(){
+    backtoTags(escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/tags/"]').first().click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen);
     }
 
-    navigateToProfile(){
+    navigateToProfile(escenario='escenario',imagen='imagen'){
         cy.get('div.gh-user-avatar').first().click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('a[href*="#/settings/staff/"]').first().click();
+        cy.screenshot(escenario+'/'+imagen+'_2');
         cy.wait(2000);
     }
 
-    updateProfileSlug(slug){
+    updateProfileSlug(slug, escenario='escenario',imagen='imagen'){
         cy.get('input[name="user"]').clear().type(slug, {force: true});
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1before');
         cy.get('button.gh-btn-primary').click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen+'_2after');
     }
 
-    updateProfileName(name){
+    updateProfileName(name,escenario='escenario',imagen='imagen'){
         cy.get('input#user-name').clear().type(name, {force: true});
-        
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1update');
         cy.get('input#user-slug')
         .invoke('val')
         .as('slug')
 
         cy.get('button.gh-btn-primary').click();
         cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen+'_2after');
     }
 
-    updateTitle(title){
+    updateTitle(title, escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/settings/"]').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('a[href="#/settings/general/"]').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
         cy.get('div.gh-main-section').find('button.gh-btn').first().click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_3');
         cy.get('input.ember-text-field').first().clear().type(title, {force: true});
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_4');
         cy.get('button.gh-btn-primary').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_5');
     }
 
 
-    addLink(title){
+    addLink(title, escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/settings/"]').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('a[href="#/settings/navigation/"]').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
         cy.get('div.gh-blognav-item').eq(2).find('input.ember-text-field').first().clear().type(title, {force: true});
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_3');
         cy.get('button.gh-btn-primary').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_4');
     }
 
-    removeLink(){
+    removeLink(escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/settings/"]').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');   
         cy.get('a[href="#/settings/navigation/"]').click();
         cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
     
         return cy.get('div.gh-blognav-item').eq(2).find('input.ember-text-field')
         .invoke('val')
         .then((link) => {
             cy.get('div.gh-blognav-item').eq(2).find('button.gh-blognav-delete').click();
             cy.wait(1000);
+            cy.screenshot(escenario+'/'+imagen+'_3');
             cy.get('button.gh-btn-primary').click();
             cy.wait(2000);
+            cy.screenshot(escenario+'/'+imagen+'_4');
             return cy.wrap(link);
         });
     }

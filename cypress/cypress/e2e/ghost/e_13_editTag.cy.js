@@ -7,6 +7,7 @@ const PostPage = require("./pageobjects/postpage");
 const SitePage = require("./pageobjects/sitepage");
 
 context("EditTag", function () {
+    let escenario = 'escenario13';
     beforeEach(function () {
         this.page = new Page();
         this.tagpage = new TagPage();
@@ -17,25 +18,25 @@ context("EditTag", function () {
             cy.log('Data: '+data.url );
             this.data = data;
             //Given      
-            this.page.visit(this.data.url);
+            this.page.visit(this.data.url, escenario, '1_home');
         });
     });
     
     it("El usuario edita un tag", function () {
         //Given
-        this.page.loginAdmin(this.data.username, this.data.password);
-        this.page.navigateToTags();
+        this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
+        this.page.navigateToTags(escenario, '3_tags');
         this.tagpage.getLastTag();
         cy.get('@tag').then((tag) => {
             //When
             cy.log('tag a editar:'+tag);
-            this.tagpage.navigateToSpecificTag(tag);
+            this.tagpage.navigateToSpecificTag(tag, escenario, '4_specifictag');
             const newTag = this.page.getRandomTagTitle(this.data.tag.name);
-            this.tagpage.updateTagForm(newTag);
-            this.page.backtoTags();
+            this.tagpage.updateTagForm(newTag, escenario, '5_updateform');
+            this.page.backtoTags(escenario, '6_backtotags');
     
             //Then
-            this.tagpage.verifyTagExists(newTag);
+            this.tagpage.verifyTagExists(newTag, escenario, '7_verify');
         });
     });
 
