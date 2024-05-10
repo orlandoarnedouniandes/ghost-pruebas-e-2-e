@@ -76,13 +76,40 @@ Instalar backstop de manera global si no lo tiene instalado aun: npm install -g 
 navegar a la carpeta backstop: cd backstop
 
 
-### Escenarios de pruebas
-[Escenarios de pruebas](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Escenarios-de-pruebas)
+### Funcionalidades bajo prueba - Regresión Visual (10 Escenarios)
+#### [Funcionalidades bajo prueba - Regresión Visual](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Funcionalidades-bajo-pruebas-de-regresion-visual)
 
-### Funcionalidades bajo prueba
-[Funcionalidades bajo prueba](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Funcionalidades-bajo-prueba)
+### Escenarios de pruebas de regresión visual (10 Escenarios)
+#### [Funcionalidades bajo prueba - Regresión Visual](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Escenarios-de-prueba-regresion-visual)
 
-### Resumen de Pros y Contras
-[Pros y Contras de las herramientas](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Pros-y-Contras-de-las-herramientas)
+### Resumen de Pros y Contras ResembleJS y BackstopJS
+#### [Resumen de Pros y Contras ResembleJS Y BackstopJS](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Pros-y-contras-ResembleJS-vs-BackstopJS)
+
+### Informe de diferencias visuales
+#### [Informe de diferencias visuales](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Reporte-de-Incidencias)
+
+### Funcionalidades bajo prueba (40 Escenarios)
+Aca de describen todas las funcionalidades bajo prueba que se usaron para los 40 Escenarios de prueba iniciales.
+#### [Funcionalidades bajo prueba (40 Escenarios)](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Funcionalidades-bajo-prueba)
+
+### Escenarios de Pruebas (40 Escenarios)
+Aca se describen los 20 escenarios trabajados para cada herramienta Kraken y Cypres; en total los 40 escenarios que se modificaron para la toma de captures.
+#### [Escenarios de Pruebas (40 Escenarios)](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Escenarios-de-pruebas)
+
+### Video
+
+### Lanzamiento 10 Escenarios - Regresión Visual
+#### Reporte HTML ResembleJS
+* Se puede descargar en el siguiente link https://helverinio.github.io/report_backstop_cypress_escenario1/html_report/
+* Se puede tambien visulizar en la ruta del realease del proyecto ghost-pruebas-e-2-e/backstop/reporte_escenario1_cypress_backstop
+
+#### Reporte HTML BackstopJS
+* Se puede descargar en el siguiente link https://helverinio.github.io/report_backstop_cypress_escenario1/html_report/
+* Se puede tambien visulizar en la ruta del realease del proyecto ghost-pruebas-e-2-e/backstop/reporte_escenario1_cypress_backstopindex.html/html_report/
+
+
+Informe HTML
+Lanzamiento 40 Escenarios ajustados
+Funcionalidades generales de Ghost
 
 
