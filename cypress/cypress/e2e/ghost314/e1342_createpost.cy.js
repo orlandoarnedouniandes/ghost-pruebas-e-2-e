@@ -4,8 +4,8 @@ const Page = require("./pageobjects/page");
 const PostPage = require("./pageobjects/postpage");
 
 
-context("CreatePost314", function () {
-  let escenario='escenario1';
+context("CreatePost342", function () {
+  let escenario='escenario1342';
 
   beforeEach(function () {
     this.page = new Page();

@@ -13,11 +13,13 @@ class PostPage {
    }
 
     unpublishPost(escenario = 'escenario',imagen = 'imagen'){
-        cy.get('button.gh-unpublish-trigger').click();
+        cy.get('div.ember-basic-dropdown-trigger').first().click();
         cy.wait(1000);
         cy.screenshot(escenario+'/'+imagen+'_1');
-        cy.get('button.gh-revert-to-draft').click();
+        cy.contains('.gh-publishmenu-radio-label', 'Unpublished').parent().parent().click();
         cy.wait(1000);
+        cy.get('button.gh-publishmenu-button').click();
+        cy.wait(2000)
         cy.screenshot(escenario+'/'+imagen+'_2');
     }
 
