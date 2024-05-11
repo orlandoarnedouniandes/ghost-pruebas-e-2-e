@@ -11,5 +11,5 @@ Feature: Ghost Tests
       And I wait 2 seconds
       And I modify the description
       And I wait 1 seconds
-      Then I navigate to page "https://ghost-jpjk.onrender.com/" 
+      Then I navigate to page "<BASEURLROOT>" 
       And I validate that the description has been changed 'Proof Ghost Uniandes' on users page

@@ -9,7 +9,7 @@ const execPromise = util.promisify(exec);
 // File paths
 const scenarios = [
 	//"e1",
-	"e2",
+	//"e2",
 	//"e3",
 	//"e4",
 	//"e5",
@@ -25,9 +25,9 @@ const scenarios = [
 	//"e15",
 	//"e16",
 	//"e17",
-	//"e18",
-	//"e19",
-	//"e20",
+	"e18",
+	"e19",
+	"e20",
 ];
 const destinationFile = "features/execute.feature";
 
