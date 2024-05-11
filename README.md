@@ -30,6 +30,9 @@ versión: 3.42 - http://misoubuntuhw.eastus.cloudapp.azure.com:3001/
 3. Ubíquese dentro de la carpeta Kraken o Kraken_3_42 dependiendo de la versión de Ghost que desee probar
 4. Sobre la carpeta Kraken o Kraken_3_42, use el siguiente comando: npm install
 5. A continuación, corra las pruebas usando el siguiente comando: node features/executeKrakenAll.js
+#### ResembleJS
+1. ResembleJS viene incluido dentro de las dependencias del proyecto, por tanto se instala al correr normalmente el comando npm install que se describe en las instrucciones de instalacion y ejecucion de Kraken para este repositorio
+2. Resemble corre automaticamente mientras el proyecto de Kraken ejecuta su analisis y esta  acoplado al proceso de toma de screenshots de forma que al momento de ejecutarse el screenshot que describe el cierre del paso (-after.) se dispara un reporte automatico que compara ese punto especifico dentro de la ejecucion. Este reporte automatico se almacena dentro del folder ./kraken/results o ./kraken_3_42/results.
  
 ### Instalación y ejecución de las pruebas en Cypress
 #### Requisitos
