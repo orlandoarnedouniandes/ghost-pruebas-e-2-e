@@ -1,18 +1,26 @@
-Feature: Profile Actualizar full name
+Feature: Configuration link Delete
 
-  @user16 @web
-  Scenario: E16 - Modify and Verify full name Information
+  @user20 @web
+  Scenario: E20 - Modify Delete and Verify link Deletion
     Given I navigate to page "<BASEURL>"
-    And I set the new full name to "Edited Full Name"
-    When I log in with email "<USERNAME>" and password "<PASSWORD>"
+    And I log in with email "<USERNAME>" and password "<PASSWORD>"
+    And I wait 2 seconds
+    And I click on the "Settings" tab
+    And I wait 2 seconds
+    And I navigate to the "Navigation" settings page
     And I wait 3 seconds
-    And I Click on user dropdown
-    And I wait 1 seconds
-    And I click on the 'Your profile' link
-    And I wait 1 seconds
-    When I get current slug name
-    When I modify current full name and save changes
+    When I add a new navigation item with label "Test" and URL "<BASEURLROOT>"
+    And I click the primary Save button
     And I wait 3 seconds
     Then I refresh the page
+    And I wait 3 seconds
+    Then I should see a navigation item with label "Test" and URL "<BASEURLROOT>"
+    Then delete label "Test"
     And I wait 2 seconds
-    Then I should see the expected full name
+    And I click the primary Save button
+    And I wait 2 seconds
+    Then I refresh the page
+    
+
+    
+
