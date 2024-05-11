@@ -30,14 +30,6 @@ versión: 3.42 - http://misoubuntuhw.eastus.cloudapp.azure.com:3001/
 3. Ubíquese dentro de la carpeta Kraken o Kraken_3_42 dependiendo de la versión de Ghost que desee probar
 4. Sobre la carpeta Kraken o Kraken_3_42, use el siguiente comando: npm install
 5. A continuación, corra las pruebas usando el siguiente comando: node features/executeKrakenAll.js
-
-
-### En caso de querer correr una prueba en particular:
-1. Navegar a la carpeta principal del proyecto y luego a la carpeta kraken
-2. Copiar la prueba desde el folder en el que se encuentra situada (ejemplo: feature/e15)
-3. Pegar el archivo de prueba dentro del folder /features
-4. Asegurarse de que ningún otro archivo con extensión .feature está presente en /features aparte del que deseamos probar (esto debido a la limitación de kraken para correr diferentes archivos de prueba en Windows. Link de la discusión: https://uniandes-miso.slack.com/archives/C06QRVAKMHR/p1714705849745749)
-5. Correr - npx kraken-node run
  
 ### Instalación y ejecución de las pruebas en Cypress
 #### Requisitos
