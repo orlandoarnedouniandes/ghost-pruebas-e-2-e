@@ -48,7 +48,7 @@ Cypress package version: 13.8.1
 Cypress binary version: 13.8.1
 
 
-#### backstop
+#### BackstopJS
 node: 18.13.0
 BackstopJS v6.3.23
 Instale Backstop de manera global si no lo tiene instalado aún: npm install -g backstopjs
@@ -86,9 +86,9 @@ Aca se describen los 20 escenarios trabajados para cada herramienta Kraken y Cyp
 #### [Escenarios de Pruebas (40 Escenarios)](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Escenarios-de-pruebas)
 
 ### Video
-[Presentación Semana 6 (VRT)](https://youtu.be/K9dH1WsJ_C0)
+#### [Presentación Semana 6 (VRT)](https://youtu.be/K9dH1WsJ_C0)
 
-### Lanzamiento 10 Escenarios - Regresión Visual
+### Ejecución de los 10 Escenarios de prueba - Regresión Visual
 #### Reporte HTML ResembleJS
 * Se puede visualizar online en el siguiente link https://helverinio.github.io/report_resemble_kraken/Resemble_Comparison_results/2024-05-08/
 * Se puede tambien visualizar en la ruta del release del proyecto ghost-pruebas-e-2-e/kraken/resembleReportSemana6/Resemble_Comparison_results/index.html
@@ -97,9 +97,9 @@ Aca se describen los 20 escenarios trabajados para cada herramienta Kraken y Cyp
 * Se puede visualizar online en el siguiente link https://helverinio.github.io/report_backstop_cypress_escenario1/html_report/
 * Se puede tambien visulizar en la ruta del release del proyecto ghost-pruebas-e-2-e/backstop/reporte_escenario1_cypress_backstopindex.html/html_report/index.html
 
-#### Reporte HTML
-### Release 40 Escenarios ajustados 
-
+#### Ejecución de 40 Escenarios de pruebas
+Aca se describe los resultados de ejecutar los 40 escenarios de pruebas sin ajustar en la versión anterior, y actual de Ghost.
+## [Ejecución de 40 Escenarios de pruebas](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Ejecuci%C3%B3n-de-pruebas-en-Ghost-3.42-sin-cambios+)
 
 ### Funcionalidades generales de Ghost
 ## [Funcionalidades generales de Ghost](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Funcionalidades-generales-de-Ghost)
