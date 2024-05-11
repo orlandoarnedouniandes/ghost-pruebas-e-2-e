@@ -89,7 +89,7 @@ Aca se describen los 20 escenarios trabajados para cada herramienta Kraken y Cyp
 
 ### Lanzamiento 10 Escenarios - Regresión Visual
 #### Reporte HTML ResembleJS
-* Se puede descargar en el siguiente link https://helverinio.github.io/report_backstop_cypress_escenario1/html_report/
+* Se puede descargar en el siguiente link https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/tree/develop/kraken/resembleReportSemana6
 * Se puede tambien visulizar en la ruta del realease del proyecto ghost-pruebas-e-2-e/backstop/reporte_escenario1_cypress_backstop
 
 #### Reporte HTML BackstopJS(Escenario 1 - crear post)
