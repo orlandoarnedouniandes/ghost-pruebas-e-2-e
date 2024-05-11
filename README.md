@@ -86,32 +86,23 @@ Aca se describen los 20 escenarios trabajados para cada herramienta Kraken y Cyp
 #### [Escenarios de Pruebas (40 Escenarios)](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Escenarios-de-pruebas)
 
 ### Video
+[Presentación Semana 6 (VRT)](https://youtu.be/K9dH1WsJ_C0)
 
 ### Lanzamiento 10 Escenarios - Regresión Visual
 #### Reporte HTML ResembleJS
-* Se puede descargar en el siguiente link https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/tree/develop/kraken/resembleReportSemana6
-* Se puede tambien visulizar en la ruta del realease del proyecto ghost-pruebas-e-2-e/backstop/reporte_escenario1_cypress_backstop
+* Se puede descargar en el siguiente link https://helverinio.github.io/report_resemble_kraken/Resemble_Comparison_results/2024-05-08/
+* Se puede tambien visulizar en la ruta del realease del proyecto host-pruebas-e-2-e/backstop/reporte_escenario1_cypress_backstopindex.html/html_report/kraken/resembleReportSemana6/Resemble_Comparison_results
 
 #### Reporte HTML BackstopJS(Escenario 1 - crear post)
 * Se puede descargar en el siguiente link https://helverinio.github.io/report_backstop_cypress_escenario1/html_report/
 * Se puede tambien visulizar en la ruta del realease del proyecto ghost-pruebas-e-2-e/backstop/reporte_escenario1_cypress_backstopindex.html/html_report/
 
-## Documentacion (Wiki) Semana 6
-### [Funcionalidades bajo prueba - Pruebas e2e](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Funcionalidades-bajo-prueba)
-### [Funcionalidades bajo prueba - Regresión Visual](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Funcionalidades-bajo-pruebas-de-regresion-visual)
-### [Escenarios de pruebas e2e](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Escenarios-de-pruebas)
-### [Escenarios de prueba regresión visual](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Escenarios-de-prueba-regresion-visual)
-### [Pros y Contras de las herramientas](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Pros-y-contras-ResembleJS-vs-BackstopJS)
-### [Reporte de diferencias visuales](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Reporte-de-Incidencias)
-### [Link Video](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Pros-y-Contras-de-las-herramientas)
-### [Release 10 Escenarios - Regresión Visual](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/releases/tag/v1.0.0)
 #### Reporte HTML
-### [Release 40 Escenarios ajustados ](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/releases/tag/v1.0.0)
-### [Funcionalidades generales de Ghost](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Funcionalidades-generales-de-Ghost)
+### Release 40 Escenarios ajustados 
 
 
-Informe HTML
-Lanzamiento 40 Escenarios ajustados
-Funcionalidades generales de Ghost
+### Funcionalidades generales de Ghost
+## [Funcionalidades generales de Ghost](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Funcionalidades-generales-de-Ghost)
+
 
 
