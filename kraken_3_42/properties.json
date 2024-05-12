@@ -1,0 +1,7 @@
+{
+	"BASEURL": "http://misoubuntuhw.eastus.cloudapp.azure.com:3001/ghost/#/signin/",
+	"BASEURLROOT": "http://misoubuntuhw.eastus.cloudapp.azure.com:3001/",
+	"POSTSURL": "http://misoubuntuhw.eastus.cloudapp.azure.com:3001/ghost/#/posts",
+	"USERNAME": "h.wiesner@uniandes.edu.co",
+	"PASSWORD": "mWxNuDsU5Ng7LD"
+}

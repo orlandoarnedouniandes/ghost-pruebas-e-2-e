@@ -1,0 +1,125 @@
+{
+  "testSuite": "BackstopJS",
+  "tests": [
+    {
+      "pair": {
+        "reference": "..\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "test": "..\\bitmaps_test\\20240508-235215\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "selector": "document",
+        "fileName": "backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "label": "Escenario 1 - CreatePost",
+        "requireSameDimensions": true,
+        "misMatchThreshold": 0.1,
+        "url": "http://127.0.0.1:3000/screenshots/ghost314/e1314_createpost.cy.js/escenario1/1_home.png",
+        "referenceUrl": "http://127.0.0.1:3000/screenshots/ghost/e1_createpost.cy.js/escenario1/1_home.png",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "error": "Reference file not found E:\\miso\\2pruebas\\semana5\\ghost-pruebas-e-2-e\\backstop\\backstop_data\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "..\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "test": "..\\bitmaps_test\\20240508-235215\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "selector": "document",
+        "fileName": "backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "label": "Escenario 1 - CreatePost",
+        "requireSameDimensions": true,
+        "misMatchThreshold": 0.1,
+        "url": "http://127.0.0.1:3000/screenshots/ghost314/e1314_createpost.cy.js/escenario1/2_login_1before.png",
+        "referenceUrl": "http://127.0.0.1:3000/screenshots/ghost/e1_createpost.cy.js/escenario1/2_login_1before.png",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "error": "Reference file not found E:\\miso\\2pruebas\\semana5\\ghost-pruebas-e-2-e\\backstop\\backstop_data\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "..\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "test": "..\\bitmaps_test\\20240508-235215\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "selector": "document",
+        "fileName": "backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "label": "Escenario 1 - CreatePost",
+        "requireSameDimensions": true,
+        "misMatchThreshold": 0.1,
+        "url": "http://127.0.0.1:3000/screenshots/ghost314/e1314_createpost.cy.js/escenario1/2_login_2after.png",
+        "referenceUrl": "http://127.0.0.1:3000/screenshots/ghost/e1_createpost.cy.js/escenario1/2_login_2after.png",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "error": "Reference file not found E:\\miso\\2pruebas\\semana5\\ghost-pruebas-e-2-e\\backstop\\backstop_data\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "..\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "test": "..\\bitmaps_test\\20240508-235215\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "selector": "document",
+        "fileName": "backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "label": "Escenario 1 - CreatePost",
+        "requireSameDimensions": true,
+        "misMatchThreshold": 0.1,
+        "url": "http://127.0.0.1:3000/screenshots/ghost314/e1314_createpost.cy.js/escenario1/3_newpost_dashboard.png",
+        "referenceUrl": "http://127.0.0.1:3000/screenshots/ghost/e1_createpost.cy.js/escenario1/3_newpost_dashboard.png",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "error": "Reference file not found E:\\miso\\2pruebas\\semana5\\ghost-pruebas-e-2-e\\backstop\\backstop_data\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "..\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "test": "..\\bitmaps_test\\20240508-235215\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "selector": "document",
+        "fileName": "backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "label": "Escenario 1 - CreatePost",
+        "requireSameDimensions": true,
+        "misMatchThreshold": 0.1,
+        "url": "http://127.0.0.1:3000/screenshots/ghost314/e1314_createpost.cy.js/escenario1/3_newpost_newpost.png",
+        "referenceUrl": "http://127.0.0.1:3000/screenshots/ghost/e1_createpost.cy.js/escenario1/3_newpost_newpost.png",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "error": "Reference file not found E:\\miso\\2pruebas\\semana5\\ghost-pruebas-e-2-e\\backstop\\backstop_data\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "..\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "test": "..\\bitmaps_test\\20240508-235215\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "selector": "document",
+        "fileName": "backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "label": "Escenario 1 - CreatePost",
+        "requireSameDimensions": true,
+        "misMatchThreshold": 0.1,
+        "url": "http://127.0.0.1:3000/screenshots/ghost314/e1314_createpost.cy.js/escenario1/4_fillform.png",
+        "referenceUrl": "http://127.0.0.1:3000/screenshots/ghost/e1_createpost.cy.js/escenario1/4_fillform.png",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "error": "Reference file not found E:\\miso\\2pruebas\\semana5\\ghost-pruebas-e-2-e\\backstop\\backstop_data\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "..\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "test": "..\\bitmaps_test\\20240508-235215\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "selector": "document",
+        "fileName": "backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png",
+        "label": "Escenario 1 - CreatePost",
+        "requireSameDimensions": true,
+        "misMatchThreshold": 0.1,
+        "url": "http://127.0.0.1:3000/screenshots/ghost314/e1314_createpost.cy.js/escenario1/5_backtoposts.png",
+        "referenceUrl": "http://127.0.0.1:3000/screenshots/ghost/e1_createpost.cy.js/escenario1/5_backtoposts.png",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "error": "Reference file not found E:\\miso\\2pruebas\\semana5\\ghost-pruebas-e-2-e\\backstop\\backstop_data\\bitmaps_reference\\backstop_default_Escenario_1_-_CreatePost_0_document_0_tablet.png"
+      },
+      "status": "fail"
+    }
+  ],
+  "id": "backstop_default"
+}

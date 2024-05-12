@@ -1,4 +1,10 @@
 {
+	"BASEURL": "http://misoubuntuhw.eastus.cloudapp.azure.com:2368/ghost/#/signin",
+	"BASEURLROOT": "http://misoubuntuhw.eastus.cloudapp.azure.com:2368/",
 	"USERNAME": "h.wiesner@uniandes.edu.co",
-	"PASSWORD": "mWxNuDsU5Ng7LD"
+	"PASSWORD": "mWxNuDsU5Ng7LD",
+	"POSTTITLE": "The First automated post",
+	"POSTCONTENT": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+	"PAGETITLE": "The First automated page",
+	"PAGECONTENT": "Lorem ipsum dolor sit amet, consectetur adipiscing elit page"
 }

@@ -129,3 +129,11 @@ dist
 .yarn/install-state.gz
 .pnp.*
 kraken/reports/*
+kraken/results/*
+feature/screenshotcypress
+cypress/screenshots/*
+kraken/resembleReport/results/*
+kraken_3_42/reports/*
+kraken_3_42/results/*
+
+backstop/screenshots/*
