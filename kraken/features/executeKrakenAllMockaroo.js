@@ -30,7 +30,7 @@ const scenarios = [
 	// "e20",
 ];
 const destinationFile = "features/execute.feature";
-const featureFolder = "features/altScenariosFaker";
+const featureFolder = "features/altScenariosMockaroo";
 
 // Async function to process files sequentially
 async function processFilesSequentially() {
