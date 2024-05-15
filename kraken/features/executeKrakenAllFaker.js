@@ -24,7 +24,7 @@ const scenarios = [
 	// "e14",
 	// "e15",
 	"e16",
-	// "e17",
+	"e17",
 	// "e18",
 	// "e19",
 	// "e20",
@@ -34,7 +34,7 @@ const destinationFile = "features/execute.feature";
 // Async function to process files sequentially
 async function processFilesSequentially() {
 	for (const scenario of scenarios) {
-		const sourceFile = `features/fakerFeatures/${scenario}/${scenario}.feature`;
+		const sourceFile = `features/fakerScenarios/${scenario}/${scenario}.feature`;
 		try {
 			const data = await readFile(sourceFile, "utf8");
 

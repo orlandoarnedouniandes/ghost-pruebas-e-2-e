@@ -1,18 +1,23 @@
-Feature: Profile Actualizar full name
+Feature: Profile Title update
 
-  @user16 @web
-  Scenario: E16 - Modify and Verify full name Information
+  @user17 @web
+  Scenario: E17 - Modify and Verify Site Title Information
     Given I navigate to page "<BASEURL>"
-    And I set the new full name to "Edited Full Name"
-    When I log in with email "<USERNAME>" and password "<PASSWORD>"
-    And I wait 3 seconds
-    And I Click on user dropdown
-    And I wait 1 seconds
-    And I click on the 'Your profile' link
-    And I wait 1 seconds
-    When I get current slug name
-    When I modify current full name and save changes
-    And I wait 3 seconds
-    When I navigate to new user profile page
+    And I log in with email "<USERNAME>" and password "<PASSWORD>"
     And I wait 2 seconds
-    Then I should see the expected full name
+    And I click on the "Settings" tab
+    And I wait 2 seconds
+    And I navigate to the "General" settings page
+    And I wait 2 seconds
+    When I click the Expand button
+    And I wait 1 seconds
+    When I update the site title to "Updated Title"
+    And I wait 2 seconds
+    And I click the primary Save button
+    And I wait 3 seconds
+    Then I refresh the page
+    And I wait 2 seconds
+    When I click the Expand button
+    And I wait 1 seconds
+    Then The input field should equal 'Updated Title'
+
