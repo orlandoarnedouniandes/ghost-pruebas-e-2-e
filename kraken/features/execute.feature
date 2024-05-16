@@ -4,7 +4,7 @@ Feature: Profile Actualizar slug
   Scenario: E15 - Modify and Verify User Information
     Given I navigate to page "<BASEURL>"
     And I set the new user name to "editedUsername"
-    When I log in with faker email "pseudo-random" and password "a-priori"
+    When I log in with faker email "a-priori" and password "a-priori"
     And I wait 2 seconds
     And I Click on user dropdown
     And I wait 1 seconds

@@ -12,6 +12,7 @@ const {
 } = require("./helper");
 const aPrioriData = require("./aPrioriData");
 const pseudoRandomData = require("./pseudoRandomData");
+const generateRandomData = require("./randomData");
 
 async function saveScreenshot(resultsPath, stringId, sequenceString) {
 	ensureDirSync(resultsPath);
@@ -60,14 +61,32 @@ When(
 		let email = "";
 		let password = "";
 
-		if (inputEmail === "a-priori") {
-			email = aPrioriData.correctEmail;
+		switch (inputEmail) {
+			case "a-priori":
+				email = aPrioriData.correctEmail;
+				break;
+			case "pseudo-random":
+				email = pseudoRandomData.email;
+				break;
+			case "random":
+				email = generateRandomData().email;
+				break;
+			default:
+				email = inputEmail;
 		}
-		if (inputEmail === "pseudo-random") {
-			email = pseudoRandomData.email;
-		}
-		if (inputPassword === "a-priori") {
-			password = aPrioriData.correctPassword;
+
+		switch (inputPassword) {
+			case "a-priori":
+				password = aPrioriData.correctPassword;
+				break;
+			case "pseudo-random":
+				password = pseudoRandomData.password;
+				break;
+			case "random":
+				password = generateRandomData().password;
+				break;
+			default:
+				password = inputPassword;
 		}
 
 		datetime = getFormattedDatetime();

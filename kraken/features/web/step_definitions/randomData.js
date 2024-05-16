@@ -1,14 +1,18 @@
-const { faker } = require("@faker-js/faker");
+const { Faker, en } = require("@faker-js/faker");
 
-faker.seed(123);
+// Create a new Faker instance
+const faker = new Faker({
+	locales: { en },
+	locale: "en",
+});
 
-const pseudoRandomData = {
+const generateRandomData = () => ({
 	fullname: faker.person.fullName(),
 	email: faker.internet.email(),
 	address: faker.location.streetAddress(),
 	firstname: faker.person.firstName(),
 	lastname: faker.person.lastName(),
 	password: faker.internet.password(),
-};
+});
 
-module.exports = pseudoRandomData;
+module.exports = generateRandomData;
