@@ -1,12 +1,17 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 let datetime;
 let resultsPath;
+const properties = require("../../../properties.json");
+
+const { BASEURLROOT } = properties;
 
 const {
 	ensureDirSync,
 	getFormattedDatetime,
 	saveComparisonReport,
 } = require("./helper");
+const aPrioriData = require("./aPrioriData");
+const pseudoRandomData = require("./pseudoRandomData");
 
 async function saveScreenshot(resultsPath, stringId, sequenceString) {
 	ensureDirSync(resultsPath);
@@ -29,6 +34,42 @@ async function saveScreenshot(resultsPath, stringId, sequenceString) {
 When(
 	"I log in with email {kraken-string} and password {kraken-string}",
 	async function (email, password) {
+		datetime = getFormattedDatetime();
+		resultsPath = `./results/${datetime}`;
+
+		await saveScreenshot.call(this, resultsPath, "email", "before");
+		let emailElement = await this.driver.$("#ember6");
+		await emailElement.setValue(email);
+		await saveScreenshot.call(this, resultsPath, "email", "after");
+
+		await saveScreenshot.call(this, resultsPath, "pwd", "before");
+		let passwordElement = await this.driver.$("#ember8");
+		await passwordElement.setValue(password);
+		await saveScreenshot.call(this, resultsPath, "pwd", "after");
+
+		await saveScreenshot.call(this, resultsPath, "loginBtn", "before");
+		let nextButton = await this.driver.$("#ember10");
+		await nextButton.click();
+		await saveScreenshot.call(this, resultsPath, "loginBtn", "after");
+	}
+);
+
+When(
+	"I log in with faker email {kraken-string} and password {kraken-string}",
+	async function (inputEmail, inputPassword) {
+		let email = "";
+		let password = "";
+
+		if (inputEmail === "a-priori") {
+			email = aPrioriData.correctEmail;
+		}
+		if (inputEmail === "pseudo-random") {
+			email = pseudoRandomData.email;
+		}
+		if (inputPassword === "a-priori") {
+			password = aPrioriData.correctPassword;
+		}
+
 		datetime = getFormattedDatetime();
 		resultsPath = `./results/${datetime}`;
 
@@ -124,9 +165,7 @@ Then("I should see the expected full name", async function () {
 
 When("I navigate to new user profile page", async function () {
 	await saveScreenshot.call(this, resultsPath, "navigateToProfile", "before");
-	await this.driver.url(
-		`https://ghost-jpjk.onrender.com/author/${this.newUsername}/`
-	);
+	await this.driver.url(`${BASEURLROOT}/author/${this.newUsername}/`);
 	await saveScreenshot.call(this, resultsPath, "navigateToProfile", "after");
 });
 
