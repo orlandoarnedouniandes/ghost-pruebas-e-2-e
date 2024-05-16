@@ -1,13 +1,13 @@
-const faker = require("faker");
+const { faker } = require("@faker-js/faker");
 
 faker.seed(123);
 
 const pseudoRandomData = {
-	fullname: faker.name.findName(),
+	fullname: faker.person.fullName(),
 	email: faker.internet.email(),
-	address: faker.address.streetAddress(),
-	firstname: faker.firstname.findName(),
-	lastname: faker.lastname.findName(),
+	address: faker.location.streetAddress(),
+	firstname: faker.person.firstName(),
+	lastname: faker.person.lastName(),
 };
 
 module.exports = pseudoRandomData;
