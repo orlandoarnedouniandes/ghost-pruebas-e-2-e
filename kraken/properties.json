@@ -6,5 +6,7 @@
 	"POSTTITLE": "The First automated post",
 	"POSTCONTENT": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
 	"PAGETITLE": "The First automated page",
-	"PAGECONTENT": "Lorem ipsum dolor sit amet, consectetur adipiscing elit page"
+	"PAGECONTENT": "Lorem ipsum dolor sit amet, consectetur adipiscing elit page",
+	"TAGTITLE": "Test Tag Modified",
+	"BLANK": ""
 }

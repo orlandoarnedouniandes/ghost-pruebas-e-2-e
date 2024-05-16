@@ -1,7 +1,7 @@
-Feature: Configuration link Delete
+Feature: Ghost Tests
 
-  @user130 @web
-    Scenario: E130 - Edit Tag / Random - Title (Random)
+  @user33 @web
+    Scenario: E33 - Edit Tag / Random - Title (Random)
       Given I navigate to page "<BASEURL>"
       When I log in with email "<USERNAME>" and password "<PASSWORD>"
       And I wait 3 seconds
