@@ -1,7 +1,7 @@
-Feature: Change Site Description (a-priori)
+Feature: Change Site Description (aleatorio)
 
-  @user60 @web
-    Scenario: E60 - Change Site Description (a-priori)
+  @user62 @web
+    Scenario: E62 - Change Site Description (aleatorio)
       Given I navigate to page "<BASEURL>"
       When I log in with email "<USERNAME>" and password "<PASSWORD>"
       And I wait 3 seconds
@@ -9,7 +9,7 @@ Feature: Change Site Description (a-priori)
       And I wait 1 seconds
       And I click on the 'General Settings' link
       And I wait 2 seconds
-      And I modify the description to faker "a-priori"
+      And I modify the description to faker "random"
       And I wait 3 seconds
       Then I navigate to base root url
       And I wait 3 seconds

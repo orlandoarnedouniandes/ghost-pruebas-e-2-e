@@ -258,6 +258,11 @@ When("I navigate to new user profile page", async function () {
 	await this.driver.url(`${BASEURLROOT}/author/${this.newUsername}/`);
 	await saveScreenshot.call(this, resultsPath, "navigateToProfile", "after");
 });
+Then("I navigate to base root url", async function () {
+	await saveScreenshot.call(this, resultsPath, "navigateToProfile", "before");
+	await this.driver.url(`${BASEURLROOT}`);
+	await saveScreenshot.call(this, resultsPath, "navigateToProfile", "after");
+});
 
 When("I wait {int} seconds", function (seconds) {
 	return new Promise((resolve) => {
@@ -611,6 +616,62 @@ When("I modify the description", async function () {
 	await saveScreenshot.call(this, resultsPath, "desciptionEditClick", "after");
 });
 
+When(
+	"I modify the description to faker {string}",
+	async function (inputDescription) {
+		let newDescription = "";
+
+		switch (inputDescription) {
+			case "a-priori":
+				newDescription = `${aPrioriData.siteTitle}`;
+				break;
+			case "pseudo-random":
+				newDescription = `${pseudoRandomData.siteTitle}`;
+				break;
+			case "random":
+				newDescription = `${generateRandomData().siteTitle}`;
+				break;
+			case "NULL":
+				newDescription = null;
+				break;
+			case "EMPTY":
+				newDescription = "";
+				break;
+			default:
+				newDescription = inputEmail;
+		}
+
+		this.updatedSiteDescription = newDescription;
+
+		let expandLink = await this.driver.$$(
+			"div.gh-expandable-header button.gh-btn"
+		)[0];
+		await expandLink.click();
+
+		await saveScreenshot.call(this, resultsPath, "desciptionEdit", "before");
+		let descriptionElement = await this.driver.$(
+			"div.description-container input.ember-text-field"
+		);
+		await descriptionElement.setValue(newDescription);
+		await saveScreenshot.call(this, resultsPath, "desciptionEdit", "after");
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"desciptionEditClick",
+			"before"
+		);
+		let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
+		await saveButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"desciptionEditClick",
+			"after"
+		);
+	}
+);
+
 Then(
 	"I validate that the description has been changed 'Proof Ghost Uniandes' on users page",
 	async function () {
@@ -623,6 +684,15 @@ Then(
 		}
 	}
 );
+Then("I validate that the description has been changed", async function () {
+	let descriptionElement = await this.driver
+		.$("div.site-header-inner p.site-description")
+		.getText();
+
+	if (descriptionElement !== this.updatedSiteDescription) {
+		throw new Error(`Expected Description is different`);
+	}
+});
 
 /**Posts**/
 Given("I click on the 'Posts' link", async function () {
@@ -1237,6 +1307,44 @@ When("I update the site title to {string}", async function (newTitle) {
 	await saveScreenshot.call(this, resultsPath, "updateSiteTitle", "after");
 });
 
+When(
+	"I update the site title to faker {string}",
+	async function (inputNewTitle) {
+		let newTitle = "";
+
+		switch (inputNewTitle) {
+			case "a-priori":
+				newTitle = `${aPrioriData.siteTitle}_`;
+				break;
+			case "pseudo-random":
+				newTitle = `${pseudoRandomData.siteTitle}`;
+				break;
+			case "random":
+				newTitle = `${generateRandomData().siteTitle}`;
+				break;
+			case "NULL":
+				newTitle = null;
+				break;
+			case "EMPTY":
+				newTitle = "";
+				break;
+			default:
+				newTitle = inputEmail;
+		}
+
+		await saveScreenshot.call(this, resultsPath, "updateSiteTitle", "before");
+		let titleInput = await this.driver.$(
+			"input.ember-text-field.gh-input[type='text']"
+		);
+		const timestamp = Date.now();
+		const encodedTimestamp = encodeURIComponent(timestamp);
+		this.updatedSiteTitle = `${"Updated Title"}_${newTitle}_${encodedTimestamp}`;
+
+		await titleInput.setValue(this.updatedSiteTitle);
+		await saveScreenshot.call(this, resultsPath, "updateSiteTitle", "after");
+	}
+);
+
 When("I click the primary Save button", async function () {
 	await saveScreenshot.call(this, resultsPath, "primarySaveBtn", "before");
 	let saveButton = await this.driver.$(
@@ -1286,6 +1394,19 @@ Then("The input field should equal 'Updated Title'", async function () {
 		);
 	}
 });
+
+Then("The site title should be updated", async function () {
+	let inputField = await this.driver.$(
+		"input.ember-text-field.gh-input[type='text']"
+	);
+	let inputValue = await inputField.getValue();
+	if (inputValue !== this.updatedSiteTitle) {
+		throw new Error(
+			`Expected input to be 'Updated Title' but found '${inputValue}'`
+		);
+	}
+});
+
 
 //E9
 

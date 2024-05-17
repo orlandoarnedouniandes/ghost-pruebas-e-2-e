@@ -6,6 +6,7 @@ const aPrioriData = {
 	correctEmail: "h.wiesner@uniandes.edu.co",
 	correctPassword: "mWxNuDsU5Ng7LD",
 	address: "123 Main St, Anytown, USA",
+	siteTitle: "Apriori Site title",
 };
 
 module.exports = aPrioriData;
