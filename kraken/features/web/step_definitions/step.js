@@ -133,6 +133,36 @@ Given("I set the new full name to {string}", function (fullName) {
 	this.newFullName = `${fullName}_${encodedTimestamp}`;
 	this.currentFullName = this.newFullName;
 });
+Given("I set the new full name to faker {string}", function (inputFullName) {
+	let fullName = "";
+
+	switch (inputFullName) {
+		case "a-priori":
+			fullName = `${aPrioriData.firstname} ${aPrioriData.lastname}`;
+			break;
+		case "pseudo-random":
+			fullName = `${pseudoRandomData.firstname} ${pseudoRandomData.lastname}`;
+			break;
+		case "random":
+			fullName = `${generateRandomData().firstname} ${
+				generateRandomData().lastname
+			}`;
+			break;
+		case "NULL":
+			fullName = null;
+			break;
+		case "EMPTY":
+			fullName = "";
+			break;
+		default:
+			fullName = inputEmail;
+	}
+
+	const timestamp = Date.now();
+	const encodedTimestamp = encodeURIComponent(timestamp);
+	this.newFullName = `${fullName}_${encodedTimestamp}`;
+	this.currentFullName = this.newFullName;
+});
 
 When("I Click on user dropdown", async function () {
 	await saveScreenshot.call(this, resultsPath, "clickUserDropdown", "before");
