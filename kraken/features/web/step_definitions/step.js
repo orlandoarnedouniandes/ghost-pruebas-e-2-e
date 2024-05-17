@@ -1327,9 +1327,34 @@ Then(
 	}
 );
 
+// Then(
+// 	"I should see Please fill out the form to sign in message",
+// 	async function () {
+// 		await saveScreenshot.call(
+// 			this,
+// 			resultsPath,
+// 			"incorrectPasswordMessage",
+// 			"before"
+// 		);
+// 		let errorMessageElement = await this.driver.$("p.main-error");
+// 		let errorMessage = await errorMessageElement.getText();
+// 		if (!errorMessage.includes("Please fill out the form to sign in")) {
+// 			throw new Error(
+// 				`Expected error message to be "Please fill out the form to sign in" but found "${errorMessage}"`
+// 			);
+// 		}
+// 		await saveScreenshot.call(
+// 			this,
+// 			resultsPath,
+// 			"incorrectPasswordMessage",
+// 			"after"
+// 		);
+// 	}
+// );
+
 Then(
-	"I should see Please fill out the form to sign in message",
-	async function () {
+	"I should see login error message {kraken-string}",
+	async function (loginErrorMessage) {
 		await saveScreenshot.call(
 			this,
 			resultsPath,
@@ -1338,9 +1363,9 @@ Then(
 		);
 		let errorMessageElement = await this.driver.$("p.main-error");
 		let errorMessage = await errorMessageElement.getText();
-		if (!errorMessage.includes("Please fill out the form to sign in")) {
+		if (!errorMessage.includes(loginErrorMessage)) {
 			throw new Error(
-				`Expected error message to be "Please fill out the form to sign in" but found "${errorMessage}"`
+				`Expected error message to be "${loginErrorMessage}" but found "${errorMessage}"`
 			);
 		}
 		await saveScreenshot.call(
