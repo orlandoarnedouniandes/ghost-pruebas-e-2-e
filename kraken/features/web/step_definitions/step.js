@@ -71,6 +71,12 @@ When(
 			case "random":
 				email = generateRandomData().email;
 				break;
+			case "NULL":
+				email = null;
+				break;
+			case "EMPTY":
+				email = "";
+				break;
 			default:
 				email = inputEmail;
 		}
@@ -84,6 +90,12 @@ When(
 				break;
 			case "random":
 				password = generateRandomData().password;
+				break;
+			case "NULL":
+				password = null;
+				break;
+			case "EMPTY":
+				password = "";
 				break;
 			default:
 				password = inputPassword;
@@ -403,24 +415,27 @@ Then("I validate the New Tag created 'Test Tag'", async function () {
 	}
 });
 
-When("I click on the first Tag list and I modify the title {kraken-string}", async function (title) {
-	let tags = await this.driver.$$(
-		"ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name"
-	);
-	if (tags.length > 0) {
-		await tags[0].click();
+When(
+	"I click on the first Tag list and I modify the title {kraken-string}",
+	async function (title) {
+		let tags = await this.driver.$$(
+			"ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name"
+		);
+		if (tags.length > 0) {
+			await tags[0].click();
 
-		await saveScreenshot.call(this, resultsPath, "tagedit", "before");
-		let tagNameElement = await this.driver.$("#tag-name");
-		await tagNameElement.setValue(title);
-		await saveScreenshot.call(this, resultsPath, "tagedit", "after");
+			await saveScreenshot.call(this, resultsPath, "tagedit", "before");
+			let tagNameElement = await this.driver.$("#tag-name");
+			await tagNameElement.setValue(title);
+			await saveScreenshot.call(this, resultsPath, "tagedit", "after");
 
-		await saveScreenshot.call(this, resultsPath, "tageditClick", "before");
-		let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
-		await saveButton.click();
-		await saveScreenshot.call(this, resultsPath, "tageditClick", "after");
+			await saveScreenshot.call(this, resultsPath, "tageditClick", "before");
+			let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
+			await saveButton.click();
+			await saveScreenshot.call(this, resultsPath, "tageditClick", "after");
+		}
 	}
-});
+);
 
 Then("I validate the Tag modified {kraken-string}", async function (title) {
 	await saveScreenshot.call(this, resultsPath, "tageditcheck", "before");
@@ -772,7 +787,9 @@ When("I click on the draft post", async function () {
 		await posts[0].click();
 		await saveScreenshot.call(this, resultsPath, "draftPostClick", "after");
 
-		titleUrlDraftPost = await this.driver.$$("textarea.gh-editor-title")[0].getValue();
+		titleUrlDraftPost = await this.driver
+			.$$("textarea.gh-editor-title")[0]
+			.getValue();
 
 		await saveScreenshot.call(
 			this,
@@ -783,25 +800,23 @@ When("I click on the draft post", async function () {
 		let menuButton = await this.driver.$("button.gh-publish-trigger");
 		await menuButton.click();
 		await saveScreenshot.call(
-				this,
+			this,
 			resultsPath,
 			"publishPostMenuClick",
 			"after"
-		);		
+		);
 	}
 });
 
 When("I click on the publish button", async function () {
 	await saveScreenshot.call(this, resultsPath, "PublishPostDraft", "before");
-	let posts = await this.driver.$$(
-		"div.gh-publish-cta button.gh-btn"
-	);
+	let posts = await this.driver.$$("div.gh-publish-cta button.gh-btn");
 	if (posts.length > 0) {
 		await posts[0].click();
 		let menuButton = await this.driver.$("div.gh-publish-cta button.gh-btn");
 		await menuButton.click();
 
-		let back = await this.driver.$('button.gh-back-to-editor');
+		let back = await this.driver.$("button.gh-back-to-editor");
 		await back.click();
 
 		await this.driver.pause(1000);
@@ -815,15 +830,13 @@ When("I click on the publish button", async function () {
 Then("I validate that the Post is publish", async function () {
 	await saveScreenshot.call(this, resultsPath, "PublishPostCheck", "before");
 
-	let posts = await this.driver.$$(
-		"a h3.gh-content-entry-title"
-	);
+	let posts = await this.driver.$$("a h3.gh-content-entry-title");
 	let flag = false;
 	//console.log("pruebaaaaaa "+titleUrlDraftPost+" lenght"+posts.length);
-	for (let i = 0; i < posts.length; i++) {		
+	for (let i = 0; i < posts.length; i++) {
 		let post = posts[i];
-		let postText = await post.getText();//.toLowerCase().replace(/\s+/g, "-");
-		console.log("post "+post.getText());
+		let postText = await post.getText(); //.toLowerCase().replace(/\s+/g, "-");
+		console.log("post " + post.getText());
 		if (postText.includes(titleUrlDraftPost)) {
 			flag = true;
 			break;
@@ -846,12 +859,17 @@ When("I click on the publish post to change title", async function () {
 	if (posts.length > 0) {
 		await saveScreenshot.call(this, resultsPath, "publishPostClick", "before");
 		await posts[0].click();
-		await saveScreenshot.call(this, resultsPath, "publishPostClick", "after");	
+		await saveScreenshot.call(this, resultsPath, "publishPostClick", "after");
 	}
 });
 
 When("I change title of post for {kraken-string}", async function (title) {
-	await saveScreenshot.call(this, resultsPath, "PublishPostChangeTitle", "before");
+	await saveScreenshot.call(
+		this,
+		resultsPath,
+		"PublishPostChangeTitle",
+		"before"
+	);
 	let emailElement = await this.driver.$("textarea.gh-editor-title");
 	await emailElement.setValue(title);
 
@@ -859,37 +877,44 @@ When("I change title of post for {kraken-string}", async function (title) {
 
 	let button = await this.driver.$("button.gh-editor-save-trigger");
 	await button.click();
-	
-	
-	await saveScreenshot.call(this, resultsPath, "PublishPostChangeTitle", "after");
+
+	await saveScreenshot.call(
+		this,
+		resultsPath,
+		"PublishPostChangeTitle",
+		"after"
+	);
 });
 
-Then("I validate that the Post is new title {kraken-string}", async function (title) {
-	await saveScreenshot.call(this, resultsPath, "PublishPostCheck", "before");
-	let postsLink = await this.driver.$('a[href="#/posts/"]');
-	await postsLink.click();
+Then(
+	"I validate that the Post is new title {kraken-string}",
+	async function (title) {
+		await saveScreenshot.call(this, resultsPath, "PublishPostCheck", "before");
+		let postsLink = await this.driver.$('a[href="#/posts/"]');
+		await postsLink.click();
 
-	await this.driver.pause(1000);
+		await this.driver.pause(1000);
 
-	let posts = await this.driver.$$(
-		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
-	);
-	let flag = false;
+		let posts = await this.driver.$$(
+			"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
+		);
+		let flag = false;
 
-	for (let i = 0; i < posts.length; i++) {
-		let post = posts[i];
-		let postText = await post.getText();
-		if (postText.includes(title)) {
-			flag = true;
-			break;
+		for (let i = 0; i < posts.length; i++) {
+			let post = posts[i];
+			let postText = await post.getText();
+			if (postText.includes(title)) {
+				flag = true;
+				break;
+			}
+		}
+		await saveScreenshot.call(this, resultsPath, "PublishPostCheck", "after");
+
+		if (flag !== true) {
+			throw new Error(`Expected Post publish`);
 		}
 	}
-	await saveScreenshot.call(this, resultsPath, "PublishPostCheck", "after");
-
-	if (flag !== true) {
-		throw new Error(`Expected Post publish`);
-	}
-});
+);
 
 //E6
 
@@ -900,16 +925,16 @@ Given("I click on the 'Page' link", async function () {
 	await saveScreenshot.call(this, resultsPath, "pageLinkClick", "after");
 });
 
-When ("I click on the 'NewPage' link", async function () {
+When("I click on the 'NewPage' link", async function () {
 	await saveScreenshot.call(this, resultsPath, "saveNavigation", "before");
 	let newpost = await this.driver.$('a[href="#/editor/page/"]');
-	await newpost.click();	
+	await newpost.click();
 	await saveScreenshot.call(this, resultsPath, "saveNavigation", "after");
 });
 
-When("I fill the page with title {kraken-string} and content {kraken-string}",
+When(
+	"I fill the page with title {kraken-string} and content {kraken-string}",
 	async function (title, content) {
-
 		let titleElement = await this.driver.$("textarea.gh-editor-title");
 		await titleElement.setValue(title);
 		let contentElement = await this.driver.$("div.koenig-editor__editor");
@@ -925,26 +950,28 @@ When("I navigate back to the 'Page' page", async function () {
 	await saveScreenshot.call(this, resultsPath, "navigateToPage", "after");
 });
 
+Then(
+	"I validate the last page with title {kraken-string}",
+	async function (title) {
+		await this.driver.pause(2000);
+		let posts = await this.driver.$$(
+			"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
+		);
+		let flag = false;
+		for (let i = 0; i < posts.length; i++) {
+			let post = posts[i];
+			let postText = (await post.getText()).toLowerCase().replace(/\s+/g, "-");
+			if (postText.includes(title)) {
+				flag = true;
+				break;
+			}
+		}
 
-Then("I validate the last page with title {kraken-string}", async function (title) {
-	await this.driver.pause(2000);
-	let posts = await this.driver.$$(
-		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
-	);
-	let flag = false;
-	for (let i = 0; i < posts.length; i++) {
-		let post = posts[i];
-		let postText = (await post.getText()).toLowerCase().replace(/\s+/g, "-");		                     
-		if (postText.includes(title)) {
-			flag = true;
-			break;
+		if (flag === true) {
+			throw new Error(`Expected Post not exists`);
 		}
 	}
-
-	if (flag === true) {
-		throw new Error(`Expected Post not exists`);
-	}
-});
+);
 
 //E07
 let titleUrlDraftPage = "";
@@ -958,7 +985,9 @@ When("I click on the draft page", async function () {
 		await posts[0].click();
 		await saveScreenshot.call(this, resultsPath, "draftPageClick", "after");
 
-		titleUrlDraftPage = await this.driver.$$("textarea.gh-editor-title")[0].getValue();
+		titleUrlDraftPage = await this.driver
+			.$$("textarea.gh-editor-title")[0]
+			.getValue();
 
 		await saveScreenshot.call(
 			this,
@@ -969,19 +998,17 @@ When("I click on the draft page", async function () {
 		let menuButton = await this.driver.$("button.gh-publish-trigger");
 		await menuButton.click();
 		await saveScreenshot.call(
-				this,
+			this,
 			resultsPath,
 			"publishPageMenuClick",
 			"after"
-		);		
+		);
 	}
 });
 
 When("I click on the publish page button", async function () {
 	await saveScreenshot.call(this, resultsPath, "PublishPageDraft", "before");
-	let posts = await this.driver.$$(
-		"div.gh-publish-cta button.gh-btn"
-	);
+	let posts = await this.driver.$$("div.gh-publish-cta button.gh-btn");
 	if (posts.length > 0) {
 		await posts[0].click();
 		let menuButton = await this.driver.$("div.gh-publish-cta button.gh-btn");
@@ -989,7 +1016,7 @@ When("I click on the publish page button", async function () {
 
 		await this.driver.pause(2000);
 
-		let back = await this.driver.$('button.gh-back-to-editor');
+		let back = await this.driver.$("button.gh-back-to-editor");
 		await back.click();
 
 		await this.driver.pause(1000);
@@ -1003,14 +1030,12 @@ When("I click on the publish page button", async function () {
 Then("I validate that the Page is publish", async function () {
 	await saveScreenshot.call(this, resultsPath, "PublishPageCheck", "before");
 
-	let posts = await this.driver.$$(
-		"a h3.gh-content-entry-title"
-	);
+	let posts = await this.driver.$$("a h3.gh-content-entry-title");
 	let flag = false;
 	//console.log("pruebaaaaaa "+titleUrlDraftPost+" lenght"+posts.length);
-	for (let i = 0; i < posts.length; i++) {		
+	for (let i = 0; i < posts.length; i++) {
 		let post = posts[i];
-		let postText = await post.getText();//.toLowerCase().replace(/\s+/g, "-");
+		let postText = await post.getText(); //.toLowerCase().replace(/\s+/g, "-");
 
 		if (postText.includes(titleUrlDraftPost)) {
 			flag = true;
@@ -1033,49 +1058,62 @@ When("I click on the publish page to change title", async function () {
 	if (pages.length > 0) {
 		await saveScreenshot.call(this, resultsPath, "publishPageClick", "before");
 		await pages[0].click();
-		await saveScreenshot.call(this, resultsPath, "publishPageClick", "after");	
+		await saveScreenshot.call(this, resultsPath, "publishPageClick", "after");
 	}
 });
 //let titleChangeUrlPage = "";
 When("I change title of page for {kraken-string}", async function (title) {
-	await saveScreenshot.call(this, resultsPath, "PublishPageChangeTitle", "before");
+	await saveScreenshot.call(
+		this,
+		resultsPath,
+		"PublishPageChangeTitle",
+		"before"
+	);
 	let emailElement = await this.driver.$("textarea.gh-editor-title");
 	await emailElement.setValue(title);
 
 	//titleChangeUrlPage = await this.driver.$$("textarea.gh-editor-title")[0].getValue();
 
 	let button = await this.driver.$("button.gh-editor-save-trigger");
-	await button.click();	
-	
-	await saveScreenshot.call(this, resultsPath, "PublishPageChangeTitle", "after");
+	await button.click();
+
+	await saveScreenshot.call(
+		this,
+		resultsPath,
+		"PublishPageChangeTitle",
+		"after"
+	);
 });
 
-Then("I validate that the Page is new title {kraken-string}", async function (title) {
-	await saveScreenshot.call(this, resultsPath, "PublishPageCheck", "before");
-	let pagesLink = await this.driver.$('a[href="#/pages/"]');
-	await pagesLink.click();
+Then(
+	"I validate that the Page is new title {kraken-string}",
+	async function (title) {
+		await saveScreenshot.call(this, resultsPath, "PublishPageCheck", "before");
+		let pagesLink = await this.driver.$('a[href="#/pages/"]');
+		await pagesLink.click();
 
-	await this.driver.pause(1000);
+		await this.driver.pause(1000);
 
-	let pages = await this.driver.$$(
-		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
-	);
-	let flag = false;
+		let pages = await this.driver.$$(
+			"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
+		);
+		let flag = false;
 
-	for (let i = 0; i < pages.length; i++) {
-		let page = pages[i];
-		let pageText = await page.getText();
-		if (pageText.includes(title)) {
-			flag = true;
-			break;
+		for (let i = 0; i < pages.length; i++) {
+			let page = pages[i];
+			let pageText = await page.getText();
+			if (pageText.includes(title)) {
+				flag = true;
+				break;
+			}
+		}
+		await saveScreenshot.call(this, resultsPath, "PublishPageCheck", "after");
+
+		if (flag !== true) {
+			throw new Error(`Expected Page publish`);
 		}
 	}
-	await saveScreenshot.call(this, resultsPath, "PublishPageCheck", "after");
-
-	if (flag !== true) {
-		throw new Error(`Expected Page publish`);
-	}
-});
+);
 
 //E17
 Given("I navigate to the Ghost login page", async function () {
@@ -1243,17 +1281,16 @@ Then("delete label {string}", async function (expectedLabel) {
 	await saveScreenshot.call(this, resultsPath, "deleteLabel", "after");
 });
 
-
-When ("I click on the 'NewPost' link", async function () {
+When("I click on the 'NewPost' link", async function () {
 	await saveScreenshot.call(this, resultsPath, "saveNavigation", "before");
 	let newpost = await this.driver.$('a[href="#/editor/post/"]');
-	await newpost.click();	
+	await newpost.click();
 	await saveScreenshot.call(this, resultsPath, "saveNavigation", "after");
 });
 
-When("I fill the post with title {kraken-string} and content {kraken-string}",
+When(
+	"I fill the post with title {kraken-string} and content {kraken-string}",
 	async function (title, content) {
-
 		let titleElement = await this.driver.$("textarea.gh-editor-title");
 		await titleElement.setValue(title);
 		let contentElement = await this.driver.$("div.koenig-editor__editor");
@@ -1268,22 +1305,75 @@ When("I navigate back to the 'Posts' page", async function () {
 	await saveScreenshot.call(this, resultsPath, "navigateToPosts", "after");
 });
 
-Then("I validate the last post with title {kraken-string}", async function (title) {
-	let posts = await this.driver.$$(
-		"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
-	);
-	let flag = false;
-	for (let i = 0; i < posts.length; i++) {
-		let post = posts[i];
-		let postText = (await post.getText()).toLowerCase().replace(/\s+/g, "-");		                     
-		if (postText.includes(title)) {
-			flag = true;
-			break;
+Then(
+	"I validate the last post with title {kraken-string}",
+	async function (title) {
+		let posts = await this.driver.$$(
+			"ol li.gh-list-row.gh-posts-list-item a h3.gh-content-entry-title"
+		);
+		let flag = false;
+		for (let i = 0; i < posts.length; i++) {
+			let post = posts[i];
+			let postText = (await post.getText()).toLowerCase().replace(/\s+/g, "-");
+			if (postText.includes(title)) {
+				flag = true;
+				break;
+			}
+		}
+
+		if (flag === true) {
+			throw new Error(`Expected Post not exists`);
 		}
 	}
+);
 
-	if (flag === true) {
-		throw new Error(`Expected Post not exists`);
+// Then(
+// 	"I should see Please fill out the form to sign in message",
+// 	async function () {
+// 		await saveScreenshot.call(
+// 			this,
+// 			resultsPath,
+// 			"incorrectPasswordMessage",
+// 			"before"
+// 		);
+// 		let errorMessageElement = await this.driver.$("p.main-error");
+// 		let errorMessage = await errorMessageElement.getText();
+// 		if (!errorMessage.includes("Please fill out the form to sign in")) {
+// 			throw new Error(
+// 				`Expected error message to be "Please fill out the form to sign in" but found "${errorMessage}"`
+// 			);
+// 		}
+// 		await saveScreenshot.call(
+// 			this,
+// 			resultsPath,
+// 			"incorrectPasswordMessage",
+// 			"after"
+// 		);
+// 	}
+// );
+
+Then(
+	"I should see login error message {kraken-string}",
+	async function (loginErrorMessage) {
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"incorrectPasswordMessage",
+			"before"
+		);
+		let errorMessageElement = await this.driver.$("p.main-error");
+		let errorMessage = await errorMessageElement.getText();
+		if (!errorMessage.includes(loginErrorMessage)) {
+			throw new Error(
+				`Expected error message to be "${loginErrorMessage}" but found "${errorMessage}"`
+			);
+		}
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"incorrectPasswordMessage",
+			"after"
+		);
 	}
-});
+);
 
