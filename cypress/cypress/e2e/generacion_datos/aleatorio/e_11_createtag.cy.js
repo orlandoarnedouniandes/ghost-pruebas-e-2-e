@@ -24,13 +24,14 @@ context("CreateTag", function () {
         this.page.navigateToNewTag(escenario, '3_newtag');
     
         //When
-        const title = faker.lorem.sentence();
+        const tag = faker.lorem.sentence();
         const color = faker.internet.color();
-        this.tagpage.fillandSaveTagForm(title, color, escenario, '4_fillform');
+        const colorWithoutHash = color.replace('#', '');
+        this.tagpage.fillandSaveTagForm(tag, colorWithoutHash, escenario, '4_fillform');
         this.page.backtoTags(escenario, '5_backtotags');
     
         //Then
-        this.tagpage.verifyTagExists(title, escenario, '6_verify');
+        this.tagpage.verifyTagExists(tag, escenario, '6_verify');
     });
 
 });
