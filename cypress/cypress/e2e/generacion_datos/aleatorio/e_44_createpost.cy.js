@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import { faker } from '@faker-js/faker';
-const Page = require(".././pageobjects/page");
-const PostPage = require(".././pageobjects/postpage");
+const Page = require("../pageobjects/page");
+const PostPage = require("../pageobjects/postpage");
 
 
 context("CreatePost", function () {

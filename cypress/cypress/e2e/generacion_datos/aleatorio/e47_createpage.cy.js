@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import { faker } from '@faker-js/faker';
-const Page = require(".././pageobjects/page");
-const PageObject = require(".././pageobjects/pagepage");
+const Page = require("../pageobjects/page");
+const PageObject = require("../pageobjects/pagepage");
 
 context("CreatePage", function () {
   let escenario='escenario6';

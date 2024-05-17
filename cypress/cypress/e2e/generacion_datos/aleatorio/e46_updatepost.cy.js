@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
 import { faker } from '@faker-js/faker';
-const Page = require(".././pageobjects/page");
-const PostPage = require(".././pageobjects/postpage");
-const SitePage = require(".././pageobjects/sitepage");
+const Page = require("../pageobjects/page");
+const PostPage = require("../pageobjects/postpage");
+const SitePage = require("../pageobjects/sitepage");
 
 context("UpdatePost",function () {
     let escenario='escenario3';
