@@ -1,20 +1,9 @@
-Feature: Profile Actualizar slug
+Feature: Profile Actualizar full name
 
   @user35 @web
-  Scenario: E15 - Modify and Verify User Information
+  Scenario: E16 - Login Correo (a-priori) + contraseña (vacio)
     Given I navigate to page "<BASEURL>"
-    And I set the new user name to "editedUsername"
-    When I log in with faker email "a-priori" and password "a-priori"
-    And I wait 2 seconds
-    And I Click on user dropdown
-    And I wait 1 seconds
-    And I click on the 'Your profile' link
-    And I wait 1 seconds
-    When I get current full name
-    When I modify the user name and save changes
+    And I set the new full name to "Edited Full Name"
+    When I log in with faker email "a-priori" and password "EMPTY"
     And I wait 3 seconds
-    When I navigate to new user profile page
-    And I wait 2 seconds
-    Then I should see the expected name
-
-  
+    Then I should see Please fill out the form to sign in message
