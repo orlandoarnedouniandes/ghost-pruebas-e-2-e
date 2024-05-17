@@ -1,12 +1,18 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 let datetime;
 let resultsPath;
+const properties = require("../../../properties.json");
+
+const { BASEURLROOT } = properties;
 
 const {
 	ensureDirSync,
 	getFormattedDatetime,
 	saveComparisonReport,
 } = require("./helper");
+const aPrioriData = require("./aPrioriData");
+const pseudoRandomData = require("./pseudoRandomData");
+const generateRandomData = require("./randomData");
 
 async function saveScreenshot(resultsPath, stringId, sequenceString) {
 	ensureDirSync(resultsPath);
@@ -29,6 +35,60 @@ async function saveScreenshot(resultsPath, stringId, sequenceString) {
 When(
 	"I log in with email {kraken-string} and password {kraken-string}",
 	async function (email, password) {
+		datetime = getFormattedDatetime();
+		resultsPath = `./results/${datetime}`;
+
+		await saveScreenshot.call(this, resultsPath, "email", "before");
+		let emailElement = await this.driver.$("#ember6");
+		await emailElement.setValue(email);
+		await saveScreenshot.call(this, resultsPath, "email", "after");
+
+		await saveScreenshot.call(this, resultsPath, "pwd", "before");
+		let passwordElement = await this.driver.$("#ember8");
+		await passwordElement.setValue(password);
+		await saveScreenshot.call(this, resultsPath, "pwd", "after");
+
+		await saveScreenshot.call(this, resultsPath, "loginBtn", "before");
+		let nextButton = await this.driver.$("#ember10");
+		await nextButton.click();
+		await saveScreenshot.call(this, resultsPath, "loginBtn", "after");
+	}
+);
+
+When(
+	"I log in with faker email {kraken-string} and password {kraken-string}",
+	async function (inputEmail, inputPassword) {
+		let email = "";
+		let password = "";
+
+		switch (inputEmail) {
+			case "a-priori":
+				email = aPrioriData.correctEmail;
+				break;
+			case "pseudo-random":
+				email = pseudoRandomData.email;
+				break;
+			case "random":
+				email = generateRandomData().email;
+				break;
+			default:
+				email = inputEmail;
+		}
+
+		switch (inputPassword) {
+			case "a-priori":
+				password = aPrioriData.correctPassword;
+				break;
+			case "pseudo-random":
+				password = pseudoRandomData.password;
+				break;
+			case "random":
+				password = generateRandomData().password;
+				break;
+			default:
+				password = inputPassword;
+		}
+
 		datetime = getFormattedDatetime();
 		resultsPath = `./results/${datetime}`;
 
@@ -124,9 +184,7 @@ Then("I should see the expected full name", async function () {
 
 When("I navigate to new user profile page", async function () {
 	await saveScreenshot.call(this, resultsPath, "navigateToProfile", "before");
-	await this.driver.url(
-		`https://ghost-jpjk.onrender.com/author/${this.newUsername}/`
-	);
+	await this.driver.url(`${BASEURLROOT}/author/${this.newUsername}/`);
 	await saveScreenshot.call(this, resultsPath, "navigateToProfile", "after");
 });
 
@@ -345,7 +403,7 @@ Then("I validate the New Tag created 'Test Tag'", async function () {
 	}
 });
 
-When("I click on the first Tag list and I modify the title", async function () {
+When("I click on the first Tag list and I modify the title {kraken-string}", async function (title) {
 	let tags = await this.driver.$$(
 		"ol li.gh-list-row.gh-tags-list-item a h3.gh-tag-list-name"
 	);
@@ -354,7 +412,7 @@ When("I click on the first Tag list and I modify the title", async function () {
 
 		await saveScreenshot.call(this, resultsPath, "tagedit", "before");
 		let tagNameElement = await this.driver.$("#tag-name");
-		await tagNameElement.setValue("Test Tag Modified");
+		await tagNameElement.setValue(title);
 		await saveScreenshot.call(this, resultsPath, "tagedit", "after");
 
 		await saveScreenshot.call(this, resultsPath, "tageditClick", "before");
@@ -364,7 +422,7 @@ When("I click on the first Tag list and I modify the title", async function () {
 	}
 });
 
-Then("I validate the Tag modified 'Test Tag Modified'", async function () {
+Then("I validate the Tag modified {kraken-string}", async function (title) {
 	await saveScreenshot.call(this, resultsPath, "tageditcheck", "before");
 	let tagLink = await this.driver.$('a[href="#/tags/"]');
 	await tagLink.click();
@@ -377,7 +435,7 @@ Then("I validate the Tag modified 'Test Tag Modified'", async function () {
 	for (let i = 0; i < tags.length; i++) {
 		let tag = tags[i];
 		let tagText = await tag.getText();
-		if (tagText.includes("Test Tag Modified")) {
+		if (tagText.includes(title)) {
 			flag = true;
 			break;
 		}
@@ -779,7 +837,7 @@ Then("I validate that the Post is publish", async function () {
 });
 
 //E3
-let titleChangeUrlPost
+//let titleChangeUrlPost
 
 When("I click on the publish post to change title", async function () {
 	let posts = await this.driver.$$(
@@ -792,12 +850,12 @@ When("I click on the publish post to change title", async function () {
 	}
 });
 
-When("I change title of post", async function () {
+When("I change title of post for {kraken-string}", async function (title) {
 	await saveScreenshot.call(this, resultsPath, "PublishPostChangeTitle", "before");
 	let emailElement = await this.driver.$("textarea.gh-editor-title");
-	await emailElement.setValue("Title Kraken");
+	await emailElement.setValue(title);
 
-	titleChangeUrlPost = await this.driver.$$("textarea.gh-editor-title")[0].getValue();
+	//titleChangeUrlPost = await this.driver.$$("textarea.gh-editor-title")[0].getValue();
 
 	let button = await this.driver.$("button.gh-editor-save-trigger");
 	await button.click();
@@ -806,7 +864,7 @@ When("I change title of post", async function () {
 	await saveScreenshot.call(this, resultsPath, "PublishPostChangeTitle", "after");
 });
 
-Then("I validate that the Post is new title", async function () {
+Then("I validate that the Post is new title {kraken-string}", async function (title) {
 	await saveScreenshot.call(this, resultsPath, "PublishPostCheck", "before");
 	let postsLink = await this.driver.$('a[href="#/posts/"]');
 	await postsLink.click();
@@ -821,7 +879,7 @@ Then("I validate that the Post is new title", async function () {
 	for (let i = 0; i < posts.length; i++) {
 		let post = posts[i];
 		let postText = await post.getText();
-		if (postText.includes(titleChangeUrlPost)) {
+		if (postText.includes(title)) {
 			flag = true;
 			break;
 		}
@@ -978,13 +1036,13 @@ When("I click on the publish page to change title", async function () {
 		await saveScreenshot.call(this, resultsPath, "publishPageClick", "after");	
 	}
 });
-let titleChangeUrlPage = "";
-When("I change title of page", async function () {
+//let titleChangeUrlPage = "";
+When("I change title of page for {kraken-string}", async function (title) {
 	await saveScreenshot.call(this, resultsPath, "PublishPageChangeTitle", "before");
 	let emailElement = await this.driver.$("textarea.gh-editor-title");
-	await emailElement.setValue("Title Kraken");
+	await emailElement.setValue(title);
 
-	titleChangeUrlPage = await this.driver.$$("textarea.gh-editor-title")[0].getValue();
+	//titleChangeUrlPage = await this.driver.$$("textarea.gh-editor-title")[0].getValue();
 
 	let button = await this.driver.$("button.gh-editor-save-trigger");
 	await button.click();	
@@ -992,7 +1050,7 @@ When("I change title of page", async function () {
 	await saveScreenshot.call(this, resultsPath, "PublishPageChangeTitle", "after");
 });
 
-Then("I validate that the Page is new title", async function () {
+Then("I validate that the Page is new title {kraken-string}", async function (title) {
 	await saveScreenshot.call(this, resultsPath, "PublishPageCheck", "before");
 	let pagesLink = await this.driver.$('a[href="#/pages/"]');
 	await pagesLink.click();
@@ -1007,7 +1065,7 @@ Then("I validate that the Page is new title", async function () {
 	for (let i = 0; i < pages.length; i++) {
 		let page = pages[i];
 		let pageText = await page.getText();
-		if (pageText.includes(titleChangeUrlPage)) {
+		if (pageText.includes(title)) {
 			flag = true;
 			break;
 		}
