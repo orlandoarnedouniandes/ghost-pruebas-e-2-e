@@ -126,6 +126,35 @@ Given("I set the new user name to {string}", function (username) {
 	const encodedTimestamp = encodeURIComponent(timestamp);
 	this.newUsername = `${username}_${encodedTimestamp}`;
 });
+Given("I set the new user name to faker {string}", function (inputUsername) {
+	let username = "";
+
+	switch (inputUsername) {
+		case "a-priori":
+			username = `Slug_${aPrioriData.firstname}_${aPrioriData.lastname}`;
+			break;
+		case "pseudo-random":
+			username = `Slug_${pseudoRandomData.firstname}_${pseudoRandomData.lastname}`;
+			break;
+		case "random":
+			username = `Slug_${generateRandomData().firstname}_${
+				generateRandomData().lastname
+			}`;
+			break;
+		case "NULL":
+			username = null;
+			break;
+		case "EMPTY":
+			username = "";
+			break;
+		default:
+			username = inputEmail;
+	}
+
+	const timestamp = Date.now();
+	const encodedTimestamp = encodeURIComponent(timestamp);
+	this.newUsername = `${username}_${encodedTimestamp}`;
+});
 
 Given("I set the new full name to {string}", function (fullName) {
 	const timestamp = Date.now();
