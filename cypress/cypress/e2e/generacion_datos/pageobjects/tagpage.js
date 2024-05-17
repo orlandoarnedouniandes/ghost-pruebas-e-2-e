@@ -3,9 +3,27 @@ class TagPage {
         //cy.get('input[name="name"]').clear();
         cy.get('main.gh-main').scrollTo(0, 0);
         cy.get('input[name="name"]').type(title,{force: true});
+        cy.wait(1000);
         cy.get('input[name="accent-color"]').first().type(color,{force: true});
         cy.get('input[name="slug"]').clear().type(title,{force: true});
         cy.get('textarea[name="description"]').clear().type(title,{force: true});
+        cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view').click();
+        cy.wait(2000);
+        cy.get('main.gh-main').scrollTo(0, 0);
+        cy.screenshot(escenario+'/'+imagen);
+    }
+
+    fillandSaveTagForm(title,color,slug,description,escenario = 'escenario',imagen = 'imagen') {        
+        //cy.get('input[name="name"]').clear();
+        cy.get('main.gh-main').scrollTo(0, 0);
+        cy.get('input[name="name"]').type(title,{force: true});
+        cy.wait(1000);
+        cy.get('input[name="accent-color"]').first().type(color,{force: true});
+        cy.wait(1000);
+        cy.get('input[name="slug"]').clear().type(slug,{force: true});
+        cy.wait(1000);
+        cy.get('textarea[name="description"]').clear().type(description,{force: true});
+        cy.wait(1000);
         cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view').click();
         cy.wait(2000);
         cy.get('main.gh-main').scrollTo(0, 0);

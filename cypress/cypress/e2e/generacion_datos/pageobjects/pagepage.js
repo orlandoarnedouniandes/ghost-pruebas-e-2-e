@@ -77,7 +77,11 @@ class PageObject {
     }
 
     editPage(escenario='escenario',imagen='imagen'){
-        cy.get('button.gh-editor-save-trigger').click();
+        cy.get('body').then((body) => {
+            if (body.find('button.gh-editor-save-trigger').length > 0) {
+                cy.get('button.gh-editor-save-trigger').click();
+            }
+        });
         cy.wait(2000);
         cy.screenshot(escenario+'/'+imagen);
     }
