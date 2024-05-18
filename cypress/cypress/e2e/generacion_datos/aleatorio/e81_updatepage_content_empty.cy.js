@@ -37,7 +37,7 @@ context("UpdatePage", function () {
 
             // When
             const newTitle = faker.lorem.sentence();
-            const newContent = generateEmptyData(); // Aquí se genera contenido vacío
+            const newContent = generateEmptyData();
 
             this.pageObject.fillandSavePageEmptyContent(newTitle, escenario, '5_empty_fillform');
             this.pageObject.backtoPages(escenario, '6_backtopages');
