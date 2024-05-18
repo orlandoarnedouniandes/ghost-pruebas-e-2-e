@@ -7,7 +7,7 @@ const PostPage = require("../pageobjects/postpage");
 const SitePage = require("../pageobjects/sitepage");
 
 context("EditTag", function () {
-    let escenario = 'escenario13';
+    let escenario = 'escenario94';
     beforeEach(function () {
         this.page = new Page();
         this.tagpage = new TagPage();

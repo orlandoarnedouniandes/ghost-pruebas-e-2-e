@@ -4,7 +4,7 @@ const Page = require("../pageobjects/page");
 const SitePage = require("../pageobjects/sitepage");
 
 context("UpdateProfileName", function () {
-    let escenario = 'escenario16';
+    let escenario = 'escenario105';
     beforeEach(function () {
         this.page = new Page();
         this.sitePage = new SitePage();
