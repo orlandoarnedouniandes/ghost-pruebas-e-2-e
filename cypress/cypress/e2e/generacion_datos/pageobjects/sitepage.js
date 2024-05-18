@@ -59,6 +59,14 @@ class SitePage {
         cy.screenshot(escenario+'/'+imagen);
     }
 
+    verifyDescriptionDoesntExist(expectedDescription, escenario = 'escenario', imagen = 'imagen') {
+        //cy.log('Texto Objetnido: '+nameTitle );
+        cy.wait(1000);
+        cy.get('div.site-header-inner p.site-description').should((description) => {
+            assert.notExists(description);
+        });
+        cy.screenshot(escenario+'/'+imagen);
+    }
 }
 
 module.exports = SitePage;

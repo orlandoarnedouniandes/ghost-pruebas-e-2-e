@@ -17,7 +17,7 @@ context("CreatePost", function () {
     });
   });
 
-  it.skip("El usuario editor quiere crear un nuevo post", function () {
+  it("El usuario editor quiere crear un nuevo post", function () {
     //Given
     this.page.loginAdmin(this.data.username, this.data.password,escenario,'2_login');
     this.page.navigateToNewPost(escenario,'3_newpost');

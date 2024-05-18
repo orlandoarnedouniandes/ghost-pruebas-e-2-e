@@ -16,13 +16,29 @@ class TagPage {
     fillandSaveTagForm(title,color,slug,description,escenario = 'escenario',imagen = 'imagen') {        
         //cy.get('input[name="name"]').clear();
         cy.get('main.gh-main').scrollTo(0, 0);
-        cy.get('input[name="name"]').type(title,{force: true});
+        if(title != ''){
+            cy.get('input[name="name"]').type(title,{force: true});
+        }else{
+            cy.get('input[name="name"]').clear();
+        }
         cy.wait(1000);
-        cy.get('input[name="accent-color"]').first().type(color,{force: true});
+        if(color != ''){
+            cy.get('input[name="accent-color"]').first().type(color,{force: true});
+        }else{
+            cy.get('input[name="accent-color"]').first().clear();
+        }
         cy.wait(1000);
-        cy.get('input[name="slug"]').clear().type(slug,{force: true});
+        if(slug != ''){
+            cy.get('input[name="slug"]').clear().type(slug,{force: true});
+        }else{
+            cy.get('input[name="slug"]').clear();
+        }
         cy.wait(1000);
-        cy.get('textarea[name="description"]').clear().type(description,{force: true});
+        if(description != ''){
+            cy.get('textarea[name="description"]').clear().type(description,{force: true});
+        }else{
+            cy.get('textarea[name="description"]').clear();
+        }
         cy.wait(1000);
         cy.get('button.gh-btn.gh-btn-primary.gh-btn-icon.ember-view').click();
         cy.wait(2000);
@@ -106,6 +122,16 @@ class TagPage {
         cy.screenshot(escenario+'/'+imagen+'_2');
     }
 
+    editDescriptionAndSave(descipcion,escenario = 'escenario',imagen = 'imagen'){        
+        cy.get('div.description-container input.ember-text-field').first().should('be.visible').invoke('val', '').clear();
+        //cy.get('input[id="tag-name"]').first().type(name);
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
+        cy.get('div.gh-canvas-header button.gh-btn span').click();
+        cy.wait(2000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
+    }
+
     deleteTag(escenario = 'escenario',imagen = 'imagen'){
         cy.get('button.gh-btn-red').click();
         cy.wait(1000);
@@ -129,6 +155,13 @@ class TagPage {
             assert.equal(description, descr.text(), 'Expected Description is different');
         });
         cy.screenshot(escenario+'/'+imagen);
+    }
+
+    verifyTagErrorEmpty(escenario = 'escenario', imagen = 'imagen'){
+        cy.get('div.form-group.error span.error p.response').should('be.visible').invoke('text').then((text) => {
+            expect(text.trim()).to.eq('You must specify a name for the tag.');
+          });
+          cy.screenshot(escenario+'/'+imagen);
     }
 }
 
