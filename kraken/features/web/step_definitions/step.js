@@ -126,8 +126,67 @@ Given("I set the new user name to {string}", function (username) {
 	const encodedTimestamp = encodeURIComponent(timestamp);
 	this.newUsername = `${username}_${encodedTimestamp}`;
 });
+Given("I set the new user name to faker {string}", function (inputUsername) {
+	let username = "";
+
+	switch (inputUsername) {
+		case "a-priori":
+			username = `Slug_${aPrioriData.firstname}_${aPrioriData.lastname}`;
+			break;
+		case "pseudo-random":
+			username = `Slug_${pseudoRandomData.firstname}_${pseudoRandomData.lastname}`;
+			break;
+		case "random":
+			username = `Slug_${generateRandomData().firstname}_${
+				generateRandomData().lastname
+			}`;
+			break;
+		case "NULL":
+			username = null;
+			break;
+		case "EMPTY":
+			username = "";
+			break;
+		default:
+			username = inputEmail;
+	}
+
+	const timestamp = Date.now();
+	const encodedTimestamp = encodeURIComponent(timestamp);
+	this.newUsername = `${username}_${encodedTimestamp}`;
+});
 
 Given("I set the new full name to {string}", function (fullName) {
+	const timestamp = Date.now();
+	const encodedTimestamp = encodeURIComponent(timestamp);
+	this.newFullName = `${fullName}_${encodedTimestamp}`;
+	this.currentFullName = this.newFullName;
+});
+Given("I set the new full name to faker {string}", function (inputFullName) {
+	let fullName = "";
+
+	switch (inputFullName) {
+		case "a-priori":
+			fullName = `${aPrioriData.firstname} ${aPrioriData.lastname}`;
+			break;
+		case "pseudo-random":
+			fullName = `${pseudoRandomData.firstname} ${pseudoRandomData.lastname}`;
+			break;
+		case "random":
+			fullName = `${generateRandomData().firstname} ${
+				generateRandomData().lastname
+			}`;
+			break;
+		case "NULL":
+			fullName = null;
+			break;
+		case "EMPTY":
+			fullName = "";
+			break;
+		default:
+			fullName = inputEmail;
+	}
+
 	const timestamp = Date.now();
 	const encodedTimestamp = encodeURIComponent(timestamp);
 	this.newFullName = `${fullName}_${encodedTimestamp}`;
@@ -197,6 +256,11 @@ Then("I should see the expected full name", async function () {
 When("I navigate to new user profile page", async function () {
 	await saveScreenshot.call(this, resultsPath, "navigateToProfile", "before");
 	await this.driver.url(`${BASEURLROOT}/author/${this.newUsername}/`);
+	await saveScreenshot.call(this, resultsPath, "navigateToProfile", "after");
+});
+Then("I navigate to base root url", async function () {
+	await saveScreenshot.call(this, resultsPath, "navigateToProfile", "before");
+	await this.driver.url(`${BASEURLROOT}`);
 	await saveScreenshot.call(this, resultsPath, "navigateToProfile", "after");
 });
 
@@ -552,6 +616,62 @@ When("I modify the description", async function () {
 	await saveScreenshot.call(this, resultsPath, "desciptionEditClick", "after");
 });
 
+When(
+	"I modify the description to faker {string}",
+	async function (inputDescription) {
+		let newDescription = "";
+
+		switch (inputDescription) {
+			case "a-priori":
+				newDescription = `${aPrioriData.siteTitle}`;
+				break;
+			case "pseudo-random":
+				newDescription = `${pseudoRandomData.siteTitle}`;
+				break;
+			case "random":
+				newDescription = `${generateRandomData().siteTitle}`;
+				break;
+			case "NULL":
+				newDescription = null;
+				break;
+			case "EMPTY":
+				newDescription = "";
+				break;
+			default:
+				newDescription = inputEmail;
+		}
+
+		this.updatedSiteDescription = newDescription;
+
+		let expandLink = await this.driver.$$(
+			"div.gh-expandable-header button.gh-btn"
+		)[0];
+		await expandLink.click();
+
+		await saveScreenshot.call(this, resultsPath, "desciptionEdit", "before");
+		let descriptionElement = await this.driver.$(
+			"div.description-container input.ember-text-field"
+		);
+		await descriptionElement.setValue(newDescription);
+		await saveScreenshot.call(this, resultsPath, "desciptionEdit", "after");
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"desciptionEditClick",
+			"before"
+		);
+		let saveButton = await this.driver.$("//span[contains(text(), 'Save')]");
+		await saveButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"desciptionEditClick",
+			"after"
+		);
+	}
+);
+
 Then(
 	"I validate that the description has been changed 'Proof Ghost Uniandes' on users page",
 	async function () {
@@ -564,6 +684,15 @@ Then(
 		}
 	}
 );
+Then("I validate that the description has been changed", async function () {
+	let descriptionElement = await this.driver
+		.$("div.site-header-inner p.site-description")
+		.getText();
+
+	if (descriptionElement !== this.updatedSiteDescription) {
+		throw new Error(`Expected Description is different`);
+	}
+});
 
 /**Posts**/
 Given("I click on the 'Posts' link", async function () {
@@ -1178,6 +1307,44 @@ When("I update the site title to {string}", async function (newTitle) {
 	await saveScreenshot.call(this, resultsPath, "updateSiteTitle", "after");
 });
 
+When(
+	"I update the site title to faker {string}",
+	async function (inputNewTitle) {
+		let newTitle = "";
+
+		switch (inputNewTitle) {
+			case "a-priori":
+				newTitle = `${aPrioriData.siteTitle}_`;
+				break;
+			case "pseudo-random":
+				newTitle = `${pseudoRandomData.siteTitle}`;
+				break;
+			case "random":
+				newTitle = `${generateRandomData().siteTitle}`;
+				break;
+			case "NULL":
+				newTitle = null;
+				break;
+			case "EMPTY":
+				newTitle = "";
+				break;
+			default:
+				newTitle = inputEmail;
+		}
+
+		await saveScreenshot.call(this, resultsPath, "updateSiteTitle", "before");
+		let titleInput = await this.driver.$(
+			"input.ember-text-field.gh-input[type='text']"
+		);
+		const timestamp = Date.now();
+		const encodedTimestamp = encodeURIComponent(timestamp);
+		this.updatedSiteTitle = `${"Updated Title"}_${newTitle}_${encodedTimestamp}`;
+
+		await titleInput.setValue(this.updatedSiteTitle);
+		await saveScreenshot.call(this, resultsPath, "updateSiteTitle", "after");
+	}
+);
+
 When("I click the primary Save button", async function () {
 	await saveScreenshot.call(this, resultsPath, "primarySaveBtn", "before");
 	let saveButton = await this.driver.$(
@@ -1228,11 +1395,62 @@ Then("The input field should equal 'Updated Title'", async function () {
 	}
 });
 
+Then("The site title should be updated", async function () {
+	let inputField = await this.driver.$(
+		"input.ember-text-field.gh-input[type='text']"
+	);
+	let inputValue = await inputField.getValue();
+	if (inputValue !== this.updatedSiteTitle) {
+		throw new Error(
+			`Expected input to be 'Updated Title' but found '${inputValue}'`
+		);
+	}
+});
+
+
 //E9
 
 When(
 	"I add a new navigation item with label {string} and URL {string}",
 	async function (label, url) {
+		await saveScreenshot.call(this, resultsPath, "newNavigation", "before");
+		let labelInputs = await this.driver.$$(
+			`input.ember-text-field.gh-input[type='text'][placeholder='Label']`
+		);
+
+		await labelInputs[labelInputs.length - 1].setValue(label);
+
+		let addButtons = await this.driver.$$("button.gh-blognav-add");
+		let lastAddButton = addButtons[addButtons.length - 1]; // Select the last "Add" button
+		await lastAddButton.click();
+		await saveScreenshot.call(this, resultsPath, "newNavigation", "after");
+	}
+);
+When(
+	"I add a new navigation item with faker label {string} and URL {string}",
+	async function (inputLabel, url) {
+		let label = "";
+
+		switch (inputLabel) {
+			case "a-priori":
+				label = `label_${aPrioriData.firstname}`;
+				break;
+			case "pseudo-random":
+				label = `label__${pseudoRandomData.firstname}`;
+				break;
+			case "random":
+				label = `label__${generateRandomData().firstname}`;
+				break;
+			case "NULL":
+				label = null;
+				break;
+			case "EMPTY":
+				label = "";
+				break;
+			default:
+				label = inputEmail;
+		}
+
 		await saveScreenshot.call(this, resultsPath, "newNavigation", "before");
 		let labelInputs = await this.driver.$$(
 			`input.ember-text-field.gh-input[type='text'][placeholder='Label']`
@@ -1376,4 +1594,342 @@ Then(
 		);
 	}
 );
+
+When(
+	"I modify current location and save changes with faker {string}",
+	async function (inputLocation) {
+		let location = "";
+
+		switch (inputLocation) {
+			case "a-priori":
+				location = `${aPrioriData.city}`;
+				break;
+			case "pseudo-random":
+				location = `${pseudoRandomData.city}`;
+				break;
+			case "random":
+				location = `${generateRandomData().city}`;
+				break;
+			case "NULL":
+				location = null;
+				break;
+			case "EMPTY":
+				location = "";
+				break;
+			default:
+				location = inputEmail;
+		}
+
+		this.currentLocation = location;
+
+		await saveScreenshot.call(this, resultsPath, "changeLocation", "before");
+		let nameField = await this.driver.$("#user-location");
+		await nameField.setValue(this.currentLocation);
+		await saveScreenshot.call(this, resultsPath, "changeLocation", "after");
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changeLocationClick",
+			"before"
+		);
+		let saveButton = await this.driver.$("button.gh-btn-primary");
+		await saveButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changeLocationClick",
+			"after"
+		);
+	}
+);
+
+When("I get current location", async function () {
+	let element = await this.driver.$("#user-location");
+	this.currentLocation = await element.getValue();
+});
+Then("I should see the expected location", async function () {
+	let element = await this.driver.$("#user-location");
+	let displayedItem = await element.getValue();
+
+	if (displayedItem !== this.currentLocation) {
+		throw new Error(
+			`Expected name to be ${this.currentLocation} but found ${displayedItem}`
+		);
+	}
+});
+
+
+
+When(
+	"I modify current website and save changes with faker {string}",
+	async function (inputItem) {
+		let textToType = "";
+
+		switch (inputItem) {
+			case "a-priori":
+				textToType = `${aPrioriData.website}`;
+				break;
+			case "pseudo-random":
+				textToType = `${pseudoRandomData.website}`;
+				break;
+			case "random":
+				textToType = `${generateRandomData().website}`;
+				break;
+			case "NULL":
+				textToType = null;
+				break;
+			case "EMPTY":
+				textToType = "";
+				break;
+			default:
+				textToType = inputEmail;
+		}
+
+		this.currentWebsite = textToType;
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changeWebsiteLocation",
+			"before"
+		);
+		let nameField = await this.driver.$("#user-website");
+		await nameField.setValue(this.currentWebsite);
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changeWebsiteLocation",
+			"after"
+		);
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changeWebsiteLocationClick",
+			"before"
+		);
+		let saveButton = await this.driver.$("button.gh-btn-primary");
+		await saveButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changeWebsiteLocationClick",
+			"after"
+		);
+	}
+);
+
+Then("I should see the expected website", async function () {
+	let element = await this.driver.$("#user-website");
+	let displayedItem = await element.getValue();
+
+	if (!displayedItem.includes(this.currentWebsite)) {
+		throw new Error(
+			`Expected name to be ${this.currentWebsite} but found ${displayedItem}`
+		);
+	}
+});
+
+
+
+When(
+	"I modify current facebook and save changes with faker {string}",
+	async function (inputItem) {
+		let textToType = "";
+
+		switch (inputItem) {
+			case "a-priori":
+				textToType = `${aPrioriData.firstname}`;
+				break;
+			case "pseudo-random":
+				textToType = `${pseudoRandomData.firstname}`;
+				break;
+			case "random":
+				textToType = `${generateRandomData().firstname}`;
+				break;
+			case "NULL":
+				textToType = null;
+				break;
+			case "EMPTY":
+				textToType = "";
+				break;
+			default:
+				textToType = inputEmail;
+		}
+
+		this.currentFacebook = textToType;
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentFacebook",
+			"before"
+		);
+		let nameField = await this.driver.$("#user-facebook");
+		await nameField.setValue(this.currentFacebook);
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentFacebook",
+			"after"
+		);
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentFacebookClick",
+			"before"
+		);
+		let saveButton = await this.driver.$("button.gh-btn-primary");
+		await saveButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentFacebookClick",
+			"after"
+		);
+	}
+);
+
+Then("I should see the expected facebook", async function () {
+	let element = await this.driver.$("#user-facebook");
+	let displayedItem = await element.getValue();
+
+	if (!displayedItem.includes(this.currentFacebook)) {
+		throw new Error(
+			`Expected name to be ${this.currentFacebook} but found ${displayedItem}`
+		);
+	}
+});
+
+When(
+	"I modify current twitter and save changes with faker {string}",
+	async function (inputItem) {
+		let textToType = "";
+
+		switch (inputItem) {
+			case "a-priori":
+				textToType = `${aPrioriData.firstname}`;
+				break;
+			case "pseudo-random":
+				textToType = `${pseudoRandomData.firstname}`;
+				break;
+			case "random":
+				textToType = `${generateRandomData().firstname}`;
+				break;
+			case "NULL":
+				textToType = null;
+				break;
+			case "EMPTY":
+				textToType = "";
+				break;
+			default:
+				textToType = inputEmail;
+		}
+
+		this.currentTwitter = textToType;
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentTwitter",
+			"before"
+		);
+		let nameField = await this.driver.$("#user-twitter");
+		await nameField.setValue(this.currentTwitter);
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentTwitter",
+			"after"
+		);
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentTwitterClick",
+			"before"
+		);
+		let saveButton = await this.driver.$("button.gh-btn-primary");
+		await saveButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentTwitterClick",
+			"after"
+		);
+	}
+);
+
+Then("I should see the expected twitter", async function () {
+	let element = await this.driver.$("#user-twitter");
+	let displayedItem = await element.getValue();
+
+	if (!displayedItem.includes(this.currentTwitter)) {
+		throw new Error(
+			`Expected name to be ${this.currentTwitter} but found ${displayedItem}`
+		);
+	}
+});
+
+When(
+	"I modify current bio and save changes with faker {string}",
+	async function (inputItem) {
+		let textToType = "";
+
+		switch (inputItem) {
+			case "a-priori":
+				textToType = `${aPrioriData.paragraph}`;
+				break;
+			case "pseudo-random":
+				textToType = `${pseudoRandomData.paragraph}`;
+				break;
+			case "random":
+				textToType = `${generateRandomData().paragraph}`;
+				break;
+			case "NULL":
+				textToType = null;
+				break;
+			case "EMPTY":
+				textToType = "";
+				break;
+			default:
+				textToType = inputEmail;
+		}
+
+		this.currentBio = textToType;
+
+		await saveScreenshot.call(this, resultsPath, "changecurrentBio", "before");
+		let nameField = await this.driver.$("#user-bio");
+		await nameField.setValue(this.currentBio);
+		await saveScreenshot.call(this, resultsPath, "changecurrentBio", "after");
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentBioClick",
+			"before"
+		);
+		let saveButton = await this.driver.$("button.gh-btn-primary");
+		await saveButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentBioClick",
+			"after"
+		);
+	}
+);
+
+Then("I should see the expected bio", async function () {
+	let element = await this.driver.$("#user-bio");
+	let displayedItem = await element.getValue();
+
+	if (!displayedItem.includes(this.currentBio)) {
+		throw new Error(
+			`Expected name to be ${this.currentBio} but found ${displayedItem}`
+		);
+	}
+});
 
