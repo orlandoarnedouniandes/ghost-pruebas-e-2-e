@@ -22,28 +22,32 @@ context("EditTag", function () {
                 this.tagdata = response.body;
             });
 
-            //Given      
+            //Given the user is in the home page      
             this.page.visit(this.data.url, escenario, '1_home');
         });
     });
     
-    it("El usuario edita un tag usando pull de datos a priori", function () {
-        //Given
+    it("A priori - El usuario edita un tag usando pull de datos a priori", function () {
+        //Given the user is logged as Admin and navigate to the tags
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToTags(escenario, '3_tags');
+        // and the user identity the tag to update
         this.tagpage.getLastTag();
         cy.get('@tag').then((tag) => {
-            //When
+
             cy.log('tag a editar:'+tag);
+            //When the user navigate to the tag and update it
             this.tagpage.navigateToSpecificTag(tag, escenario, '4_specifictag');
+            //and the user gets data from priori
             const newTag = this.tagdata.tag;
             const newcolor = this.tagdata.color;
             const newslug = this.tagdata.tag;
             const newdescription = this.tagdata.description;
+            // and the user fill the form and save it and back to tags
             this.tagpage.updateTagForm(newTag,newcolor,newslug,newdescription, escenario, '5_updateform');
             this.page.backtoTags(escenario, '6_backtotags');
     
-            //Then
+            //Then the user verify the tag was updated
             this.tagpage.verifyTagExists(newTag, escenario, '7_verify');
         });
     });

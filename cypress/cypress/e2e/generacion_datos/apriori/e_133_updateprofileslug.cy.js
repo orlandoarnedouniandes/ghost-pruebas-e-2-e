@@ -4,7 +4,7 @@ const Page = require("../pageobjects/page");
 const SitePage = require("../pageobjects/sitepage");
 
 context("UpdateProfileSlug", function () {
-    let escenario = 'escenario15';
+    let escenario = 'escenario133';
 
     beforeEach(function () {
         this.page = new Page();
@@ -12,22 +12,23 @@ context("UpdateProfileSlug", function () {
 
         cy.fixture("ghost.json").then((data) => {
             this.data = data;
-            //Given      
+            //Given  the user is in the home page     
             this.page.visit(this.data.url, escenario, '1_home');
         });
     });
 
-    it("El usuario actualiza su pagina de autor", function () {
-        //Given
+    it("A priori - El usuario actualiza su pagina de autor", function () {
+        //Given the user is in the home page and navigates to profile
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToProfile(escenario, '3_profile');
         
-        //When
+        //When the user updates the slug with an empty value
         const slug = '';
         this.page.updateProfileSlug(slug, escenario, '5_updateprofile');
+        // and the user goes to the profile page
         this.page.navigateToProfile(escenario, '3_profile');
         
-        //Then
+        //Then the user verify the profile is not updated
         this.page.profileisNotEmpty(escenario, '7_verify');
     });
 });

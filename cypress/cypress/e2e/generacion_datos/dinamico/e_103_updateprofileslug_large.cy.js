@@ -4,7 +4,7 @@ const Page = require("../pageobjects/page");
 const SitePage = require("../pageobjects/sitepage");
 
 context("UpdateProfileSlug", function () {
-    let escenario = 'escenario15';
+    let escenario = 'escenario103';
 
     beforeEach(function () {
         this.page = new Page();
@@ -17,22 +17,22 @@ context("UpdateProfileSlug", function () {
                 this.slugdata = response.body;
             });
 
-            //Given      
+            //Given the user is in the home page      
             this.page.visit(this.data.url, escenario, '1_home');
         });
     });
 
-    it("El usuario actualiza su pagina de autor", function () {
-        //Given
+    it("Dinamico - El usuario actualiza su pagina de autor", function () {
+        //Given the user logs in and navigates to profile
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToProfile(escenario, '3_profile');
         
-        //When
+        //When the user updates the slug with a dynamic value and logs out
         const slug = this.slugdata.slug_big;
         this.page.updateProfileSlug(slug, escenario, '5_updateprofile');
         this.page.logout(escenario, '6_logout');
         
-        //Then
+        //Then the user verify the author page and the slug is updated
         this.sitePage.verifyifPageExists(this.data.url, 'author/'+slug, escenario, '7_verify');
     });
 });

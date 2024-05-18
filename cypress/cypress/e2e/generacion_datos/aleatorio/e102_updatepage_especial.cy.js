@@ -26,29 +26,32 @@ context("UpdatePage", function () {
         if (this.data === undefined) {
             cy.fixture("ghost.json").then((data) => {
                 this.data = data;
-                //Given
+                //Given the user is in the home page
                 this.page.visit(this.data.url, escenario, '1_home');
             });
         }
     });
 
-    it("El usuario actualiza una página coespecin titulo y contenido de caracteres especiales", function () {
-        //Given
+    it("aleatorio - El usuario actualiza una página coespecin titulo y contenido de caracteres especiales", function () {
+        //Given the use is logged as Admin and navigate to the pages
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToPages(escenario, '3_pages');
+        //and the user identity the page to update
         this.pageObject.findfirstpage();
 
         cy.get('@pageTitle').then((data) => {
+            //and the user navigate to the page
             this.pageObject.navigateToSpecificPage(data, escenario, '4_specificpage');
 
-            //When
+            //When the user gets a random title and content with especial characters
             const newTitle = generateSpecialCharacters(100); 
             const newContent = generateSpecialCharacters(1000);
 
+            //and the user fill the form and save it and back to pages
             this.pageObject.fillandSavePageForm(newTitle, newContent, escenario, '5_fillform');
             this.pageObject.backtoPages(escenario, '6_backtopages');
 
-            //Then
+            //Then the user verify the page was updated as a draft
             this.pageObject.verifylastPageTitleandDraft(newTitle, escenario, '7_verify');
         });
     });

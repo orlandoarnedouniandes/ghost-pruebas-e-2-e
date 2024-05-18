@@ -15,24 +15,25 @@ context("UpdateProfileName", function () {
 
         cy.fixture("ghost.json").then((data) => {
             this.data = data;
-            //Given      
+            //Given the user is in the home page      
             this.page.visit(this.data.url, escenario, '1_home');
         });
     });
 
-    it("El usuario actualiza su nombre de autor", function () {
-        //Given
+    it("A priori - El usuario actualiza su nombre de autor", function () {
+        //Given the user is in the home page and navigates to profile
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToProfile(escenario, '3_profile');
         
-        //When
+        //When the user updates the name with an empty value
         const name = '';
         this.page.updateProfileName(name, escenario, '5_updateprofile');
         cy.get('@slug').then((slug) => {
             cy.log('Slug: '+slug);
+            // and the user logs out
             this.page.logout(escenario, '6_logout');
             
-            //Then
+            //Then the user verify the author page and the name is updated
             this.page.visit(this.data.url+'author/'+slug, escenario, '7_authorpage');
             this.sitePage.verifyIfUserNameIsDisplayed(name, escenario, '8_verify');
         });

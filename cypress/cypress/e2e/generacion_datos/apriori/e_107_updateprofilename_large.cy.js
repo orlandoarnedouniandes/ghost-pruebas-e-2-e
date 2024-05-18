@@ -15,21 +15,22 @@ context("UpdateProfileName", function () {
 
         cy.fixture("ghost.json").then((data) => {
             this.data = data;
-            //Given      
+            //Given the user is in the home page      
             this.page.visit(this.data.url, escenario, '1_home');
         });
     });
 
-    it("El usuario actualiza su nombre de autor", function () {
-        //Given
+    it("A priori - El usuario actualiza su nombre de autor", function () {
+        //Given the user is logged as Admin and navigate to the profile
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToProfile(escenario, '3_profile');
         
-        //When
+        //When the user  gets a large name from priori data 
         const name = this.profiledata.slug_big;
-        this.page.updateProfileName(name, escenario, '5_updateprofile');
+        // and the user fill the form and save it
+        this.page.updateProfileName(name, escenario, '4_updateprofile');
 
-        //Then
-        this.page.verifyIGetTheErrorNameTooLong(escenario, '6_verify');
+        //Then yhe user verify that gets an error message beacuse the name is too long
+        this.page.verifyIGetTheErrorNameTooLong(escenario, '5_verify');
     });
 });

@@ -5,7 +5,7 @@ const PostPage = require("../pageobjects/postpage");
 
 
 context("CreatePost", function () {
-  let escenario='escenario1';
+  let escenario='escenario96';
 
   beforeEach(function () {
     this.page = new Page();
@@ -17,24 +17,24 @@ context("CreatePost", function () {
     
     cy.fixture("ghost.json").then((data) => {
       this.userdata = data;
-      //Given      
+      //Given the user is in the home page      
       this.page.visit(this.userdata.url,escenario,'1_home');
     });
 
   });
 
-  it("El usuario editor quiere crear un nuevo post", function () {
-    //Given
+  it("A priori - El usuario editor quiere crear un nuevo post", function () {
+    //Given the user logs in and navigates to new post
     this.page.loginAdmin(this.userdata.username, this.userdata.password,escenario,'2_login');
     this.page.navigateToNewPost(escenario,'3_newpost');
 
-    //When
+    //When the user fills the form with a title and content from priori data and back to posts
     const title = this.postdata.post_title;
     const content = this.postdata.post_content;
     this.postPage.fillandSavePostForm(title, content,'4_fillform');
     this.postPage.backtoPosts(escenario,'5_backtoposts');
 
-    //Then
+    //Then the user verify the post is created with naughty words
     this.postPage.verifylastPostTitleandDraft(title,escenario,'6_verify');
   });
 });
