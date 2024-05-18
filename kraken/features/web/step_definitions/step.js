@@ -1426,6 +1426,44 @@ When(
 		await saveScreenshot.call(this, resultsPath, "newNavigation", "after");
 	}
 );
+When(
+	"I add a new navigation item with faker label {string} and URL {string}",
+	async function (inputLabel, url) {
+		let label = "";
+
+		switch (inputLabel) {
+			case "a-priori":
+				label = `label_${aPrioriData.firstname}`;
+				break;
+			case "pseudo-random":
+				label = `label__${pseudoRandomData.firstname}`;
+				break;
+			case "random":
+				label = `label__${generateRandomData().firstname}`;
+				break;
+			case "NULL":
+				label = null;
+				break;
+			case "EMPTY":
+				label = "";
+				break;
+			default:
+				label = inputEmail;
+		}
+
+		await saveScreenshot.call(this, resultsPath, "newNavigation", "before");
+		let labelInputs = await this.driver.$$(
+			`input.ember-text-field.gh-input[type='text'][placeholder='Label']`
+		);
+
+		await labelInputs[labelInputs.length - 1].setValue(label);
+
+		let addButtons = await this.driver.$$("button.gh-blognav-add");
+		let lastAddButton = addButtons[addButtons.length - 1]; // Select the last "Add" button
+		await lastAddButton.click();
+		await saveScreenshot.call(this, resultsPath, "newNavigation", "after");
+	}
+);
 
 When("I save the navigation changes", async function () {
 	await saveScreenshot.call(this, resultsPath, "saveNavigation", "before");

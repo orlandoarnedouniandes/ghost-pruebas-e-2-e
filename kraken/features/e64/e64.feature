@@ -1,7 +1,7 @@
-Feature: Add link (a-priori)
+Feature: Add link (aleatorio)
 
-  @user62 @web
-  Scenario: E62 - Add link (a-priori)
+  @user64 @web
+  Scenario: E64 - Add link (aleatorio)
     Given I navigate to page "<BASEURL>"
     And I log in with email "<USERNAME>" and password "<PASSWORD>"
     And I wait 2 seconds
@@ -9,7 +9,7 @@ Feature: Add link (a-priori)
     And I wait 1 seconds
     And I navigate to the "Navigation" settings page
     And I wait 3 seconds
-    When I add a new navigation item with faker label "a-priori" and URL "<BASEURLROOT>"
+    When I add a new navigation item with faker label "random" and URL "<BASEURLROOT>"
     And I click the primary Save button
     And I wait 3 seconds
     Then I refresh the page
