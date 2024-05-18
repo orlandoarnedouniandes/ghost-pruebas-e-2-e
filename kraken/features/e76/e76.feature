@@ -1,7 +1,7 @@
-Feature: Change Twitter profile (a-priori)
+Feature: Change Twitter profile (aleatorio)
 
-  @user74 @web
-  Scenario: E74 - Change Twitter profile (a-priori)
+  @user76 @web
+  Scenario: E76 - Change Twitter profile (aleatorio)
     Given I navigate to page "<BASEURL>"
     When I log in with email "<USERNAME>" and password "<PASSWORD>"
     And I wait 3 seconds
@@ -9,7 +9,7 @@ Feature: Change Twitter profile (a-priori)
     And I wait 1 seconds
     And I click on the 'Your profile' link
     And I wait 2 seconds
-    When I modify current twitter and save changes with faker "a-priori"
+    When I modify current twitter and save changes with faker "random"
     And I wait 3 seconds
     When I refresh the page
     And I wait 2 seconds

@@ -1803,3 +1803,73 @@ Then("I should see the expected facebook", async function () {
 	}
 });
 
+When(
+	"I modify current twitter and save changes with faker {string}",
+	async function (inputItem) {
+		let textToType = "";
+
+		switch (inputItem) {
+			case "a-priori":
+				textToType = `${aPrioriData.firstname}`;
+				break;
+			case "pseudo-random":
+				textToType = `${pseudoRandomData.firstname}`;
+				break;
+			case "random":
+				textToType = `${generateRandomData().firstname}`;
+				break;
+			case "NULL":
+				textToType = null;
+				break;
+			case "EMPTY":
+				textToType = "";
+				break;
+			default:
+				textToType = inputEmail;
+		}
+
+		this.currentTwitter = textToType;
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentTwitter",
+			"before"
+		);
+		let nameField = await this.driver.$("#user-twitter");
+		await nameField.setValue(this.currentTwitter);
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentTwitter",
+			"after"
+		);
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentTwitterClick",
+			"before"
+		);
+		let saveButton = await this.driver.$("button.gh-btn-primary");
+		await saveButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentTwitterClick",
+			"after"
+		);
+	}
+);
+
+Then("I should see the expected twitter", async function () {
+	let element = await this.driver.$("#user-twitter");
+	let displayedItem = await element.getValue();
+
+	if (!displayedItem.includes(this.currentTwitter)) {
+		throw new Error(
+			`Expected name to be ${this.currentTwitter} but found ${displayedItem}`
+		);
+	}
+});
+
