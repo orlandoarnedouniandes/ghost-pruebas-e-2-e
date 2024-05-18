@@ -28,9 +28,9 @@ versión: 3.42 - http://misoubuntuhw.eastus.cloudapp.azure.com:3001/
 1. Antes de iniciar, valide que se cumplan los requisitos previos para el uso de la herramienta usando en tu consola el siguiente comando: kraken-node doctor
 2. Clone el siguiente repositorio https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e.git
 
-3. Ubíquese dentro de la carpeta Kraken o Kraken_3_42 dependiendo de la versión de Ghost que desee probar
-4. Sobre la carpeta Kraken o Kraken_3_42, use el siguiente comando: npm install
-5. A continuación, corra las pruebas usando el siguiente comando: node features/executeKrakenAll.js
+3. Ubíquese dentro de la carpeta Kraken
+4. Sobre la carpeta Kraken, use el siguiente comando: npm install
+5. A continuación, corra las pruebas de la semana 7 usando el siguiente comando: node features/executeKrakenAll_week7.js
 
 #### ResembleJS
 1. ResembleJS viene incluido dentro de las dependencias del proyecto, por tanto se instala al correr normalmente el comando npm install que se describe en las instrucciones de instalacion y ejecucion de Kraken para este repositorio
