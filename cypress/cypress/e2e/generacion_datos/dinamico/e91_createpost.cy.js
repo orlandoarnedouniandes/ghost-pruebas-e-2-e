@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { faker } from '@faker-js/faker';
+
 const Page = require("../pageobjects/page");
 const PostPage = require("../pageobjects/postpage");
 
@@ -10,21 +10,28 @@ context("CreatePost", function () {
   beforeEach(function () {
     this.page = new Page();
     this.postPage = new PostPage();
+    
     cy.fixture("ghost.json").then((data) => {
-      this.data = data;
+      this.userdata = data;
+
+      cy.request('GET', this.userdata.api_post_dinamico).then((response) => {
+        this.postdata = response.body;
+      });
+
       //Given      
-      this.page.visit(this.data.url,escenario,'1_home');
+      this.page.visit(this.userdata.url,escenario,'1_home');
     });
+
   });
 
-  it.skip("El usuario editor quiere crear un nuevo post", function () { 
+  it("El usuario editor quiere crear un nuevo post", function () {
     //Given
-    this.page.loginAdmin(this.data.username, this.data.password,escenario,'2_login');
+    this.page.loginAdmin(this.userdata.username, this.userdata.password,escenario,'2_login');
     this.page.navigateToNewPost(escenario,'3_newpost');
 
     //When
-    const title = faker.lorem.sentence();
-    const content = faker.lorem.sentence();
+    const title = this.postdata.post_title;
+    const content = this.postdata.post_content;
     this.postPage.fillandSavePostForm(title, content,'4_fillform');
     this.postPage.backtoPosts(escenario,'5_backtoposts');
 
