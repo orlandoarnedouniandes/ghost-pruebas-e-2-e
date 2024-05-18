@@ -1,7 +1,7 @@
 class PageObject {
     fillandSavePageForm(postTitle, postContent, escenario='escenario',imagen='imagen'){
-        cy.get('textarea.gh-editor-title').clear().type(postTitle);
-        cy.get('div.koenig-editor__editor').clear().type(postContent);
+        cy.get('textarea.gh-editor-title').clear().type(postTitle,  { parseSpecialCharSequences: false });
+        cy.get('div.koenig-editor__editor').clear().type(postContent,  { parseSpecialCharSequences: false });
         cy.get('body').click(); 
         cy.wait(2000);
         cy.screenshot(escenario+'/'+imagen);

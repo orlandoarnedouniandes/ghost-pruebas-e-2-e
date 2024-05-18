@@ -4,5 +4,8 @@
     "username":"h.wiesner@uniandes.edu.co",
     "password":"mWxNuDsU5Ng7LD",
     "api_tag_dinamico":"https://my.api.mockaroo.com/ghost_tag.json?key=e41270f0",
-    "api_post_dinamico":"https://my.api.mockaroo.com/ghost_post.json?key=e41270f0"
+    "api_tag_naughty":"https://my.api.mockaroo.com/ghost_tag_naughty.json?key=e41270f0",
+    "api_post_dinamico":"https://my.api.mockaroo.com/ghost_post.json?key=e41270f0",
+    "api_slug_dinamico":"https://my.api.mockaroo.com/slug.json?key=e41270f0",
+    "color":"ffff00"
 }

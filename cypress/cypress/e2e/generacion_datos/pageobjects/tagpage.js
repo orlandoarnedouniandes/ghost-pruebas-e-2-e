@@ -30,9 +30,15 @@ class TagPage {
         cy.screenshot(escenario+'/'+imagen);
     }
 
-    updateTagForm(title, escenario = 'escenario', imagen = 'imagen') {
+    updateTagForm(title,color,slug,description, escenario = 'escenario', imagen = 'imagen') {
         cy.get('main.gh-main').scrollTo(0, 0);
         cy.get('input[name="name"]').clear().type(title,{force: true});
+        cy.wait(1000);
+        cy.get('input[name="accent-color"]').first().clear().type(color,{force: true});
+        cy.wait(1000);
+        cy.get('input[name="slug"]').clear().type(slug,{force: true});
+        cy.wait(1000);
+        cy.get('textarea[name="description"]').clear().type(description,{force: true});
         cy.wait(1000);
         cy.get('main.gh-main').scrollTo(0, 0);
         cy.screenshot(escenario+'/'+imagen+'_1before');

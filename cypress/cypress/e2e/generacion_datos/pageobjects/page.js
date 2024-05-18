@@ -214,6 +214,13 @@ class Page {
         return result;
     }
 
+    verifyIGetTheErrorNameTooLong(escenario='escenario',imagen='imagen'){
+        cy.get('div.first-form-group p.response').invoke('text').then((text) => {
+            expect(text.trim()).to.eq('Name is too long');
+          });
+          cy.screenshot();
+    }
+
 }
 
 module.exports = Page;
