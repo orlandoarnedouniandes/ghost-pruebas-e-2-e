@@ -7,5 +7,6 @@
     "api_tag_naughty":"https://my.api.mockaroo.com/ghost_tag_naughty.json?key=e41270f0",
     "api_post_dinamico":"https://my.api.mockaroo.com/ghost_post.json?key=e41270f0",
     "api_slug_dinamico":"https://my.api.mockaroo.com/slug.json?key=e41270f0",
-    "color":"ffff00"
+    "color":"ffff00",
+    "api_ghost":"https://my.api.mockaroo.com/page.json?key=e41270f0"
 }

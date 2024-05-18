@@ -184,6 +184,21 @@ class Page {
         cy.screenshot(escenario+'/'+imagen+'_4');
     }
 
+    addLinkEmpty(link,escenario='escenario',imagen='imagen'){
+        cy.get('a[href="#/settings/"]').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_1');
+        cy.get('a[href="#/settings/navigation/"]').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_2');
+        cy.get('div.gh-blognav-item').eq(2).find('input.ember-text-field').first().clear();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_3');
+        cy.get('button.gh-btn-primary').click();
+        cy.wait(1000);
+        cy.screenshot(escenario+'/'+imagen+'_4');
+    }
+
     removeLink(escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/settings/"]').click();
         cy.wait(1000);
@@ -221,6 +236,26 @@ class Page {
           cy.screenshot();
     }
 
+    verifyTitleIsTooLong(expectedTitle, escenario = 'escenario', imagen = 'imagen') {
+        cy.get('div.form-group.error p.response').invoke('text').then((text) => {
+            expect(text.trim()).to.eq('Title is too long');
+          });
+        cy.screenshot();
+    }
+
+    verifyDescriptionIsTooLong(expectedDescription, escenario = 'escenario', imagen = 'imagen') {
+        cy.get('div.form-group.error p.response').invoke('text').then((text) => {
+            expect(text.trim()).to.eq('Description is too long');
+          });
+        cy.screenshot();
+    }
+
+    verifyLinkEmpty(escenario = 'escenario', imagen = 'imagen') {
+        cy.get('span.gh-blognav-label p.response').invoke('text').then((text) => {
+            expect(text.trim()).to.eq('You must specify a label');
+          });
+        cy.screenshot();
+    }
 }
 
 module.exports = Page;

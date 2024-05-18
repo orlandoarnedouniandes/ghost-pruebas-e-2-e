@@ -96,16 +96,14 @@ class TagPage {
         cy.screenshot(escenario+'/'+imagen+'_3')
     }
 
-    editDescriptionAndSave(escenario = 'escenario',imagen = 'imagen'){
-        const description = "Description Cypress General";
-        cy.get('div.description-container input.ember-text-field').first().should('be.visible').invoke('val', '').type(description);
+    editDescriptionAndSave(descipcion,escenario = 'escenario',imagen = 'imagen'){        
+        cy.get('div.description-container input.ember-text-field').first().should('be.visible').invoke('val', '').type(descipcion);
         //cy.get('input[id="tag-name"]').first().type(name);
         cy.wait(1000);
         cy.screenshot(escenario+'/'+imagen+'_1');
         cy.get('div.gh-canvas-header button.gh-btn span').click();
         cy.wait(1000);
         cy.screenshot(escenario+'/'+imagen+'_2');
-        return description;
     }
 
     deleteTag(escenario = 'escenario',imagen = 'imagen'){
@@ -128,11 +126,7 @@ class TagPage {
         //cy.log('Texto Objetnido: '+nameTitle );
         cy.wait(1000);
         cy.get('div.site-header-inner p.site-description').then((descr) => {
-            if(description !== descr.text()){
-                throw new Error(
-                    `Expected Description is different`
-                );
-            }
+            assert.equal(description, descr.text(), 'Expected Description is different');
         });
         cy.screenshot(escenario+'/'+imagen);
     }
