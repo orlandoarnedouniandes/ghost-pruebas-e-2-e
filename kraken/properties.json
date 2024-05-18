@@ -8,5 +8,9 @@
 	"PAGETITLE": "The First automated page",
 	"PAGECONTENT": "Lorem ipsum dolor sit amet, consectetur adipiscing elit page",
 	"TAGTITLE": "Test Tag Modified",
-	"BLANK": ""
+	"BLANK": "",
+	"NAMEMEMBER": "ANDRES PIARPUZAN",
+	"EMAILMEMBER": "w.piarpuzan@uniandes.edu.co",
+	"NOTEMEMBER": "MEMBER NOTE PROOF",
+	"LABELMEMBER": "LABEL PROOF"
 }

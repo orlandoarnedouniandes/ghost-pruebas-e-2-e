@@ -1,7 +1,7 @@
 Feature: Ghost Tests
 
   @user26 @web
-    Scenario: E26 - Change Title on Publish Post /  - Title (Blank)
+    Scenario: E26 - Change Title on Publish Post / Apriori  - Title (Blank)
       Given I navigate to page "<BASEURL>"
       When I log in with email "<USERNAME>" and password "<PASSWORD>"
       And I wait 3 seconds

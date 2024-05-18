@@ -1,7 +1,7 @@
 Feature: Ghost Tests
 
 @user28 @web
-    Scenario: E28 - Create Page / Pseudo - Title (Random) Content (Blank)
+    Scenario: E28 - Create Page / Pseudo Aleatorio - Title (Random) Content (Blank)
         Given I navigate to page "<BASEURL>"
         When I log in with email "<USERNAME>" and password "<PASSWORD>"
         And I wait 3 seconds

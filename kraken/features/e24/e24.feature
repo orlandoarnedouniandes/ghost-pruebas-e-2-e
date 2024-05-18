@@ -1,7 +1,7 @@
 Feature: Ghost Tests
 
   @user24 @web
-    Scenario: E24 - Create Post / - Title (Blank) Content (Blank)
+    Scenario: E24 - Create Post / Apriori - Title (Blank) Content (Blank)
         Given I navigate to page "<BASEURL>"
         When I log in with email "<USERNAME>" and password "<PASSWORD>"
         And I wait 3 seconds
