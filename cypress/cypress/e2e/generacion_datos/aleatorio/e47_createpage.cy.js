@@ -4,7 +4,7 @@ const Page = require("../pageobjects/page");
 const PageObject = require("../pageobjects/pagepage");
 
 context("CreatePage", function () {
-  let escenario='escenario6';
+  let escenario='escenario47';
   beforeEach(function () {
     this.page = new Page();
     this.pageObject = new PageObject();

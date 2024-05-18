@@ -7,7 +7,7 @@ const PostPage = require("../pageobjects/postpage");
 //La aserción de este caso de prueba falla debido a que Ghost tiene un bug cuando se intenta crear un post con un título de más de 2000 caracteres
 
 context("CreatePost", function () {
-  let escenario='escenario1';
+  let escenario='escenario45';
 
   beforeEach(function () {
     this.page = new Page();
