@@ -10,13 +10,14 @@ context("CreateTag", function () {
         this.page = new Page();
         this.tagpage = new TagPage();
 
-        cy.fixture("ghost_tag.json").then((data) => {
-            this.tagdata = data[Math.floor(Math.random() * data.length)];
-        });
-
         cy.fixture("ghost.json").then((data) => {
             cy.log('Data: '+data.url );
             this.data = data;
+            
+            cy.request('GET', this.data.api_tag_naughty).then((response) => {
+                this.tagdata = response.body;
+            });
+            
             //Given      
             this.page.visit(this.data.url, escenario, '1_home');
         });
@@ -29,7 +30,7 @@ context("CreateTag", function () {
     
         //When
         const title = this.tagdata.tag;
-        const color = this.tagdata.color;
+        const color = this.data.color;
         const slug = this.tagdata.tag;
         const description = this.tagdata.description;
         this.tagpage.fillandSaveTagForm(title, color,slug,description, escenario, '4_fillform');
