@@ -11,6 +11,7 @@ const pseudoRandomData = {
 	password: faker.internet.password(),
 	siteTitle: faker.commerce.productName(),
 	city: faker.location.city(),
+	website: faker.internet.url(),
 };
 
 module.exports = pseudoRandomData;

@@ -9,7 +9,6 @@ Feature: Change Location (pseudo-aleatorio)
     And I wait 1 seconds
     And I click on the 'Your profile' link
     And I wait 2 seconds
-    ## When I get current location
     When I modify current location and save changes with faker "pseudo-random"
     And I wait 3 seconds
     When I refresh the page

@@ -1659,3 +1659,75 @@ Then("I should see the expected location", async function () {
 	}
 });
 
+
+
+When(
+	"I modify current website and save changes with faker {string}",
+	async function (inputItem) {
+		let textToType = "";
+
+		switch (inputItem) {
+			case "a-priori":
+				textToType = `${aPrioriData.website}`;
+				break;
+			case "pseudo-random":
+				textToType = `${pseudoRandomData.website}`;
+				break;
+			case "random":
+				textToType = `${generateRandomData().website}`;
+				break;
+			case "NULL":
+				textToType = null;
+				break;
+			case "EMPTY":
+				textToType = "";
+				break;
+			default:
+				textToType = inputEmail;
+		}
+
+		this.currentWebsite = textToType;
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changeWebsiteLocation",
+			"before"
+		);
+		let nameField = await this.driver.$("#user-website");
+		await nameField.setValue(this.currentWebsite);
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changeWebsiteLocation",
+			"after"
+		);
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changeWebsiteLocationClick",
+			"before"
+		);
+		let saveButton = await this.driver.$("button.gh-btn-primary");
+		await saveButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changeWebsiteLocationClick",
+			"after"
+		);
+	}
+);
+
+Then("I should see the expected website", async function () {
+	let element = await this.driver.$("#user-website");
+	let displayedItem = await element.getValue();
+
+	if (!displayedItem.includes(this.currentWebsite)) {
+		throw new Error(
+			`Expected name to be ${this.currentWebsite} but found ${displayedItem}`
+		);
+	}
+});
+

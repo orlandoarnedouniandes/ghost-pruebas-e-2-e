@@ -8,6 +8,7 @@ const aPrioriData = {
 	address: "123 Main St, Anytown, USA",
 	siteTitle: "Apriori Site title",
 	city: "Apriori Medellin",
+	website: "test-site.com",
 };
 
 module.exports = aPrioriData;

@@ -1,7 +1,7 @@
-Feature: Change Location (aleatorio)
+Feature: Change Website (aleatorio)
 
-  @user67 @web
-  Scenario: E67 - Change Location (aleatorio)
+  @user70 @web
+  Scenario: E70 - Change Website (aleatorio)
     Given I navigate to page "<BASEURL>"
     When I log in with email "<USERNAME>" and password "<PASSWORD>"
     And I wait 3 seconds
@@ -9,8 +9,8 @@ Feature: Change Location (aleatorio)
     And I wait 1 seconds
     And I click on the 'Your profile' link
     And I wait 2 seconds
-    When I modify current location and save changes with faker "random"
+    When I modify current website and save changes with faker "random"
     And I wait 3 seconds
     When I refresh the page
     And I wait 2 seconds
-    Then I should see the expected location
+    Then I should see the expected website
