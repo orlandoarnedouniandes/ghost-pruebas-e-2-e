@@ -13,6 +13,12 @@ class PageObject {
         cy.wait(2000);
         cy.screenshot(escenario + '/' + imagen);
     }
+    fillandSavePageEmptyContent(postTitle, escenario = 'escenario', imagen = 'imagen') {
+        cy.get('textarea.gh-editor-title').clear().type(postTitle);;
+        cy.get('div.koenig-editor__editor').clear();
+        cy.wait(2000);
+        cy.screenshot(escenario + '/' + imagen);
+    }
 
     backtoPages(escenario='escenario',imagen='imagen'){
         cy.get('a[href="#/pages/"]').first().click();
