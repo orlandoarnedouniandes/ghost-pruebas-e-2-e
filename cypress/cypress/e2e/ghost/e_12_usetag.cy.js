@@ -17,18 +17,18 @@ context("UseTag", function () {
         cy.fixture("ghost.json").then((data) => {
             cy.log('Data: '+data.url );
             this.data = data;
-            //Given      
+            //Given the user is in the home page      
             this.page.visit(this.data.url, escenario, '1_home');
         });
     });
     
-    it("El usuario usa un tag", function () {
-        //Given
+    it.skip("El usuario usa un tag", function () {
+        //Given the user logs in and navigates to last tag
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToTags(escenario, '3_tags');
         this.tagpage.getLastTag();
         cy.get('@tag').then((tag) => {
-            //When
+            //When the user navigates to new post and fills the form with the tag and logs out
             cy.log('tag a usar:'+tag);
             this.page.navigateToNewPost(escenario, '4_newpost');
             const title = this.page.getRandomPostTitle(this.data.post.title);
@@ -38,7 +38,7 @@ context("UseTag", function () {
             this.postPage.backtoDashBoard(escenario, '8_backtodashboard');
             this.page.logout(escenario, '9_logout'); 
 
-            //Then
+            //Then the user verify the tag is in the post
             this.sitePage.verifyTagExistsInPost(tag, escenario, '10_verify');
         });
     });

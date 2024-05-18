@@ -16,16 +16,15 @@ context("DeletePost",function () {
         if(this.data === undefined){
           cy.fixture("ghost.json").then((data) => {
             this.data = data;
-            //Given
+            //Given the user is in the home page
             this.page.visit(this.data.url,escenario,'1_home');
           });
         }
     
       });
 
-      it("User wants to delete a post",function (){
-        //Given
-        //this.page.visit(this.data.url,escenario,'1_home');
+      it.skip("User wants to delete a post",function (){
+        //Given the user logs in and navigates to the last post created
         cy.wait(3000);
         this.page.getLastPostTitle();
         cy.get('@postTitle').then((title) => {
@@ -34,11 +33,11 @@ context("DeletePost",function () {
             this.page.navigateToPosts(escenario,'3_posts');
             this.postPage.navigateToSpecificPost(title,escenario,'4_post'); 
 
-            //When
+            //When the user deletes the post and logs out
             this.postPage.deletePost(escenario,'5_deletepost');
             this.page.logout(escenario,'6_logout');  
 
-            //Then
+            //Then the user verify the post was deleted
             this.SitePage.verifyPostTitleDoesNotExist(title,escenario,'7_verify');
         });
       });

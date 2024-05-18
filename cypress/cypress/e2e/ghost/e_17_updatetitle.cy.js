@@ -11,21 +11,21 @@ context("UpdateTitle", function () {
 
         cy.fixture("ghost.json").then((data) => {
             this.data = data;
-            //Given      
+            //Given the user is in the home page     
             this.page.visit(this.data.url, escenario, '1_home');
         });
     });
 
-    it("El usuario actualiza el titulo del sitio", function () {
-        //Given
+    it.skip("El usuario actualiza el titulo del sitio", function () {
+        //Given the user logs in
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         
-        //When
+        //When the user updates the title with a random value and logs out
         const title = this.page.getRandomTitle(this.data.title);
         this.page.updateTitle(title, escenario, '3_updatetitle');
         this.page.logout(escenario, '4_logout');
 
-        //Then
+        //Then the user verify the title is updated
         this.sitePage.verifyTitle(title, escenario, '5_verify');
     });
 

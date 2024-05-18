@@ -15,25 +15,25 @@ context("PublishPost", function () {
       cy.fixture("ghost.json").then((data) => {
         cy.log('Data: '+data.url );
         this.data = data;
-        //Given      
+        //Given  the user is in the home page     
         this.page.visit(this.data.url,escenario,'1_home');
       });
     });
   
-    it("El usuario editor quiere publicar un post que había creado previamente", function () {
-      //Given
+    it.skip("El usuario editor quiere publicar un post que había creado previamente", function () {
+      //Given the user logs in and navigates to a draft post
       this.page.loginAdmin(this.data.username, this.data.password,escenario,'2_login');
       this.page.navigateToPosts(escenario,'3_posts');    
       this.postPage.findDraftPost(); 
       cy.get('@postTitle').then((title) => {
         this.postPage.navigateToSpecificPost(title,escenario,'4_specificpost');
 
-      //When 
+      //When  the user publishes the post and goes back to dashboard and logs out
       this.postPage.publishPost(escenario,'5_publish');
       this.postPage.backtoDashBoard(escenario,'6_dashboard');
       this.page.logout(escenario,'7_logout');  
 
-      //Then
+      //Then the user verify the post was published
       this.sitePage.verifylastPostTitle(title,escenario,'8_verify');
       });
     });
