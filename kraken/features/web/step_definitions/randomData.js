@@ -13,6 +13,10 @@ const generateRandomData = () => ({
 	firstname: faker.person.firstName(),
 	lastname: faker.person.lastName(),
 	password: faker.internet.password(),
+	siteTitle: faker.commerce.productName(),
+	city: faker.location.city(),
+	website: faker.internet.url(),
+	paragraph: faker.lorem.paragraph(),
 });
 
 module.exports = generateRandomData;
