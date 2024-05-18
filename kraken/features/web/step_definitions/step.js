@@ -1873,3 +1873,63 @@ Then("I should see the expected twitter", async function () {
 	}
 });
 
+When(
+	"I modify current bio and save changes with faker {string}",
+	async function (inputItem) {
+		let textToType = "";
+
+		switch (inputItem) {
+			case "a-priori":
+				textToType = `${aPrioriData.paragraph}`;
+				break;
+			case "pseudo-random":
+				textToType = `${pseudoRandomData.paragraph}`;
+				break;
+			case "random":
+				textToType = `${generateRandomData().paragraph}`;
+				break;
+			case "NULL":
+				textToType = null;
+				break;
+			case "EMPTY":
+				textToType = "";
+				break;
+			default:
+				textToType = inputEmail;
+		}
+
+		this.currentBio = textToType;
+
+		await saveScreenshot.call(this, resultsPath, "changecurrentBio", "before");
+		let nameField = await this.driver.$("#user-bio");
+		await nameField.setValue(this.currentBio);
+		await saveScreenshot.call(this, resultsPath, "changecurrentBio", "after");
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentBioClick",
+			"before"
+		);
+		let saveButton = await this.driver.$("button.gh-btn-primary");
+		await saveButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentBioClick",
+			"after"
+		);
+	}
+);
+
+Then("I should see the expected bio", async function () {
+	let element = await this.driver.$("#user-bio");
+	let displayedItem = await element.getValue();
+
+	if (!displayedItem.includes(this.currentBio)) {
+		throw new Error(
+			`Expected name to be ${this.currentBio} but found ${displayedItem}`
+		);
+	}
+});
+

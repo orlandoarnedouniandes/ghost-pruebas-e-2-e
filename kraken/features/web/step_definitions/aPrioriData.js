@@ -9,6 +9,7 @@ const aPrioriData = {
 	siteTitle: "Apriori Site title",
 	city: "Apriori Medellin",
 	website: "test-site.com",
+	paragraph: "Test paragraph. This is a quick a priori demo",
 };
 
 module.exports = aPrioriData;
