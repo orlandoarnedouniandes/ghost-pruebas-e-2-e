@@ -5,7 +5,7 @@ const Page = require("../pageobjects/page");
 const PageObject = require("../pageobjects/pagepage");
 const SitePage = require("../pageobjects/sitepage");
 
-function generateSpecialCharactersTitle(length) {
+function generateSpecialCharactersContent(length) {
     const specialCharacters = '!@#$%^&*()_+[]{}|;:,.<>?';
     let result = '';
     const charactersLength = specialCharacters.length;
@@ -16,7 +16,7 @@ function generateSpecialCharactersTitle(length) {
 }
 
 context("UpdatePage", function () {
-    let escenario = 'e_100_updatepage_title_especial';
+    let escenario = 'e_101_updatepage_content_especial';
 
     beforeEach(function () {
         this.page = new Page();
@@ -32,7 +32,7 @@ context("UpdatePage", function () {
         }
     });
 
-    it("El usuario actualiza una página title especial - faker", function () {
+    it("El usuario actualiza una página content especial - faker", function () {
         //Given
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToPages(escenario, '3_pages');
@@ -42,8 +42,8 @@ context("UpdatePage", function () {
             this.pageObject.navigateToSpecificPage(data, escenario, '4_specificpage');
 
             //When
-            const newTitle = generateSpecialCharactersTitle(100); 
-            const newContent = faker.lorem.sentence();
+            const newTitle = faker.lorem.sentence(); 
+            const newContent = generateSpecialCharactersContent(1000);
 
             this.pageObject.fillandSavePageForm(newTitle, newContent, escenario, '5_fillform');
             this.pageObject.backtoPages(escenario, '6_backtopages');
