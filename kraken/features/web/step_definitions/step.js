@@ -1731,3 +1731,75 @@ Then("I should see the expected website", async function () {
 	}
 });
 
+
+
+When(
+	"I modify current facebook and save changes with faker {string}",
+	async function (inputItem) {
+		let textToType = "";
+
+		switch (inputItem) {
+			case "a-priori":
+				textToType = `${aPrioriData.firstname}`;
+				break;
+			case "pseudo-random":
+				textToType = `${pseudoRandomData.firstname}`;
+				break;
+			case "random":
+				textToType = `${generateRandomData().firstname}`;
+				break;
+			case "NULL":
+				textToType = null;
+				break;
+			case "EMPTY":
+				textToType = "";
+				break;
+			default:
+				textToType = inputEmail;
+		}
+
+		this.currentFacebook = textToType;
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentFacebook",
+			"before"
+		);
+		let nameField = await this.driver.$("#user-facebook");
+		await nameField.setValue(this.currentFacebook);
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentFacebook",
+			"after"
+		);
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentFacebookClick",
+			"before"
+		);
+		let saveButton = await this.driver.$("button.gh-btn-primary");
+		await saveButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changecurrentFacebookClick",
+			"after"
+		);
+	}
+);
+
+Then("I should see the expected facebook", async function () {
+	let element = await this.driver.$("#user-facebook");
+	let displayedItem = await element.getValue();
+
+	if (!displayedItem.includes(this.currentFacebook)) {
+		throw new Error(
+			`Expected name to be ${this.currentFacebook} but found ${displayedItem}`
+		);
+	}
+});
+
