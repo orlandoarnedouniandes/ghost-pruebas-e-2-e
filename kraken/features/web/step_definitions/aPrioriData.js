@@ -7,6 +7,7 @@ const aPrioriData = {
 	correctPassword: "mWxNuDsU5Ng7LD",
 	address: "123 Main St, Anytown, USA",
 	siteTitle: "Apriori Site title",
+	city: "Apriori Medellin",
 };
 
 module.exports = aPrioriData;

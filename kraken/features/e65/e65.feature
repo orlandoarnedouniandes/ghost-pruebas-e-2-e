@@ -1,7 +1,7 @@
-Feature: Change Location (aleatorio)
+Feature: Change Location (a-priori)
 
-  @user67 @web
-  Scenario: E67 - Change Location (aleatorio)
+  @user65 @web
+  Scenario: E65 - Change Location (a-priori)
     Given I navigate to page "<BASEURL>"
     When I log in with email "<USERNAME>" and password "<PASSWORD>"
     And I wait 3 seconds
@@ -10,7 +10,7 @@ Feature: Change Location (aleatorio)
     And I click on the 'Your profile' link
     And I wait 2 seconds
     ## When I get current location
-    When I modify current location and save changes with faker "random"
+    When I modify current location and save changes with faker "a-priori"
     And I wait 3 seconds
     When I refresh the page
     And I wait 2 seconds

@@ -1595,3 +1595,67 @@ Then(
 	}
 );
 
+When(
+	"I modify current location and save changes with faker {string}",
+	async function (inputLocation) {
+		let location = "";
+
+		switch (inputLocation) {
+			case "a-priori":
+				location = `${aPrioriData.city}`;
+				break;
+			case "pseudo-random":
+				location = `${pseudoRandomData.city}`;
+				break;
+			case "random":
+				location = `${generateRandomData().city}`;
+				break;
+			case "NULL":
+				location = null;
+				break;
+			case "EMPTY":
+				location = "";
+				break;
+			default:
+				location = inputEmail;
+		}
+
+		this.currentLocation = location;
+
+		await saveScreenshot.call(this, resultsPath, "changeLocation", "before");
+		let nameField = await this.driver.$("#user-location");
+		await nameField.setValue(this.currentLocation);
+		await saveScreenshot.call(this, resultsPath, "changeLocation", "after");
+
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changeLocationClick",
+			"before"
+		);
+		let saveButton = await this.driver.$("button.gh-btn-primary");
+		await saveButton.click();
+		await saveScreenshot.call(
+			this,
+			resultsPath,
+			"changeLocationClick",
+			"after"
+		);
+	}
+);
+
+When("I get current location", async function () {
+	let element = await this.driver.$("#user-location");
+	this.currentLocation = await element.getValue();
+});
+Then("I should see the expected location", async function () {
+	let element = await this.driver.$("#user-location");
+	let displayedItem = await element.getValue();
+
+	if (displayedItem !== this.currentLocation) {
+		throw new Error(
+			`Expected name to be ${this.currentLocation} but found ${displayedItem}`
+		);
+	}
+});
+
