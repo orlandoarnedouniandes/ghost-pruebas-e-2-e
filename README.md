@@ -44,9 +44,10 @@ versión: 3.42 - http://misoubuntuhw.eastus.cloudapp.azure.com:3001/
 1. Clone el siguiente repositorio https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e.git
 2. Navegue hasta el directorio donde descargó el repositorio
 3. Ubíquese dentro de la carpeta Cypress (cd cypress)
-4. A continuación, corra las pruebas usando el siguiente comando: cypress run
-5. Verifique los resultados.
-6. Recuerde que la aplicación bajo pruebas se encuentra desplegada en: http://misoubuntuhw.eastus.cloudapp.azure.com:2368/ (versión 5.14) y http://misoubuntuhw.eastus.cloudapp.azure.com:3001/ (versión 3.42), si desea evidenciar la ejecución de las pruebas puede ingresar a la URL con las siguientes credenciales: User:h.wiesner@uniandes.edu.co; Password: mWxNuDsU5Ng7LD.
+4. **Generación de datos: Ejecutar npm i**  para instraar la libreria js-faker. 
+5. A continuación, corra las pruebas usando el siguiente comando: cypress run
+6. Verifique los resultados.
+7. Recuerde que la aplicación bajo pruebas se encuentra desplegada en: http://misoubuntuhw.eastus.cloudapp.azure.com:2368/ (versión 5.14) y http://misoubuntuhw.eastus.cloudapp.azure.com:3001/ (versión 3.42), si desea evidenciar la ejecución de las pruebas puede ingresar a la URL con las siguientes credenciales: User:h.wiesner@uniandes.edu.co; Password: mWxNuDsU5Ng7LD.
 #### Versiones utilizadas en el desarrollo de las pruebas
 node: 18.13.0
 Cypress package version: 13.8.1
@@ -109,5 +110,21 @@ Aca se describe los resultados de ejecutar los 40 escenarios de pruebas sin ajus
 ### Funcionalidades generales de Ghost
 ## [Funcionalidades generales de Ghost](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Funcionalidades-generales-de-Ghost)
 
+## Estrategia de generación de DATOS
+
+### Cypress - A priori
+ Para las pruebas e2e en Cypres se generaron varios paquetes de datos a través de la plataforma mockaroo incluyendo data para post, paginas, tags, usuarios e información de la página. Dentro de la estrategia se generaron datos con caracteres especiales (Naughty) y datos con valores muy grandes para analizar el comportamiento de la aplicación Ghost respecto a estos modelos de datos. Estos archivos fueron cargados dentro de la carpeta fixtures y se usaban en las pruebas mediante la función cy.fixtures de cypress. Los archivos generados fueron ghost_general.json, ghost_post_naughty.json, ghost_post.json,ghost_slug.json, ghost_tag.json,ghost_user.json. Para todas las pruebas que requieran autenticación del usuario, se usaron los datos a priori cargados manualmente en el archivo ghost.json.
+
+### Cypress - Dinamico
+Para las pruebas e2e en Cypress con data pool dinámico se generaron varios API a través de la plataforma de mockaroo. Estos API se configuraron en la plataforma siguiendo la estrategia de datos correctos, datos malos(naughty) y datos de tamaño grande para las diferentes funcionalidades de Ghost. Estos APIs son llamados al inicio de la ejecución de las pruebas a través de la función  cy.request y usados en las pruebas a conveniencia. 
+Los API generados son:
+
+* [ghost_post.json](https://my.api.mockaroo.com/ghost_post.json?key=e41270f0)
+* [ghost_tag.json](https://my.api.mockaroo.com/ghost_tag.json?key=e41270f0)
+* [ghost_tag_naughty.json](https://my.api.mockaroo.com/ghost_tag_naughty.json?key=e41270f0)
+* [page.json](https://my.api.mockaroo.com/page.json?key=e41270f0)
+* [slug.json](https://my.api.mockaroo.com/slug.json?key=e41270f0)
 
 
+### Cypress - Aleatorio
+ Para las pruebas e2e en Cypress con data pool aleatorio, se instaló la libreria js-faker **Importante: Ejecutar npm install para poder ejecutar las pruebas**. Mediante la librería faker se generaban los distintos datos a medida que se necesitaban en cada una de las pruebas realizadas. 
