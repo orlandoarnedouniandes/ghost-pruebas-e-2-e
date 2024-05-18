@@ -1,7 +1,7 @@
 Feature: Ghost Tests
 
   @user34 @web
-    Scenario: E34 - Edit Tag / Random - Title (Blank)
+    Scenario: E34 - Edit Tag / Apriori - Title (Blank)
       Given I navigate to page "<BASEURL>"
       When I log in with email "<USERNAME>" and password "<PASSWORD>"
       And I wait 3 seconds

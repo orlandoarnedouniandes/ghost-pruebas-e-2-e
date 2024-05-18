@@ -1908,3 +1908,75 @@ Then("I should see the expected bio", async function () {
 	}
 });
 
+//E121
+
+When ("I click on the 'Members' link", async function () {
+	await saveScreenshot.call(this, resultsPath, "clickMember", "before");
+	let members = await this.driver.$('a[href="#/members/"]');
+	await members.click();	
+	await saveScreenshot.call(this, resultsPath, "clickMembers", "after");
+});
+
+When ("I click on the 'New Member' link", async function () {
+	await saveScreenshot.call(this, resultsPath, "clickNewMembers", "before");
+	let members = await this.driver.$('a[href="#/members/new/"]');
+	await members.click();	
+	await saveScreenshot.call(this, resultsPath, "clickNewMembers", "after");
+});
+
+When("I fill the new member with name {kraken-string}, email {kraken-string}, labels {kraken-string} and note {kraken-string}",
+	async function (name, email, labels, note) {
+		await saveScreenshot.call(this, resultsPath, "newMember", "before");
+		let nameElement = await this.driver.$("#member-name");
+		await nameElement.setValue(name);
+		let emailElement = await this.driver.$("#member-email");
+		await emailElement.setValue(email);
+		let labelsElement = await this.driver.$("div input.ember-power-select-trigger-multiple-input");
+		await labelsElement.setValue(labels);
+		let noteElement = await this.driver.$("#member-note");
+		await noteElement.setValue(note);
+		let save = await this.driver.$('button.gh-btn-primary span');
+		await save.click();		
+		await this.driver.pause(1000);		
+		await saveScreenshot.call(this, resultsPath, "newMember", "after");
+	}
+);
+
+Then("I validate the new member created with name {kraken-string} and email {kraken-string}", async function (name, email) {
+	//console.log("name: "+name+" email: "+email);
+	let membersLink = await this.driver.$('a[href="#/members/"]');
+	await membersLink.click();	
+	await this.driver.pause(2000);	
+	let members = await this.driver.$$("tbody.ember-view tr");
+	let flag = true;
+	//console.log("longitud miembros: "+members.length);
+	for (let i = 0; i < members.length; i++) {
+		let member = await members[i];
+		//console.log("member: "+member);
+		let memberName = await member.$("h3.gh-members-list-name").getText();
+		//console.log("memberName: "+memberName);
+		let memberEmail = await member.$("p").getText();
+		//console.log("memberEmail: "+memberEmail);
+		if ((memberName.includes(name))&&(memberEmail.includes(email))) {
+			flag = false;
+			break;
+		}
+	}
+
+	if (flag === true) {
+		throw new Error(`Expected Member not exist`);
+	}
+});
+
+When("I click on the first Member list", async function () {
+	let members = await this.driver.$$(
+		"tbody.ember-view tr"
+	);
+	if (members.length > 0) {
+		await saveScreenshot.call(this, resultsPath, "memberedit", "before");
+		let memberElement = await members[0].$("h3.gh-members-list-name");
+		await memberElement.click();
+		await saveScreenshot.call(this, resultsPath, "memberedit", "after");	
+	}
+});
+

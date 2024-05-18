@@ -1,7 +1,7 @@
 Feature: Ghost Tests
 
   @user32 @web
-    Scenario: E32 - Change Title on Publish Page /  - Title (Blank)
+    Scenario: E32 - Change Title on Publish Page / Apiori - Title (Blank)
       Given I navigate to page "<BASEURL>"
       When I log in with email "<USERNAME>" and password "<PASSWORD>"
       And I wait 3 seconds
