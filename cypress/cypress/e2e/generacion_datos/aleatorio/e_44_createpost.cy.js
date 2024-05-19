@@ -17,7 +17,7 @@ context("Post", function () {
     });
   });
 
-  it.skip("aleatorio - El usuario editor quiere crear un nuevo post", function () { 
+  it("aleatorio - El usuario editor quiere crear un nuevo post", function () { 
     //Given the user is an Admin and navegate to the new post page
     this.page.loginAdmin(this.data.username, this.data.password,escenario,'2_login');
     this.page.navigateToNewPost(escenario,'3_newpost');

@@ -18,7 +18,7 @@ context("CreateTag", function () {
         });
     });
     
-    it.skip("aleatorio -El usuario crea un tag", function () {
+    it("aleatorio -El usuario crea un tag", function () {
         //Given the user is logged as Admin and navigate to the tags
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToNewTag(escenario, '3_newtag');

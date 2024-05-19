@@ -17,7 +17,7 @@ context("CreatePage", function () {
     });
   });
 
-  it.skip("aleatorio - El usuario crea una página",function (){
+  it("aleatorio - El usuario crea una página",function (){
     //Given the user is logged as Admin and navigate to the pages
     this.page.loginAdmin(this.data.username, this.data.password, escenario,'2_login');
     this.page.navigateToNewPage(escenario,'3_newpage');
