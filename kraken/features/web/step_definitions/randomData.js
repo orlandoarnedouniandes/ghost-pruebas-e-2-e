@@ -1,6 +1,7 @@
 const { Faker, en } = require("@faker-js/faker");
 
-// Create a new Faker instance in order to access random data everytime is called
+// Create a new Faker instance in order to access random data 
+//everytime is called
 const faker = new Faker({
 	locales: { en },
 	locale: "en",
