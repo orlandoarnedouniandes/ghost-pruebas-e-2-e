@@ -9,6 +9,6 @@ Feature: Ghost Tests
       And I wait 1 seconds
       And I click on the publish post to change title
       And I wait 1 seconds
-      And I change title of post
+      And I change title of post for "<POSTTITLE>"
       And I wait 2 seconds
-      Then I validate that the Post is new title
+      Then I validate that the Post is new title "<POSTTITLE>"

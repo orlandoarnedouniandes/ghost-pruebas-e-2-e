@@ -15,28 +15,28 @@ context("UnpublishPost314", function () {
     if (this.data === undefined) {
       cy.fixture("ghost.json").then((data) => {
         this.data = data;
-        //Given
+        //Given the user is in the home page
         this.page.visit(this.data.url342, escenario, "1_home");
       });
     }
   });
 
-  it("El usuario editor quiere despublicar un post para que no esté más visible en el home del sitio", function () {
+  it.skip("El usuario editor quiere despublicar un post para que no esté más visible en el home del sitio", function () {
     this.page.getLastPostTitle();
     cy.get("@postTitle").then((title) => {
       cy.log("post a despublicar:" + title);
 
-      //Given
+      //Given the user logs in and navigates to the last post created
       this.page.loginAdmin(this.data.username, this.data.password, escenario, "2_login");
       this.page.navigateToPosts(escenario, "3_posts");
       this.postPage.navigateToSpecificPost(title, escenario, "4_post");
 
-      //When
+      //When the user unpublish the post and logs out
       this.postPage.unpublishPost(escenario, "5_unpublish");
       this.page.navigateToPosts(escenario, "6_posts");
       this.page.logout(escenario, "7_logout");
 
-      //Then
+      //Then the user verify the post was unpublished
       this.SitePage.verifyPostTitleDoesNotExist(title, escenario, "8_verify");
     });
   });

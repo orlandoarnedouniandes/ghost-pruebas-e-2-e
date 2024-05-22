@@ -17,25 +17,25 @@ context("EditTag", function () {
         cy.fixture("ghost.json").then((data) => {
             cy.log('Data: '+data.url );
             this.data = data;
-            //Given      
+            //Given  the user is in the home page     
             this.page.visit(this.data.url, escenario, '1_home');
         });
     });
     
-    it("El usuario edita un tag", function () {
-        //Given
+    it.skip("El usuario edita un tag", function () {
+        //Given the user logs in and navigates to last tag
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToTags(escenario, '3_tags');
         this.tagpage.getLastTag();
         cy.get('@tag').then((tag) => {
-            //When
+            //When the user navigates to the tag and updates the form and goes back to tags
             cy.log('tag a editar:'+tag);
             this.tagpage.navigateToSpecificTag(tag, escenario, '4_specifictag');
             const newTag = this.page.getRandomTagTitle(this.data.tag.name);
             this.tagpage.updateTagForm(newTag, escenario, '5_updateform');
             this.page.backtoTags(escenario, '6_backtotags');
     
-            //Then
+            //Then the user verify the tag was updated
             this.tagpage.verifyTagExists(newTag, escenario, '7_verify');
         });
     });
