@@ -19,7 +19,9 @@ async function saveComparisonReport(
 	resultsPath,
 	stringId,
 	v1Path,
-	v2Path
+	v2Path,
+	v1Name,
+	v2Name
 ) {
 	console.log(resultsPath);
 	const data = await compareImages(
@@ -40,6 +42,8 @@ async function saveComparisonReport(
 		v2Path: v2Path,
 		filePathCompare: `${stringId}-compare.png`,
 		stringId: stringId,
+		v1Name: v1Name,
+		v2Name: v2Name,
 	};
 
 	fs.writeFileSync(
@@ -56,16 +60,16 @@ async function saveComparisonReport(
 function browser(b, info) {
 	return `<div class=" browser" id="test0">
     <div class=" btitle">
-        <h4>Comparison: Ghost version 5.14 Vs 3.42</h4>
+        <h4>Comparison: Ghost ${info.v1Name} Vs ${info.v2Name}</h4>
         <p>Data: ${info.stringId}</p>
     </div>
     <div class="imgline">
       <div class="imgcontainer">
-        <span class="imgname">Version 1</span>
+        <span class="imgname">${info.v1Name}</span>
         <img class="img2" src="${info.v1Path}" id="refImage" label="Reference">
       </div>
       <div class="imgcontainer">
-        <span class="imgname">Version 2</span>
+        <span class="imgname">${info.v2Name}</span>
         <img class="img2" src="${info.v2Path}" id="testImage" label="Test">
       </div>
     </div>
