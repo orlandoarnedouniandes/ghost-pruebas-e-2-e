@@ -8,7 +8,7 @@ const {
 	wait,
 } = require("./helpers");
 
-async function runcomparisonReport(v1FolderPath, v2FolderPath) {
+async function runcomparisonReport(v1FolderPath, v2FolderPath, v1Name, v2Name) {
 	const filesInV1 = await getFilesInFolder(v1FolderPath);
 	const filesInV2 = await getFilesInFolder(v2FolderPath);
 	const dateTime = getFormattedDatetime();
@@ -33,7 +33,9 @@ async function runcomparisonReport(v1FolderPath, v2FolderPath) {
 				resultsPath,
 				stringId,
 				matchingFile.filePath,
-				fileItem.filePath
+				fileItem.filePath,
+				v1Name,
+				v2Name
 			);
 		}
 	}
@@ -58,6 +60,8 @@ function getFilesInFolder(folderPath) {
 }
 
 runcomparisonReport(
-	"C:\\Users\\SPUA\\Documents\\Repos\\Maestria\\Pruebas automatizadas\\ghost-pruebas-e-2-e\\kraken\\results\\2024-05-08\\",
-	"C:\\Users\\SPUA\\Documents\\Repos\\Maestria\\Pruebas automatizadas\\ghost-pruebas-e-2-e\\kraken_3_42\\results\\2024-05-08\\"
+	"C:\\Users\\SPUA\\Documents\\Repos\\Maestria\\Pruebas automatizadas\\ghost-pruebas-e-2-e\\kraken\\results\\Edge-2024-05-23\\",
+	"C:\\Users\\SPUA\\Documents\\Repos\\Maestria\\Pruebas automatizadas\\ghost-pruebas-e-2-e\\kraken\\results\\chrome-2024-05-23\\",
+	"Edge",
+	"Chrome"
 );
