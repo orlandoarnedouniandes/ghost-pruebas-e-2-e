@@ -10,8 +10,8 @@ context("CreatePost", function () {
   beforeEach(function () {
     this.page = new Page();
     this.postPage = new PostPage();
-
-    cy.viewport('iphone-6');
+    //Given: **Dado** que soy un usuario de teléfono IPhone
+    cy.viewport('iphone-se2');
 
     cy.fixture("ghost_post.json").then((data) => {
       this.postdata = data[Math.floor(Math.random() * data.length)];;
@@ -19,22 +19,21 @@ context("CreatePost", function () {
     
     cy.fixture("ghost.json").then((data) => {
       this.data = data;
-      //Given the user is in the home page     
       this.page.visit(this.data.url,escenario,'1_home');
     });  
   });
 
   it("El usuario editor quiere crear un nuevo post", function () {
-    //Given the user logs in and navigates to new post
+    //... y que soy un usuario administrador del sitio e ingreso a la página de administradores y navego hasta la creación de posts
     this.page.loginAdmin(this.data.username, this.data.password,escenario,'2_login');
     this.page.navigateToNewPost(escenario,'3_newpost');
 
-    //When the user fills the form with dynamic values and saves the post and goes back to posts
+    //When: **Cuando** ingreso nuevos datos como título y contenido al post, lo guardo y navego a la lista de posts
     const title = this.page.getRandomPostTitle(this.postdata.post_title.substring(0, 200));
     this.postPage.fillandSavePostForm(title, this.postdata.post_content.substring(0,1000),escenario,'4_fillform');
     this.postPage.backtoPosts(escenario,'5_backtoposts');
 
-    //Then the user verify the post was created and is in draft
+    //Then: **Entonces** debería ver el post en la lista de post en estado DRAFT
     this.postPage.verifylastPostTitleandDraft(title,escenario,'6_verify');
   });
 });

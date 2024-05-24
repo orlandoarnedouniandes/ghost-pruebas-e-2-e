@@ -13,8 +13,8 @@ context("UseTag", function () {
         this.tagpage = new TagPage();
         this.postPage = new PostPage();
         this.sitePage = new SitePage();
-
-        cy.viewport('iphone-6');
+        //Given **Dado** que soy un usuario de teléfono IPhone
+        cy.viewport('iphone-se2');
 
         cy.fixture("ghost_post.json").then((data) => {
             this.postdata = data[Math.floor(Math.random() * data.length)];;
@@ -29,12 +29,12 @@ context("UseTag", function () {
     });
     
     it("El usuario usa un tag", function () {
-        //Given the user logs in and navigates to last tag
+        //...y que soy un usuario administrador e ingreso a la página de administradores y navego hasta el listado de tags y busco el tag que quiero usar
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToTags(escenario, '3_tags');
         this.tagpage.getLastTag();
         cy.get('@tag').then((tag) => {
-            //When the user navigates to new post and fills the form with the tag and logs out
+            //When **Cuando** reo un nuevo post, uso el tag en la creación del post, voy al home del sitio y navego hacia el post
             cy.log('tag a usar:'+tag);
             this.page.navigateToNewPost(escenario, '4_newpost');
             const title = this.postdata.post_title.substring(0, 200);
@@ -44,7 +44,7 @@ context("UseTag", function () {
             this.postPage.backtoDashBoard(escenario, '8_backtodashboard');
             this.page.logout(escenario, '9_logout'); 
 
-            //Then the user verify the tag is in the post
+            //Then **Entonces** el tag debe existir dentro de los tags de la publicación
             this.sitePage.verifyTagExistsInPost(tag, escenario, '10_verify');
         });
     });

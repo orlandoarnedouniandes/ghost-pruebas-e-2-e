@@ -9,8 +9,8 @@ context("DeleteTag", function () {
     beforeEach(function () {
         this.page = new Page();
         this.tagpage = new TagPage();
-
-        cy.viewport('iphone-6');
+        //Given **Dado** que soy un usuario de teléfono IPhone 
+        cy.viewport('iphone-se2');
 
         cy.fixture("ghost_tag.json").then((data) => {
             this.tagdata = data[Math.floor(Math.random() * data.length)];;
@@ -18,24 +18,23 @@ context("DeleteTag", function () {
 
         cy.fixture("ghost.json").then((data) => {
             cy.log('Data: '+data.url );
-            this.data = data;
-            //Given  the user is in the home page     
+            this.data = data;  
             this.page.visit(this.data.url, escenario, '1_home');
         });
     });
     
     it("El usuario elimina un tag", function () {
-        //Given the user logs in and navigates to new tag
+        //...y que soy un usuario administrador del sitio e ingreso a la página de administradores y navego hasta la lista de tags
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToNewTag(escenario, '3_newtag');
         const title = this.tagdata.tag;
         this.tagpage.fillandSaveTagForm(title, this.tagdata.color,escenario, '4_fillform');
         this.page.backtoTags(escenario, '5_backtotags');
-        //When the user navigates to the tag and deletes it
+        //When  **Cuando** ingreso a un tag de la lista para eliminarlo, doy clic en el botón el eliminar y confirmo su eliminación
         this.tagpage.navigateToSpecificTag(title, escenario, '6_specifictag');
         this.tagpage.deleteTag(escenario, '7_deletetag');
 
-        //Then the user verify the tag was deleted
+        //Then **Entonces** debería desaparecer el tag de la lista
         this.tagpage.verifyTagNotExists(title, escenario, '8_verify');
     });
 

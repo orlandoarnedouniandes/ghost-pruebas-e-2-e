@@ -11,7 +11,7 @@ context("UpdatePost",function () {
         this.page = new Page();
         this.postPage = new PostPage();
         this.SitePage = new SitePage();
-
+        //Given **Dado** que soy un usuario de teléfono IPhone
         cy.viewport('iphone-6');
 
         cy.fixture("ghost_post.json").then((data) => {
@@ -21,14 +21,13 @@ context("UpdatePost",function () {
         if(this.data === undefined){
             cy.fixture("ghost.json").then((data) => {
             this.data = data;
-            //Given the user is in the home page
             this.page.visit(this.data.url,escenario,'1_home');
             });
         }
     });
 
     it("El usuario editor quiere cambiar el título de un post que había publicado anteriormente",function () {
-        //Given the user logs in and navigates to the last post created        
+        //...y que soy un usuario administrador e ingreso a la página de administradores y navego hasta el listado de post y busco el post que quiero editar       
         this.page.loginAdmin(this.data.username, this.data.password,escenario,'2_login');
         this.page.navigateToPosts(escenario,'3_posts');
         this.postPage.getLastPostTitle();
@@ -36,12 +35,12 @@ context("UpdatePost",function () {
             cy.log('post a editar:'+title);
             this.postPage.navigateToSpecificPost(title, escenario,'4_post'); 
 
-            //When the user updates the title and content with a random value and goes back to posts and logs out
+            //When: **Cuando** cambio el título del post, guardo y luego voy al home del sitio,
             const newTitle = this.page.getRandomPostTitle(this.postdata.post_title.substring(0, 200))   ;
             this.postPage.fillandSavePostForm(newTitle, this.postdata.post_content,escenario,'5_fillform');
             this.postPage.backtoPosts(escenario,'5_backtoposts');
 
-            //Then the user verify the post was updated
+            //Then: **Entonces** el post debe haber cambiado su título
             this.postPage.verifylastPostTitleandDraft(newTitle,escenario,'6_verify');
         });  
     });

@@ -8,25 +8,27 @@ context("ModifyDescription",function () {
   beforeEach(function () {
     this.page = new Page();
     this.tags = new TagPage();
-    cy.viewport('iphone-6');
+    
+    //Given **Dado** que soy un usuario de teléfono IPhone
+    cy.viewport('iphone-se2');
+
     cy.fixture("ghost.json").then((data) => {
       cy.log('Data: '+data.url );
       this.data = data;
-      //Given the user is in the home page      
       this.page.visit(this.data.url,escenario,'1_home');
     });  
   });
 
   it("User wants to modify description of General information",function (){         
-    //Given the user logs in and navigates to settings
+    //...y que soy un usuario administrador del sitio e ingreso a la página de administradores y navego hasta por las configuraciones hasta la sección General
     this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
     this.tags.navigateToSettingsAndSelectGeneral(escenario, '3_settings');
 
-    //When the user updates the description with a random value and visits the page
+    //When **Cuando** ingreso, modifico la descripción del sitio y guardo
     let description = this.tags.editDescriptionAndSave(escenario, '4_editdescription');
     this.page.visit(this.data.url, escenario, '5_home');
 
-    //Then the user verify the description is updated
+    //Then **Entonces** navego al home de la página y debería estar cambiada la descripción
     this.tags.verifyDescription(description, escenario, '6_verify');
   });
 });

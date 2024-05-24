@@ -10,13 +10,12 @@ context("DeletePage",function () {
         this.page = new Page();
         this.pageObject = new PageObject();
         this.SitePage = new SitePage();
+        //**Dado** que soy un usuario de teléfono IPhone
+        cy.viewport('iphone-se2');        
 
-        cy.viewport('iphone-6');
-        
         if(this.data === undefined){
             cy.fixture("ghost.json").then((data) => {
             this.data = data;
-            //Given the user is in the home page
             this.page.visit(this.data.url, escenario, '1_home');
             });
         }
@@ -24,18 +23,18 @@ context("DeletePage",function () {
     });
 
     it("El usuario elimina una página",function () {
-        //Given the user logs in and navigates to the last page
+        //...y que soy un usuario administrador ingreso a la página de administradores navego hasta el listado de páginas, ingreso a la página que quiero eliminar, navego hasta settings y elimino la página
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToPages(escenario, '3_pages');
         this.pageObject.findfirstpage();
         cy.get('@pageTitle').then((title) => {
             this.pageObject.navigateToSpecificPage(title,escenario,'4_specificpage');
 
-            //When the user deletes the page and navigates to pages
+            //When **Cuando** elimino la página y vuelvo al home del listado de páginas
             this.pageObject.deletePage(escenario,'5_deletepage');
             this.page.navigateToPages(escenario, '6_pages');
 
-            //Then the user verify the page does not exist
+            //Then **Entonces** la página no debe estar visible
             this.pageObject.verifyPageTitleDoesNotExist(title,escenario,'7_verify');
         }); 
     });

@@ -12,11 +12,12 @@ context("DeletePost",function () {
         this.page = new Page();
         this.postPage = new PostPage();
         this.SitePage = new SitePage();
-        cy.viewport('iphone-6');
+        //Given: **Dado** que soy un usuario de teléfono IPhone
+        cy.viewport('iphone-se2');
+
         if(this.data === undefined){
           cy.fixture("ghost.json").then((data) => {
             this.data = data;
-            //Given the user is in the home page
             this.page.visit(this.data.url,escenario,'1_home');
           });
         }
@@ -24,7 +25,7 @@ context("DeletePost",function () {
       });
 
       it("User wants to delete a post",function (){
-        //Given the user logs in and navigates to the last post created
+        //...y que soy un usuario administrador ingreso a la página de administradores y navego hasta el listado de post y busco el post que quiero eliminar,
         cy.wait(3000);
         this.page.getLastPostTitle();
         cy.get('@postTitle').then((title) => {
@@ -34,11 +35,11 @@ context("DeletePost",function () {
             this.postPage.filterPublishedPosts(escenario,'4_filter');
             this.postPage.navigateToSpecificPost(title,escenario,'5_post'); 
 
-            //When the user deletes the post and logs out
+            //When: **Cuando** elimino el post y vuelvo a la página home del sitio
             this.postPage.deletePost(escenario,'6_deletepost');
             this.page.logout(escenario,'7_logout');  
 
-            //Then the user verify the post was deleted
+            //Then: **Entonces** el post no debe estar visible
             this.SitePage.verifyPostTitleDoesNotExist(title,escenario,'8_verify');
         });
       });

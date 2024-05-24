@@ -11,28 +11,29 @@ context("PublishPage", function () {
       this.page = new Page();
       this.pageObject = new PageObject();
       this.sitePage = new SitePage();
-      cy.viewport('iphone-6');
+      //Given: **Dado**  que soy un usuario de teléfono IPhone
+      cy.viewport('iphone-se2');
+      
       cy.fixture("ghost.json").then((data) => {
         cy.log('Data: '+data.url );
-        this.data = data;
-        //Given  the user is in the home page     
+        this.data = data;   
         this.page.visit(this.data.url, escenario,'1_home');
       });
     });
   
     it("El usuario publica una página", function () {
-      //Given the user logs in and navigates to a specific drafted page
+      //...y que soy un usuario administrador del sitio e ingreso a la página de administradores, navego hasta el listado de páginas y busco una página en estado DRAFT
       this.page.loginAdmin(this.data.username, this.data.password,escenario,'2_login');
       this.page.navigateToPages(escenario,'3_pages');    
       this.pageObject.findDraftPage(); 
       cy.get('@pageTitle').then((title) => {
         this.pageObject.navigateToSpecificPage(title, escenario,'4_specificpage');
 
-      //When the user publishes the page and goes back to dashboard and logs out
+      //When: **Cuando** hago uso de la funcionalidad publicar, y voy al home del listado de páginas
       this.pageObject.publishPage(escenario,'5_publishpage');
       this.pageObject.backtoPages(escenario,'6_pages');
 
-      //Then the user verify the page is published
+      //Then:  **Entonces** la página debe quedar en estado PUBLISHED
       this.pageObject.verifylastPageTitleandPublished(title,escenario,'6_verify');
       });
     });

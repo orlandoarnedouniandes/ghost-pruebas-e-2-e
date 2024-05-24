@@ -9,32 +9,30 @@ context("UpdateProfileSlug", function () {
     beforeEach(function () {
         this.page = new Page();
         this.sitePage = new SitePage();
-
-        cy.viewport('iphone-6');
+        //Given **Dado** que soy un usuario de teléfono IPhone 
+        cy.viewport('iphone-se2');
 
         cy.fixture("ghost_slug.json").then((data) => {
             this.slug = data[Math.floor(Math.random() * data.length)];;
         });
-    
           
         cy.fixture("ghost.json").then((data) => {
-            this.data = data;
-            //Given the user is in the home page     
+            this.data = data;   
             this.page.visit(this.data.url, escenario, '1_home');
         });
     });
 
     it("El usuario actualiza su pagina de autor", function () {
-        //Given the user logs in and navigates to profile
+        //.. y que soy un administrador del sistema e ingreso a la página de inicio de sesión, 
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToProfile(escenario, '3_profile');
         
-        //When the user updates the slug with a random value and logs out
+        //When **cuando** inicio sesión, y navego hasta mi perfil para modificar el slug de usuario, y guardo los cambios
         const slug = this.slug.slug_normal;
         this.page.updateProfileSlug(slug, escenario, '5_updateprofile');
         this.page.logout(escenario, '6_logout');
         
-        //Then the user verify the author page and the slug is updated
+        //Then **entonces** debería ver el nuevo slug o nombre de usuario en el perfil actualizado y disponible para navegar en el sitio
         this.sitePage.verifyifPageExists(this.data.url, 'author/'+slug, escenario, '7_verify');
     });
 });

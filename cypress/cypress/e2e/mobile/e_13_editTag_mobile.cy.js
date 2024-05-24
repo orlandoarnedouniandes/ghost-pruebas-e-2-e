@@ -13,8 +13,9 @@ context("EditTag", function () {
         this.tagpage = new TagPage();
         this.postPage = new PostPage();
         this.sitePage = new SitePage();
-
-        cy.viewport('iphone-6');
+        
+        //Given **Dado** que soy un usuario de teléfono IPhone 
+        cy.viewport('iphone-se2');
 
         cy.fixture("ghost_tag.json").then((data) => {
             this.tagdata = data[Math.floor(Math.random() * data.length)];;
@@ -22,26 +23,25 @@ context("EditTag", function () {
 
         cy.fixture("ghost.json").then((data) => {
             cy.log('Data: '+data.url );
-            this.data = data;
-            //Given  the user is in the home page     
+            this.data = data;  
             this.page.visit(this.data.url, escenario, '1_home');
         });
     });
     
     it("El usuario edita un tag", function () {
-        //Given the user logs in and navigates to last tag
+        //...y que soy un usuario administrador del sitio e ingreso a la página de administradores y navego hasta la lista de tags
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         this.page.navigateToTags(escenario, '3_tags');
         this.tagpage.getLastTag();
         cy.get('@tag').then((tag) => {
-            //When the user navigates to the tag and updates the form and goes back to tags
+            //When **Cuando** ingreso a un tag de la lista para editarlo, cambio el nombre del tag
             cy.log('tag a editar:'+tag);
             this.tagpage.navigateToSpecificTag(tag, escenario, '4_specifictag');
             const newTag = this.tagdata.tag;
             this.tagpage.updateTagForm(newTag, escenario, '5_updateform');
             this.page.backtoTags(escenario, '6_backtotags');
     
-            //Then the user verify the tag was updated
+            //then **Entonces** debería ver el tag en la lista con el nuevo nombre asignado
             this.tagpage.verifyTagExists(newTag, escenario, '7_verify');
         });
     });
