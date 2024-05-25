@@ -128,3 +128,21 @@ Los API generados son:
 
 ### Cypress - Aleatorio
  Para las pruebas e2e en Cypress con data pool aleatorio, se instaló la libreria js-faker **Importante: Ejecutar npm install para poder ejecutar las pruebas**. Mediante la librería faker se generaban los distintos datos a medida que se necesitaban en cada una de las pruebas realizadas. 
+
+
+ ## Semana 8  - Ejecución de escenarios:
+Como parte de la estartegia se incluyeron pruebas automatizadas con el API de automatziación cypres con una resolución de pantalla de celular (375x667)
+
+Para ejecutar las pruebas
+1. Clone el siguiente repositorio https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e.git
+2. Navegue hasta el directorio donde descargó el repositorio
+3. Ubíquese dentro de la carpeta Cypress (cd cypress)
+4. **Generación de datos: Ejecutar npm i**  para instralar la libreria js-faker. 
+5. A continuación, corra las pruebas usando el siguiente comando: cypress run
+6. Verifique los resultados.
+7. Recuerde que la aplicación bajo pruebas se encuentra desplegada en: http://misoubuntuhw.eastus.cloudapp.azure.com:2368/ (versión 5.14) 
+ si desea evidenciar la ejecución de las pruebas puede ingresar a la URL con las siguientes credenciales: User:h.wiesner@uniandes.edu.co; Password: mWxNuDsU5Ng7LD.
+#### Versiones utilizadas en el desarrollo de las pruebas
+node: 18.13.0
+Cypress package version: 13.8.1
+Cypress binary version: 13.8.1
