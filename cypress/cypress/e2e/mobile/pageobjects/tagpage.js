@@ -73,8 +73,8 @@ class TagPage {
         cy.screenshot(escenario+'/'+imagen+'_3')
     }
 
-    editDescriptionAndSave(escenario = 'escenario',imagen = 'imagen'){
-        const description = "Description Cypress General";
+    editDescriptionAndSave(description,escenario = 'escenario',imagen = 'imagen'){
+        //const description = "Description Cypress General";
         cy.get('div.description-container input.ember-text-field').first().should('be.visible').invoke('val', '').type(description);
         //cy.get('input[id="tag-name"]').first().type(name);
         cy.wait(1000);
@@ -107,7 +107,7 @@ class TagPage {
         cy.get('div.site-header-inner p.site-description').then((descr) => {
             if(description !== descr.text()){
                 throw new Error(
-                    `Expected Description is different`
+                    `Expected Description is different `+description+` but found `+descr.text()
                 );
             }
         });

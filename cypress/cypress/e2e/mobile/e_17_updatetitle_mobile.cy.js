@@ -10,6 +10,10 @@ context("UpdateTitle", function () {
         this.sitePage = new SitePage();
         //Given **Dado** que soy un usuario de teléfono IPhone
         cy.viewport('iphone-se2');
+
+        cy.fixture("ghost_general.json").then((data) => {
+            this.contentdata = data[0];
+        });
         
         cy.fixture("ghost.json").then((data) => {
             this.data = data;     
@@ -22,7 +26,7 @@ context("UpdateTitle", function () {
         this.page.loginAdmin(this.data.username, this.data.password, escenario, '2_login');
         
         //When **Cuando** actualizo el título del sitio
-        const title = this.page.getRandomTitle(this.data.title);
+        const title = this.contentdata.descripcion.substring(0, 20);
         this.page.updateTitle(title, escenario, '3_updatetitle');
         this.page.logout(escenario, '4_logout');
 
