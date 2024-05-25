@@ -33,7 +33,10 @@ versión: 5.14 - http://misoubuntuhw.eastus.cloudapp.azure.com:2368/
 
 #### ResembleJS
 1. ResembleJS viene incluido dentro de las dependencias del proyecto, por tanto se instala al correr normalmente el comando npm install que se describe en las instrucciones de instalacion y ejecucion de Kraken para este repositorio
-2. Resemble corre automaticamente mientras el proyecto de Kraken ejecuta su analisis y esta  acoplado al proceso de toma de screenshots de forma que al momento de ejecutarse el screenshot que describe el cierre del paso (-after.) se dispara un reporte automatico que compara ese punto especifico dentro de la ejecucion. Este reporte automatico se almacena dentro del folder ./kraken/results o ./kraken_3_42/results.
+2. Resemble corre automaticamente mientras el proyecto de Kraken ejecuta su analisis y esta  acoplado al proceso de toma de screenshots de forma que al momento de ejecutarse el screenshot que describe el cierre del paso (-after.) se dispara un reporte automatico que compara ese punto especifico dentro de la ejecucion.
+
+### Reporte de pruebas regresión visual- semana 1
+#### [Reporte de comparación escenarios](https://helverinio.github.io/comparacionedgechrome/Resemble_Comparacion_2024-05-23_results/)
  
 ### Instalación y ejecución de las pruebas en Cypress
 #### Requisitos
@@ -67,25 +70,22 @@ Cypress binary version: 13.8.1
 
 ### Semana 8  - Ejecución de escenarios:
 
-## Inventario de pruebas semana 1
+### [Estretagía](https://uniandes-my.sharepoint.com/:b:/g/personal/k_tarazonaj_uniandes_edu_co/EcwmKdbn_HNIghWQPpsw4kQBXdSgxyo5L6oX3Zz9viUbKA?e=eKf5a2)
+
+
 ### [Inventario de pruebas semana 1](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Inventario-de-pruebas-semana-1)
 
 
-## Video
 ### [Video](https://youtu.be/UYmwYIT9uJ4)
 
 
-## Pros y contras herramientas
 ### [Pros y contras herramientas](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Pros-y-contras-herramientas-usadas-en-la-semana-8) 
 
 
-## Reporte de incidencias
 ### [Reporte de incidencias](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Reporte-de-Incidencias-semana-8) 
 
 
-## Retrospectiva
 ### [Retrospectiva](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Retrospectiva-semana-8)
 
 
-## Funcionalidades generales de Ghost
 ### [Funcionalidades generales de Ghost](https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e/wiki/Funcionalidades-generales-de-Ghost)
