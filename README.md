@@ -131,7 +131,7 @@ Los API generados son:
 
 
  ## Semana 8  - Ejecución de escenarios:
-Como parte de la estartegia se incluyeron pruebas automatizadas con el API de automatziación cypres con una resolución de pantalla de celular (375x667)
+Como parte de la estrategia se incluyeron pruebas automatizadas con el API de automatización cypres con una resolución de pantalla de celular (375x667)
 
 Para ejecutar las pruebas
 1. Clone el siguiente repositorio https://github.com/orlandoarnedouniandes/ghost-pruebas-e-2-e.git
